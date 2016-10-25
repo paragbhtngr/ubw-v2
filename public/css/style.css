@@ -1,0 +1,139 @@
+/* YOUR CUSTOM STYLES */
+body {
+    /*background-color: silver;*/
+}
+
+#page-content-wrapper {
+    padding: 0;
+}
+#page-content-wrapper>.container-fluid {
+    padding: 0;
+}
+.btn-flat {
+    border:0px;
+    box-shadow: none;
+}
+
+.btn-rounded {
+    border-radius: 100px;
+}
+
+.card-container {
+    padding:0;
+}
+.currency-card {
+    background: white;
+    margin:20px;
+    padding:20px;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.currency-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.currency-label {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    /*justify-content: center;*/
+}
+.currency-txns {
+    display: flex;
+    justify-content: center;
+}
+
+.currency-txns>div {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px;
+}
+.currency-logo {
+    width: 60px;
+    text-align: center;
+    margin-right: 20px;
+}
+.currency-text>h2 {
+    margin-bottom: 0;
+    font-weight: bold;
+    padding: 0;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+    padding: 0;
+    margin: 0;
+}
+
+.currency-status {
+
+}
+
+.currency-status>.currency-crypto {
+    padding-left: 5px;
+    font-weight: bold;
+}
+.currency-status>.currency-fiat, p {
+    padding-left: 5px;
+    color: grey;
+}
+
+.currency-options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.currency-options>.buy-container, .sell-container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+}
+
+.buy-container>h3 {
+    color: #007e33;
+    font-weight: bold;
+}
+
+.sell-container>h3 {
+    font-weight: bold;
+    color: #bf360c;
+}
+
+@media(max-width: 992px) {
+    .currency-logo {
+        width: 40px;
+        text-align: center;
+        margin-right: 10px;
+    }
+    .currency-text>h2{
+        font-size: 20px;
+    }
+
+    .currency-crypto {
+        font-size: 25px;
+    }
+
+    .currency-fiat {
+        font-size: 20px;
+    }
+
+    .currency-label {
+        width:40%;
+    }
+    .currency-status {
+        width:60%;
+    }
+    .currency-options {
+        width:100%;
+        margin-top: 20px;
+    }
+    .currency-options>.buy-container,.sell-container {
+        width:50%;
+    }
+}

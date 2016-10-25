@@ -1,0 +1,96 @@
+<div class="container-fluid" id="RegisterController" ng-controller="RegisterController">
+    <br>
+    <br>
+    <div class="col-md-6 col-md-offset-3 card">
+        <form class="col-md-10 col-md-offset-1" action="">
+            <br>
+            <h3>Register for Universal Bitcoin Wallet</h3>
+            <br>
+            <div class="registration-message name-error"></div>
+
+            <div class="col-md-6"><input type="text" id="form-firstname-input" class="form-control validate" placeholder="First Name" ng-model="firstName"></div>
+            <div class="col-md-6"><input type="text" id="form-lastname-input" class="form-control validate" placeholder="Last Name" ng-model="lastName"></div>
+
+            <div class="registration-message email-error"></div>
+
+            <div class="col-md-12">
+                <input type="text" id="form-email-input" class="form-control validate" placeholder="Email Address" ng-model="email">
+            </div>
+
+            <div class="registration-message date-error"></div>
+
+            <div class='input-group date' id='datetimepicker1'>
+                <input type='text' id="form-dob-input" class="form-control validate" placeholder="Date of Birth" aria-describedby="dob-addon">
+                <span class="input-group-addon" id="dob-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+
+            <div class="registration-message address-error"></div>
+
+            <div class="col-md-12">
+                <input type="text" id="form-adress-input" class="form-control validate" placeholder="Address" ng-model="address">
+            </div>
+            <div class="col-md-12">
+                <input type="text" id="form-adress-two-input" class="form-control validate" placeholder="Address Line 2" ng-model="address2">
+            </div>
+            <div class="col-md-6">
+                <input type="text" id="form-city-input" class="form-control validate" placeholder="City" ng-model="city">
+            </div>
+            <div class="col-md-6">
+                <input type="text" id="form-state-input" class="form-control validate" placeholder="State" ng-model="state">
+            </div>
+            <div class="col-md-12">
+                <input type="text" id="form-country-input" class="form-control validate" placeholder="Country" ng-model="country">
+            </div>
+            <div class="col-md-12">
+                <input type="text" id="form-postal-code-input" class="form-control validate" placeholder="Postal Code" ng-model="postalCode">
+            </div>
+
+            <div class="registration-message phone-error"></div>
+
+            <div class="col-md-12">
+                <input type="text" id="form-phone-input" class="form-control validate" placeholder="Mobile Phone" ng-model="mobile">
+            </div>
+            <br>
+            <div class="registration-message password-error"></div>
+
+            <input type="password" id="form-password-input" class="form-control validate" placeholder="Password" ng-model="pwd">
+            <input type="password" id="form-password-input-confirm" class="form-control validate" placeholder="Confirm Password" ng-model="pwdc">
+            <br>
+
+            <br>
+            <input class="btn btn-primary btn-lg" id="form-register" type="submit" value="Register" ng-click="register()">
+            <input type="hidden" ng->
+        </form>
+
+    </div>
+</div>
+
+<style>
+    .intl-tel-input.allow-dropdown {
+        width:85%;
+        margin-left: -15%;
+    }
+
+    #datetimepicker1, #form-password-input, #form-password-input-confirm {
+        width: 94%;
+        margin-left: 3%;
+    }
+
+    form {
+        text-align: center;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $("#form-phone-input").intlTelInput();
+    $(function () {
+        $('#datetimepicker1').datepicker({
+            format: 'dd/mm/yyyy'
+        });
+    });
+
+
+</script>

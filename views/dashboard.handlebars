@@ -1,0 +1,352 @@
+<div id="wrapper">
+    {{> sidebar}}
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <!--Navigation bar-->
+            <nav class="navbar navbar-dark bg-primary">
+                <a href="#menu-toggle" id="menu-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <img style="width: 25px; padding-top: 15px; margin-left: 15px;" src="/img/icon-hamburger.png" alt="">
+                </a>
+                <div class="container">
+                    <!--Toggle sidebar-->
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item btn-group">
+                            <div class="btn-group">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!--End Navigation bar-->
+
+            <!--Dashboard content-->
+            <div class="col-lg-10 col-lg-offset-1 col-md-12">
+                <!--Bitcoin section-->
+                <div class="bitcoin currency-container">
+                    <!--Currency label section-->
+                    <div class="currency-label col-md-4 col-sm-4">
+                        <div class="currency-logo">
+                            <img style="width:100%; box-shadow: none" src="/img/Bitcoin_Logo.png" alt="">
+                        </div>
+                        <div class="currency-text">
+                            <h2>BTC</h2>
+                            <h4>Bitcoin</h4>
+                        </div>
+                    </div>
+                    <!--Currency status-->
+                    <div class="currency-status col-md-3 col-sm-8">
+                        <p>BTC Balance</p>
+                        <h2 class="currency-crypto">200 BTC</h2>
+                        <h3 class="currency-fiat">200 USD</h3>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Deposit </button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Withdraw</button>
+                    </div>
+                    <!--Currency options-->
+                    <div class="currency-options col-md-5 col-sm-12">
+                        <div class="buy-container col-sm-6">
+                            <p>Buy DNC at</p>
+                            <h3 class="currency-exchange">200 BTC</h3>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Buy DNC</button>
+                        </div>
+                        <div class="sell-container col-sm-6">
+                            <p>Sell DNC at</p>
+                            <h3 class="currency-exchange">200 BTC</h3>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Sell DNC</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <hr>
+                <br>
+                <!--Ethereum section-->
+                <div class="bitcoin currency-container">
+                    <!--Currency label section-->
+                    <div class="currency-label col-md-4 col-sm-4">
+                        <div class="currency-logo">
+                            <img style="width:100%; box-shadow: none" src="/img/Ethereum_Logo.png" alt="">
+                        </div>
+                        <div class="currency-text">
+                            <h2>ETH</h2>
+                            <h4>Ethereum</h4>
+                        </div>
+                    </div>
+                    <!--Currency status-->
+                    <div class="currency-status col-md-3 col-sm-8">
+                        <p>ETH Balance</p>
+                        <h2 class="currency-crypto">200 ETH</h2>
+                        <h3 class="currency-fiat">200 USD</h3>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal"><i class="fa fa-arrow-down"></i> Deposit</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal"><i class="fa fa-arrow-up"></i> Withdraw </button>
+                    </div>
+                    <!--Currency options-->
+                    <div class="currency-options col-md-5 col-sm-12">
+                        <div class="buy-container col-sm-6">
+                            <p>Buy DNC at</p>
+                            <h3 class="currency-exchange">200 ETH</h3>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal">Buy DNC</button>
+                        </div>
+                        <div class="sell-container col-sm-6">
+                            <p>Sell DNC at</p>
+                            <h3 class="currency-exchange">200 ETH</h3>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal">Sell DNC</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <hr>
+                <br>
+                <!--Dinarcoin section-->
+                <div class="dinarcoin currency-container">
+                    <!--Currency label section-->
+                    <div class="currency-label col-md-4 col-sm-4">
+                        <div class="currency-logo">
+                            <img style="width:100%; box-shadow: none" src="/img/Dinarcoin_Logo.png" alt="">
+                        </div>
+                        <div class="currency-text">
+                            <h2>DNC</h2>
+                            <h4>Dinarcoin</h4>
+                        </div>
+                    </div>
+                    <!--Currency status-->
+                    <div class="currency-status col-md-3 col-sm-8">
+                        <p>DNC Balance</p>
+                        <h2 class="currency-crypto">200 DNC</h2>
+                        <h3 class="currency-fiat">200 USD</h3>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                    </div>
+                    <!--Currency options-->
+                    <div class="currency-options col-md-5 col-sm-12">
+                        <div class="buy-container col-sm-6">
+                            <p>Mint DNC</p>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal">Mint DNC</button>
+                        </div>
+                        <div class="sell-container col-sm-6">
+                            <p>Burn DNC</p>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal">Burn DNC</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <hr>
+                <br>
+
+                <!--GSC section-->
+                <div class="gsc currency-container">
+                    <!--Currency label section-->
+                    <div class="currency-label col-md-4 col-sm-4">
+                        <div class="currency-logo">
+                            <img style="width:100%; box-shadow: none" src="/img/GSC_Logo.png" alt="">
+                        </div>
+                        <div class="currency-text">
+                            <h2>GSC (1G)</h2>
+                            <h4>Gold Smart</h4>
+                            <h4>Contract</h4>
+                        </div>
+                    </div>
+                    <!--Currency status-->
+                    <div class="currency-status col-md-3 col-sm-8">
+                        <p>GSC Balance</p>
+                        <h2 class="currency-crypto">200</h2>
+                        <h3 class="currency-fiat">200 USD</h3>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                    </div>
+                    <!--Currency options-->
+                    <div class="currency-options col-md-5 col-sm-12">
+                        <div class="buy-container col-sm-6">
+                            <p>Mint GSC</p>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                        </div>
+                        <div class="sell-container col-sm-6">
+                            <p>Burn GSC</p>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <hr>
+                <br>
+
+                <!--GSC section-->
+                <div class="gsc currency-container">
+                    <!--Currency label section-->
+                    <div class="currency-label col-md-4 col-sm-4">
+                        <div class="currency-logo">
+                            <img style="width:100%; box-shadow: none" src="/img/GSC_Logo.png" alt="">
+                        </div>
+                        <div class="currency-text">
+                            <h2>GSC (100G)</h2>
+                            <h4>Gold Smart</h4>
+                            <h4>Contract</h4>
+                        </div>
+                    </div>
+                    <!--Currency status-->
+                    <div class="currency-status col-md-3 col-sm-8">
+                        <p>GSC Balance</p>
+                        <h2 class="currency-crypto">200</h2>
+                        <h3 class="currency-fiat">200 USD</h3>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                    </div>
+                    <!--Currency options-->
+                    <div class="currency-options col-md-5 col-sm-12">
+                        <div class="buy-container col-sm-6">
+                            <p>Mint GSC</p>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                        </div>
+                        <div class="sell-container col-sm-6">
+                            <p>Burn GSC</p>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <hr>
+                <br>
+
+
+                <!--GSC section-->
+                <div class="gsc currency-container">
+                    <!--Currency label section-->
+                    <div class="currency-label col-md-4 col-sm-4">
+                        <div class="currency-logo">
+                            <img style="width:100%; box-shadow: none" src="/img/GSC_Logo.png" alt="">
+                        </div>
+                        <div class="currency-text">
+                            <h2>GSC (1KG)</h2>
+                            <h4>Gold Smart</h4>
+                            <h4>Contract</h4>
+                        </div>
+                    </div>
+                    <!--Currency status-->
+                    <div class="currency-status col-md-3 col-sm-8">
+                        <p>GSC Balance</p>
+                        <h2 class="currency-crypto">200</h2>
+                        <h3 class="currency-fiat">200 USD</h3>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                    </div>
+                    <!--Currency options-->
+                    <div class="currency-options col-md-5 col-sm-12">
+                        <div class="buy-container col-sm-6">
+                            <p>Mint GSC</p>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                        </div>
+                        <div class="sell-container col-sm-6">
+                            <p>Burn GSC</p>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <hr>
+                <br>
+
+                <!--SSC section-->
+                <div class="ssc currency-container">
+                    <!--Currency label section-->
+                    <div class="currency-label col-md-4 col-sm-4">
+                        <div class="currency-logo">
+                            <img style="width:100%; box-shadow: none" src="/img/SSC_Logo.png" alt="">
+                        </div>
+                        <div class="currency-text">
+                            <h2>SSC (1Oz)</h2>
+                            <h4>Silver Smart</h4>
+                            <h4>Contract</h4>
+                        </div>
+                    </div>
+                    <!--Currency status-->
+                    <div class="currency-status col-md-3 col-sm-8">
+                        <p>GSC Balance</p>
+                        <h2 class="currency-crypto">200</h2>
+                        <h3 class="currency-fiat">200 USD</h3>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                    </div>
+                    <!--Currency options-->
+                    <div class="currency-options col-md-5 col-sm-12">
+                        <div class="buy-container col-sm-6">
+                            <p>Mint GSC</p>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                        </div>
+                        <div class="sell-container col-sm-6">
+                            <p>Burn GSC</p>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <hr>
+                <br>
+
+                <!--SSC section-->
+                <div class="ssc currency-container">
+                    <!--Currency label section-->
+                    <div class="currency-label col-md-4 col-sm-4">
+                        <div class="currency-logo">
+                            <img style="width:100%; box-shadow: none" src="/img/SSC_Logo.png" alt="">
+                        </div>
+                        <div class="currency-text">
+                            <h2>SSC (1KG)</h2>
+                            <h4>Silver Smart</h4>
+                            <h4>Contract</h4>
+                        </div>
+                    </div>
+                    <!--Currency status-->
+                    <div class="currency-status col-md-3 col-sm-8">
+                        <p>GSC Balance</p>
+                        <h2 class="currency-crypto">200</h2>
+                        <h3 class="currency-fiat">200 USD</h3>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                    </div>
+                    <!--Currency options-->
+                    <div class="currency-options col-md-5 col-sm-12">
+                        <div class="buy-container col-sm-6">
+                            <p>Mint GSC</p>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                        </div>
+                        <div class="sell-container col-sm-6">
+                            <p>Burn GSC</p>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+
+
+
+
+            </div>
+            <!--End Dashboard content-->
+    </div>
+    <!-- /#page-content-wrapper -->
+
+
+</div>
+
+{{> bitcoin-modal}}
+{{> ethereum-modal}}
+{{> dinarcoin-modal}}
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>

@@ -1,0 +1,72 @@
+<!-- Modal -->
+<div class="modal fade" id="bitcoin-info-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="BitcoinController">
+    <div class="modal-dialog" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Bitcoin</h4>
+
+
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a  href="#1" data-toggle="tab">Receive</a>
+                    </li>
+                    <li><a href="#2" data-toggle="tab">Send</a>
+                    </li>
+                    <li><a href="#3" data-toggle="tab">Transcations</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content ">
+                    <div class="tab-pane active" id="1">
+                        <br>
+                        <h3>Your Bitcoin Account Information</h3>
+                        <br>
+                        <p>Address:</p>
+                        <h4>1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2</h4>
+                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2" alt="">
+                    </div>
+                    <div class="tab-pane" id="2">
+                        <br>
+                        <h3>Send Bitcoin to an Address</h3>
+                        <div style="width: 60%; display: inline-block; margin-right: 35px;">
+                            <input type="text" id="send-address" class="form-control validate" placeholder="Receiving Address" ng-model="sendAddress">
+                        </div>
+                        <div style="width: 20%; display: inline-block;">
+                            <input type="number" id="send-amount" class="form-control validate" placeholder="Amount" ng-model="sendAmount">
+                        </div>
+                        <br>
+                        <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="sendBitcoin()">
+
+                    </div>
+                    <div class="tab-pane" id="3">
+                        <h3>Transactions</h3>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--&lt;!&ndash;Footer&ndash;&gt;-->
+            <!--<div class="modal-footer">-->
+                <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+            <!--</div>-->
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- /.Live preview-->
+
+<style>
+    .tab-content {
+        text-align: center;
+    }
+</style>

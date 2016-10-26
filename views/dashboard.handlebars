@@ -1,4 +1,4 @@
-<div id="wrapper">
+<div id="wrapper" ng-controller="DashboardController">
     {{> sidebar}}
 
     <!-- Page Content -->
@@ -42,20 +42,20 @@
                         <p>BTC Balance</p>
                         <h2 class="currency-crypto">200 BTC</h2>
                         <h3 class="currency-fiat">200 USD</h3>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Deposit </button>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Withdraw</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal" ng-click="modalActivate('bitcoin','BTC-receive')"><i class="fa fa-arrow-down"></i> Deposit </button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal" ng-click="modalActivate('bitcoin','BTC-send')"><i class="fa fa-arrow-up"></i> Withdraw</button>
                     </div>
                     <!--Currency options-->
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Buy DNC at</p>
                             <h3 class="currency-exchange">200 BTC</h3>
-                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Buy DNC</button>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-mint')">Buy DNC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Sell DNC at</p>
                             <h3 class="currency-exchange">200 BTC</h3>
-                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Sell DNC</button>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-burn')">Sell DNC</button>
                         </div>
                     </div>
                 </div>
@@ -80,20 +80,20 @@
                         <p>ETH Balance</p>
                         <h2 class="currency-crypto">200 ETH</h2>
                         <h3 class="currency-fiat">200 USD</h3>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal"><i class="fa fa-arrow-down"></i> Deposit</button>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal"><i class="fa fa-arrow-up"></i> Withdraw </button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal" ng-click="modalActivate('ethereum','ETH-receive')"><i class="fa fa-arrow-down"></i> Deposit</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal" ng-click="modalActivate('ethereum','ETH-send')"><i class="fa fa-arrow-up"></i> Withdraw </button>
                     </div>
                     <!--Currency options-->
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Buy DNC at</p>
                             <h3 class="currency-exchange">200 ETH</h3>
-                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal">Buy DNC</button>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-mint')">Buy DNC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Sell DNC at</p>
                             <h3 class="currency-exchange">200 ETH</h3>
-                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal">Sell DNC</button>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-burn')">Sell DNC</button>
                         </div>
                     </div>
                 </div>
@@ -118,18 +118,18 @@
                         <p>DNC Balance</p>
                         <h2 class="currency-crypto">200 DNC</h2>
                         <h3 class="currency-fiat">200 USD</h3>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-receive')"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-send')"><i class="fa fa-arrow-up"></i> Send</button>
                     </div>
                     <!--Currency options-->
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Mint DNC</p>
-                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal">Mint DNC</button>
+                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-mint')">Mint DNC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Burn DNC</p>
-                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal">Burn DNC</button>
+                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-burn')">Burn DNC</button>
                         </div>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
                             <img style="width:100%; box-shadow: none" src="/img/GSC_Logo.png" alt="">
                         </div>
                         <div class="currency-text">
-                            <h2>GSC (1G)</h2>
+                            <h2>GOLD (1G)</h2>
                             <h4>Gold Smart</h4>
                             <h4>Contract</h4>
                         </div>
@@ -154,20 +154,20 @@
                     <!--Currency status-->
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
-                        <h2 class="currency-crypto">200</h2>
+                        <h2 class="currency-crypto">200 GSC</h2>
                         <h3 class="currency-fiat">200 USD</h3>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
                     </div>
                     <!--Currency options-->
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Mint GSC</p>
-                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                            <button disabled class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Burn GSC</p>
-                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                            <button disabled class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
                         </div>
                     </div>
                 </div>
@@ -184,7 +184,7 @@
                             <img style="width:100%; box-shadow: none" src="/img/GSC_Logo.png" alt="">
                         </div>
                         <div class="currency-text">
-                            <h2>GSC (100G)</h2>
+                            <h2>GOLD (100G)</h2>
                             <h4>Gold Smart</h4>
                             <h4>Contract</h4>
                         </div>
@@ -192,20 +192,20 @@
                     <!--Currency status-->
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
-                        <h2 class="currency-crypto">200</h2>
+                        <h2 class="currency-crypto">200 GSC</h2>
                         <h3 class="currency-fiat">200 USD</h3>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
                     </div>
                     <!--Currency options-->
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Mint GSC</p>
-                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                            <button disabled class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Burn GSC</p>
-                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                            <button disabled class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
                         </div>
                     </div>
                 </div>
@@ -223,7 +223,7 @@
                             <img style="width:100%; box-shadow: none" src="/img/GSC_Logo.png" alt="">
                         </div>
                         <div class="currency-text">
-                            <h2>GSC (1KG)</h2>
+                            <h2>GOLD (1KG)</h2>
                             <h4>Gold Smart</h4>
                             <h4>Contract</h4>
                         </div>
@@ -231,20 +231,20 @@
                     <!--Currency status-->
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
-                        <h2 class="currency-crypto">200</h2>
+                        <h2 class="currency-crypto">200 GSC</h2>
                         <h3 class="currency-fiat">200 USD</h3>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
                     </div>
                     <!--Currency options-->
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Mint GSC</p>
-                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                            <button disabled class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Burn GSC</p>
-                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                            <button disabled class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
                         </div>
                     </div>
                 </div>
@@ -261,7 +261,7 @@
                             <img style="width:100%; box-shadow: none" src="/img/SSC_Logo.png" alt="">
                         </div>
                         <div class="currency-text">
-                            <h2>SSC (1Oz)</h2>
+                            <h2>SILVER (1Oz)</h2>
                             <h4>Silver Smart</h4>
                             <h4>Contract</h4>
                         </div>
@@ -269,20 +269,20 @@
                     <!--Currency status-->
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
-                        <h2 class="currency-crypto">200</h2>
+                        <h2 class="currency-crypto">200 GSC</h2>
                         <h3 class="currency-fiat">200 USD</h3>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
                     </div>
                     <!--Currency options-->
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Mint GSC</p>
-                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                            <button disabled class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Burn GSC</p>
-                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                            <button disabled class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
                         </div>
                     </div>
                 </div>
@@ -299,7 +299,7 @@
                             <img style="width:100%; box-shadow: none" src="/img/SSC_Logo.png" alt="">
                         </div>
                         <div class="currency-text">
-                            <h2>SSC (1KG)</h2>
+                            <h2>SILVER (1KG)</h2>
                             <h4>Silver Smart</h4>
                             <h4>Contract</h4>
                         </div>
@@ -307,36 +307,32 @@
                     <!--Currency status-->
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
-                        <h2 class="currency-crypto">200</h2>
+                        <h2 class="currency-crypto">200 GSC</h2>
                         <h3 class="currency-fiat">200 USD</h3>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
-                        <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>
+                        <button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>
                     </div>
                     <!--Currency options-->
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Mint GSC</p>
-                            <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
+                            <button disabled class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Mint GSC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Burn GSC</p>
-                            <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
+                            <button disabled class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal">Burn GSC</button>
                         </div>
                     </div>
                 </div>
 
                 <br>
                 <br>
-
-
-
-
             </div>
             <!--End Dashboard content-->
+        </div>
+
     </div>
     <!-- /#page-content-wrapper -->
-
-
 </div>
 
 {{> bitcoin-modal}}

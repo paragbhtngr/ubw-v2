@@ -1,6 +1,33 @@
 /* YOUR CUSTOM STYLES */
+.login-page,.register-page {
+    background-image: url('../img/bg.png');
+    min-height: 100vh;
+    background-size: cover;
+}
+
+.card {
+    background: white;
+    padding:30px;
+}
+
+.logo-img {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.logo-img>img {
+    width:200px;
+}
+
 body {
     /*background-color: silver;*/
+}
+
+select {
+    color: rgb(85,85,85);
+    padding: 10px;
 }
 
 #page-content-wrapper {

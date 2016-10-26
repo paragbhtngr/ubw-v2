@@ -1,22 +1,61 @@
 'use strict';
 
 // Server for Dinar Dirham backend
-var SERVER_PORT = "139.59.244.237:3000";
+var SERVER_PORT = "http://139.59.244.237:3000";
 
 
 // Declare app level module which depends on filters, and services
 
 var ngapp = angular.module('UBW', ['ngCookies']);
 
-ngapp.config(function ($interpolateProvider) {
+ngapp.config(function ($interpolateProvider, $httpProvider) {
   $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+
+  $httpProvider.defaults.useXDomain = true;
+  delete $httpProvider.defaults.headers.common['X-Requested-With']
 });
 
-ngapp.controller('SimpleController', function($scope){
-  $scope.name = "Parag";
+ngapp.factory('clientFactory', function () {
+  var factory = {};
+  var appVersion = "0.2.0";
+  var authToken;
+  var email;
+  var clientBTCAddress;
+  var clientETHAddress;
+  var clientDNCAddress;
+  var transactions = [];
+  // Getters and Setters for Client Factory
+  factory.getAppVersion = function () { return appVersion; };
+  factory.getAuthToken = function () { return authToken; };
+  factory.getEmail = function () { return email; };
+  factory.getClientBTCAddress = function () { return clientBTCAddress; };
+  factory.getClientETHAddress = function () { return clientETHAddress; };
+  factory.getClientDNCAddress = function () { return clientDNCAddress; };
+  factory.getTransactions = function() { return transactions; };
+
+  factory.setAuthToken = function (newAuthToken) { authToken = newAuthToken; };
+  factory.setEmail = function (newEmail) { email = newEmail; };
+  factory.setClientBTCAddress = function (newClientBTCAddress) { clientBTCAddress = newClientBTCAddress; };
+  factory.setClientETHAddress = function (newClientETHAddress) { clientETHAddress = newClientETHAddress; };
+  factory.setClientDNCAddress = function (newClientDNCAddress) { clientDNCAddress = newClientDNCAddress; };
+  factory.addTransactions = function(newTransactions) {
+    newTransactions.sort(function(a,b){
+      a = a.requestedAt;
+      b = b.requestedAt;
+      return a>b? -1 : a<b ? 1 : 0;
+    });
+    newTransactions.forEach(function(txn){
+      console.log(txn.requestedAt);
+      transactions.push(txn);
+    });
+  };
+
+  return factory;
 });
 
-ngapp.controller('LoginController', ['$http', '$scope', '$cookieStore', function($http, $scope, $cookieStore){
+
+ngapp.controller('LoginController', ['$http', '$scope', '$cookieStore', 'clientFactory', function($http, $scope, $cookieStore, clientFactory){
+  console.log('ClientFactory successfully loaded: v',clientFactory.getAppVersion());
   console.log($cookieStore.get("testToken"));
   console.log(SERVER_PORT);
   $scope.name = "Parag";
@@ -25,30 +64,19 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookieStore', function
     // console.log($scope.email);
     // console.log($scope.pwd);
 
-    $http({
-      method: 'GET',
-      url: (SERVER_PORT+'/api/v1/util/countries')
-    }).then(function successCallback(response) {
-      console.log(response);
-    }, function errorCallback(response) {
-      // called asynchronously if an error occurs
-      // or server returns response with an error status.
+    $http.get(SERVER_PORT+'/api/v1/util/countries').
+    success(function(data, status, headers, config) {
+      console.log(data);
+    }).
+    error(function(data, status, headers, config) {
+      // log error
     });
-
-    if($scope.email) {
-      if($scope.pwd) {
-
-        $cookieStore.put('testToken','monkeyshine');
-      } else {
-        $scope.errorMessage = "Please enter your password";
-      }
-    } else {
-      $scope.errorMessage = "Please enter your email address";
-    }
   }
 }]);
 
-ngapp.controller('RegisterController', function($scope){
+ngapp.controller('RegisterController', ['$http', '$scope', '$cookieStore', 'clientFactory', function($http, $scope, $cookieStore, clientFactory){
+  console.log('ClientFactory successfully loaded: v',clientFactory.getAppVersion());
+
   $scope.register = function() {
     // Check name input
     var firstName = $('#form-firstname-input');
@@ -176,27 +204,184 @@ ngapp.controller('RegisterController', function($scope){
       console.log(SERVER_PORT);
     }
   }
-});
+}]);
 
-ngapp.controller('BitcoinController', function($scope){
-  $scope.register = function() {
+ngapp.controller('DashboardController', ['$http', '$scope', '$cookieStore', 'clientFactory', function($http, $scope, $cookieStore, clientFactory){
+  console.log('ClientFactory successfully loaded: v',clientFactory.getAppVersion());
 
+  var txns = [
+    {
+      hash: "txn-hash",
+      mined: true,
+      executed: true,
+      typeOf: "burn",
+      metadata: {
+        fromAddress: "fromAddressExample",
+        toAddress: "toAddressExample",
+        fromCurrency: "BTC",
+        toCurrency: "DNC",
+        xRate: 1234,
+        fromAmount: 200,
+        toAmount: 200
+      },
+      requestedAt: new Date(1437425381235)
+    },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "BTC", toCurrency: "DNC", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1437425331235) },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "DNC", toCurrency: "DNC", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1434425332235) },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "ETH", toCurrency: "DNC", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1434325332235) },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "ETH", toCurrency: "ETH", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1434321332235) },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "BTC", toCurrency: "BTC", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1434325302235) },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "DNC", toCurrency: "DNC", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1430325332235) },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "DNC", toCurrency: "ETH", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1434025332235) },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "DNC", toCurrency: "DNC", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1409325332235) },
+    { hash: "txn-hash", mined: true, executed: true, typeOf: "burn", metadata: { fromAddress: "fromAddressExample", toAddress: "toAddressExample", fromCurrency: "DNC", toCurrency: "DNC", xRate: 1234, fromAmount: 200, toAmount: 200}, requestedAt: new Date(1400325332235) }
+  ];
+
+  clientFactory.addTransactions(txns);
+
+  $scope.modalActivate = function(modal, modalTab) {
+    console.log("modalActivate called with: ", modal, modalTab);
+
+    $('.'+modal+'.nav-tabs>li').each( function(){
+      $(this).removeClass('active');
+      if($(this).attr('id') == (modalTab+'-tab')){
+        $(this).addClass('active');
+      }
+    });
+
+    $('.'+modal+'.tab-content>div').each( function(){
+      $(this).removeClass('active');
+      if($(this).attr('id') == (modalTab)){
+        $(this).addClass('active');
+      }
+    });
+  };
+
+  $scope.logout = function () {
+    console.log("USER WANTS TO LOGOUT! QUICK, THINK OF SOMETHING!");
   }
-});
 
-ngapp.controller('EthereumController', function($scope){
-  $scope.register = function() {
-    console.log($scope.email);
-    console.log($scope.firstName);
-  }
-});
+}]);
 
-ngapp.controller('DinarcoinController', function($scope){
-  $scope.register = function() {
-    console.log($scope.email);
-    console.log($scope.firstName);
+ngapp.controller('BitcoinController', ['$http', '$scope', '$cookieStore', 'clientFactory', function($http, $scope, $cookieStore, clientFactory){
+  $scope.transactions = clientFactory.getTransactions();
+
+  $scope.bitcoinFilter = function (txn) {
+    if(txn.metadata.fromCurrency == "BTC" || txn.metadata.toCurrency == "BTC") {
+      return txn;
+    }
+  };
+
+  $scope.sendBitcoin = function() {
+    console.log("Sending Bitcoin");
+    // Check if Address is valid
+    if($scope.sendAddress){
+      if($('#BTC-send-address').hasClass('invalid')){
+        $('#BTC-send-address').removeClass('invalid');
+      }
+      // Check if amount is valid
+      if($scope.sendAmount && $scope.sendAmount > 0 ){
+        if($('#BTC-send-amount').hasClass('invalid')){
+          $('#BTC-send-amount').removeClass('invalid');
+        }
+        // Send the amount
+
+
+      } else {
+        $scope.errorMessage = "Please specify a valid amount";
+        if(!($('#BTC-send-amount').hasClass('invalid'))){
+          $('#BTC-send-amount').addClass('invalid');
+        }
+      }
+
+    } else {
+      $scope.errorMessage = "Please specify a recipient address";
+      if(!($('#BTC-send-address').hasClass('invalid'))){
+        $('#BTC-send-address').addClass('invalid');
+      }
+    }
   }
-});
+}]);
+
+ngapp.controller('EthereumController', ['$http', '$scope', '$cookieStore', 'clientFactory', function($http, $scope, $cookieStore, clientFactory){
+  $scope.transactions = clientFactory.getTransactions();
+
+  $scope.ethereumFilter = function (txn) {
+    if(txn.metadata.fromCurrency == "ETH" || txn.metadata.toCurrency == "ETH") {
+      return txn;
+    }
+  };
+
+  $scope.sendEthereum = function() {
+    console.log("Sending Ethereum");
+    // Check if Address is valid
+    if($scope.sendAddress){
+      if($('#ETH-send-address').hasClass('invalid')){
+        $('#ETH-send-address').removeClass('invalid');
+      }
+      // Check if amount is valid
+      if($scope.sendAmount && $scope.sendAmount > 0 ){
+        if($('#ETH-send-amount').hasClass('invalid')){
+          $('#ETH-send-amount').removeClass('invalid');
+        }
+        // Send the amount
+
+
+      } else {
+        $scope.errorMessage = "Please specify a valid amount";
+        if(!($('#ETH-send-amount').hasClass('invalid'))){
+          $('#ETH-send-amount').addClass('invalid');
+        }
+      }
+
+    } else {
+      $scope.errorMessage = "Please specify a recipient address";
+      if(!($('#ETH-send-address').hasClass('invalid'))){
+        $('#ETH-send-address').addClass('invalid');
+      }
+    }
+  }
+}]);
+
+ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookieStore', 'clientFactory', function($http, $scope, $cookieStore, clientFactory){
+  $scope.transactions = clientFactory.getTransactions();
+
+  $scope.dinarcoinFilter = function (txn) {
+    if(txn.metadata.fromCurrency == "DNC" || txn.metadata.toCurrency == "DNC") {
+      return txn;
+    }
+  };
+
+  $scope.sendDinarcoin = function() {
+    console.log("Sending Dinarcoin");
+    // Check if Address is valid
+    if($scope.sendAddress){
+      if($('#DNC-send-address').hasClass('invalid')){
+        $('#DNC-send-address').removeClass('invalid');
+      }
+      // Check if amount is valid
+      if($scope.sendAmount && $scope.sendAmount > 0 ){
+        if($('#DNC-send-amount').hasClass('invalid')){
+          $('#DNC-send-amount').removeClass('invalid');
+        }
+        // Send the amount
+
+
+      } else {
+        $scope.sendErrorMessage = "Please specify a valid amount";
+        if(!($('#DNC-send-amount').hasClass('invalid'))){
+          $('#DNC-send-amount').addClass('invalid');
+        }
+      }
+
+    } else {
+      $scope.sendErrorMessage = "Please specify a recipient address";
+      if(!($('#DNC-send-address').hasClass('invalid'))){
+        $('#DNC-send-address').addClass('invalid');
+      }
+    }
+  }
+}]);
 // 'UBW.controllers',
 // 'UBW.filters',
 // 'UBW.services',

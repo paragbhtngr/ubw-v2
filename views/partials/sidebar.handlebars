@@ -3,31 +3,20 @@
 <!-- Sidebar -->
 <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
-        <li class="sidebar-brand">
-            <a href="#">
-                Start Bootstrap
-            </a>
+        <br>
+        <div class="logo-img">
+            <img src="/img/UBW_Logo.png" alt="">
+        </div>
+        <h4 class="sidebar-brand" style="color: white; padding-left: 20px;">user@user.com</h4>
+        <li>
+            <a href="/dashboard">Dashboard</a>
         </li>
         <li>
-            <a href="#">Dashboard</a>
+            <a href="/transactions">Transactions</a>
+        </li>
         </li>
         <li>
-            <a href="#">Shortcuts</a>
-        </li>
-        <li>
-            <a href="#">Overview</a>
-        </li>
-        <li>
-            <a href="#">Events</a>
-        </li>
-        <li>
-            <a href="#">About</a>
-        </li>
-        <li>
-            <a href="#">Services</a>
-        </li>
-        <li>
-            <a href="#">Contact</a>
+            <a  ng-click="logout()">Logout</a>
         </li>
     </ul>
 </div>

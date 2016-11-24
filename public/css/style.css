@@ -151,10 +151,18 @@ h1,h2,h3,h4,h5,h6,p {
     }
 
     .currency-label {
-        width:40%;
+        width:100%;
+        display: flex;
+        justify-content: center;
     }
     .currency-status {
-        width:60%;
+        width:100%;
+        text-align: center;
+    }
+
+    .status-button-container {
+        display: flex;
+        justify-content: space-around;
     }
     .currency-options {
         width:100%;

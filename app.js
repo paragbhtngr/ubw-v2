@@ -28,7 +28,7 @@ var app = module.exports = express();
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 80);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.use(cors());

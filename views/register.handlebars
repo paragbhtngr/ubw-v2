@@ -2,7 +2,7 @@
     <br>
     <br>
     <div class="col-md-6 col-md-offset-3 card">
-        <form class="col-md-10 col-md-offset-1" action="">
+        <form class="col-md-10 col-md-offset-1">
             <br>
             <h3>Register for Universal Bitcoin Wallet</h3>
             <br>
@@ -41,17 +41,24 @@
                 <input type="text" id="form-state-input" class="form-control validate" placeholder="State" ng-model="state">
             </div>
             <div class="col-md-12">
-                <input type="text" id="form-country-input" class="form-control validate" placeholder="Country" ng-model="country">
+                <!--<input type="text" id="form-country-input" class="form-control validate" placeholder="Country" ng-model="country">-->
+
+                <select name="country" id="form-country-input" ng-model="country">
+                    <option value="" disabled selected hidden style="color: #999;">Country</option>
+                    <option ng-repeat="country in countries" value= {[{country.code}]} >{[{country.name}]}</option>
+                </select>
+
             </div>
             <div class="col-md-12">
                 <input type="text" id="form-postal-code-input" class="form-control validate" placeholder="Postal Code" ng-model="postalCode">
             </div>
 
             <div class="registration-message phone-error"></div>
-
+            <br>
             <div class="col-md-12">
                 <input type="text" id="form-phone-input" class="form-control validate" placeholder="Mobile Phone" ng-model="mobile">
             </div>
+            <br>
             <br>
             <div class="registration-message password-error"></div>
 
@@ -61,7 +68,6 @@
 
             <br>
             <input class="btn btn-primary btn-lg" id="form-register" type="submit" value="Register" ng-click="register()">
-            <input type="hidden" ng->
         </form>
 
     </div>
@@ -76,6 +82,14 @@
     #datetimepicker1, #form-password-input, #form-password-input-confirm {
         width: 94%;
         margin-left: 3%;
+    }
+
+    #form-country-input {
+        width:94%;
+    }
+
+    .register-page>.card {
+        margin-bottom:50px;
     }
 
     form {

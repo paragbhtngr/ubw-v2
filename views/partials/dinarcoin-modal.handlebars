@@ -38,8 +38,8 @@
                         <h3>Your Dinarcoin Account Information</h3>
                         <br>
                         <p>Address:</p>
-                        <h4>1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2</h4>
-                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl=1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2" alt="">
+                        <h4>{[{DNCaddress}]}</h4>
+                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{DNCaddress}]}" alt="">
                     </div>
                     <div class="tab-pane" id="DNC-send">
                         <br>
@@ -56,7 +56,7 @@
                             <input type="number" id="DNC-send-amount" class="form-control validate" placeholder="Amount" ng-model="sendAmount">
                         </div>
                         <br>
-                        <h4>Sending {[{sendAmount || 0 }]} DNC ( {[{sendAmount / DNCinUSD }]} USD ) </h4>
+                        <h4>Sending {[{sendAmount || 0 | number:2}]} DNC ( {[{sendAmount / DNCinUSD || 0 | number:2}]} USD ) </h4>
                         <br>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="sendDinarcoin()">
 
@@ -64,23 +64,25 @@
                     <div class="tab-pane" id="DNC-mint">
                         <br>
                         <h3>Mint Dinarcoin</h3>
+                        <p>Please enter amount to mint in BTC/ETH</p>
                         <div class="mint-error-message">
                             <br>
                             <h4 class='text-danger font-weight-bold'>{[{mintErrorMessage}]}</h4>
                             <br>
                         </div>
-                        <div style="width: 60%; display: inline-block; margin-right: 35px;">
+                        <div style="width: 20%; display: inline-block; margin-right: 35px;">
+                            <input type="number" id="mint-amount" class="form-control validate" placeholder="Amount" ng-model="mintAmount">
+
+                        </div>
+                        <div style="width: 60%; display: inline-block;">
                             <select name="mint-currency" id="mint-currency" ng-model="mintCurrency">
                                 <option value="BTC">BTC (Bitcoin)</option>
                                 <option value="ETH">ETH (Ethereum)</option>
                             </select>
                         </div>
-                        <div style="width: 20%; display: inline-block;">
-                            <input type="number" id="mint-amount" class="form-control validate" placeholder="Amount" ng-model="mintAmount">
-                        </div>
                         <br>
                         <div ng-if="mintCurrency == 'BTC' || mintCurrency == 'ETH'">
-                            <h4>Minting {[{mintAmount || 0 }]} DNC ( {[{mintAmount / (mintCurrency == "BTC" && (DNCinBTC || DNCinETH)) }]} {[{mintCurrency}]} ) </h4>
+                            <h4>Minting {[{mintAmount * (mintCurrency == "BTC" ? BTCinUSD/DNCaskinUSD: ETHinUSD/DNCaskinUSD) || 0 }]} DNC (  {[{mintAmount || 0 }]} {[{mintCurrency}]} ) </h4>
                             <br>
                         </div>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="mintDinarcoin()">
@@ -88,23 +90,25 @@
                     <div class="tab-pane" id="DNC-burn">
                         <br>
                         <h3>Burn Dinarcoin</h3>
+                        <p>Please enter amount to burn in BTC/ETH</p>
                         <div class="burn-error-message">
                             <br>
                             <h4 class='text-danger font-weight-bold'>{[{burnErrorMessage}]}</h4>
                             <br>
                         </div>
-                        <div style="width: 60%; display: inline-block; margin-right: 35px;">
+                        <div style="width: 20%; display: inline-block; margin-right: 35px;">
+                            <input type="number" id="burn-amount" class="form-control validate" placeholder="Amount" ng-model="burnAmount">
+                        </div>
+                        <div style="width: 60%; display: inline-block;">
                             <select name="burn-currency" id="burn-currency" ng-model="burnCurrency">
                                 <option value="BTC">BTC (Bitcoin)</option>
                                 <option value="ETH">ETH (Ethereum)</option>
                             </select>
-                        </div>
-                        <div style="width: 20%; display: inline-block;">
-                            <input type="number" id="burn-amount" class="form-control validate" placeholder="Amount" ng-model="burnAmount">
+
                         </div>
                         <br>
                         <div ng-if="burnCurrency == 'BTC' || burnCurrency == 'ETH'">
-                            <h4>Burning {[{burnAmount || 0 }]} DNC ( {[{burnAmount / (burnCurrency == "BTC" && (DNCinBTC || DNCinETH)) }]} {[{burnCurrency}]} ) </h4>
+                            <h4>Burning {[{burnAmount * (burnCurrency == "BTC" ? BTCinUSD/DNCbidinUSD : ETHinUSD/DNCbidinUSD) || 0}]} DNC ( {[{burnAmount || 0 }]} {[{burnCurrency}]} ) </h4>
                             <br>
                         </div>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="burnDinarcoin()">

@@ -7,15 +7,19 @@
  */
 
 module.exports = function(app){
-    app.all('/', function (req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        res.header("Access-Control-Allow-Headers", "GET, PUT, POST");
-        return next();
-    });
+    // app.all('/', function (req, res, next) {
+    //     res.header("Access-Control-Allow-Origin", "*");
+    //     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    //     res.header("Access-Control-Allow-Headers", "GET, PUT, POST");
+    //     return next();
+    // });
 
     app.get('/', function(req, res){
-        res.render('index',{name: "Parag"});
+        res.render('login', {
+            title: 'Login'
+        });
+        // res.render('index',{name: "Parag"});
+        // TODO: Parag - What are you doing, this is production - atleast mark it as testing code
     });
 
     app.get('/login', function(req, res){

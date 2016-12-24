@@ -1,19 +1,22 @@
 'use strict';
 
 // Server for Dinar Dirham backend
-var SERVER_PORT = "http://139.59.244.237:3000";
-
+// var SERVER_PORT = "http://139.59.244.237:3000";
+var SERVER_PORT = "http://128.199.224.194";
+var testing = true;
 
 // Declare app level module which depends on filters, and services
 
 var ngapp = angular.module('UBW', ['ngCookies']);
 
-ngapp.config(function ($interpolateProvider, $httpProvider) {
+ngapp.config(function ($interpolateProvider, $httpProvider, $locationProvider) {
   $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 
   $httpProvider.defaults.useXDomain = true;
-  delete $httpProvider.defaults.headers.common['X-Requested-With']
+  delete $httpProvider.defaults.headers.common['X-Requested-With'];
 });
+
+
 
 ngapp.service('dataStorage', function () {
   var appVersion = "0.2.0";
@@ -52,15 +55,26 @@ ngapp.service('dataStorage', function () {
       b = b.requestedAt;
       return a>b? -1 : a<b ? 1 : 0;
     });
+
+    var wasAdded = false;
     newTransactions.forEach(function(txn){
       // console.log(txn.requestedAt);
-      transactions.push(txn);
+      transactions.forEach(function(oldtxn){
+        if(oldtxn.hash == txn.hash) {
+          wasAdded = true;
+        }
+      });
+      if(testing) {
+        // console.log("TRANSACTION:::::: ", wasAdded, txn)
+      };
+
+      if(!wasAdded){
+        transactions.push(txn);
+      }
     });
   };
 
 });
-
-
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -72,7 +86,7 @@ function isEmail(email) {
 }
 
 function isValidPassword(password) {
-  var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
+  var regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&\.])[A-Za-z\d$@$!%*?&\.]{8,}/;
   return regex.test(password);
 }
 

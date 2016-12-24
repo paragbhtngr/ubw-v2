@@ -15,33 +15,31 @@ module.exports = function(app){
     // });
 
     app.get('/', function(req, res){
-        res.render('login', {
+        res.render('login.handlebars', {
             title: 'Login'
         });
-        // res.render('index',{name: "Parag"});
-        // TODO: Parag - What are you doing, this is production - atleast mark it as testing code
     });
 
     app.get('/login', function(req, res){
-        res.render('login', {
+        res.render('login.handlebars', {
             title: 'Login'
         });
     });
 
     app.get('/register', function(req, res){
-        res.render('register', {
+        res.render('register.handlebars', {
             title: 'Register'
         });
     });
 
     app.get('/dashboard', function(req, res){
-        res.render('dashboard', {
+        res.render('dashboard.handlebars', {
             title: 'Dashboard'
         });
     });
 
     app.get('/tester', function(req, res){
-        res.render('tester', {
+        res.render('tester.handlebars', {
             title: 'Dashboard'
         });
     });

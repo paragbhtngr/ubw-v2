@@ -2,6 +2,8 @@
  * Created by parag on 11/18/16.
  */
 
+
+
 ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
     $controller('DashboardController', {$scope: $scope});
     // $scope.transactions = dataStorage.getTransactions();
@@ -12,9 +14,11 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
         }
     };
 
+    // SEND BITCOIN FUNCTION
     $scope.sendBitcoin = function() {
-        console.log("Sending Bitcoin");
+        if(testing) { console.log("Sending Bitcoin"); }
         // Check if Address is valid
+        // TODO: Maybe check that the bitcoin address is an actual valid address on the server?=
         if($scope.sendAddress){
             if($('#BTC-send-address').hasClass('invalid')){
                 $('#BTC-send-address').removeClass('invalid');
@@ -24,31 +28,80 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
                 if($('#BTC-send-amount').hasClass('invalid')){
                     $('#BTC-send-amount').removeClass('invalid');
                 }
+                // Close the modal and clear the values
+                $('#bitcoin-info-modal').modal('toggle');
 
                 // Send the amount
+
                 var postObject = {
                     authToken: $scope.authToken,
-                    to: $scope.sendAddress,
+                    toAddress: $scope.sendAddress,
                     amount: $scope.sendAmount
                 };
 
-                $http.post(SERVER_PORT + '/api/v1/walletops/send_BTC', postObject).then(
+                // PNOTIFY SEND BITCOIN REQUEST PROCESSED BY CLIENT
+                if(testing) {
+                    $(function(){
+                        new PNotify({
+                            title: 'Send Bitcoin',
+                            text: 'Sent request to server \n Sending '+$scope.sendAmount+' BTC to '+$scope.sendAddress,
+                            stack: stack_topright,
+                            type: "notice"
+                        })
+                    });
+                }
+
+                // POST SEND BITCOIN REQUEST TO SERVER
+                $http.post(SERVER_PORT + '/api/v1/walletops/send_BTC', postObject).then( // valid API url
                     function (response) {
+
+                        // CLEAR INPUT
+                        $scope.sendAddress = null;
+                        $scope.sendAmount = null;
+
                         // success callback
-                        console.log("SENT BTC: ", response);
+                        if(testing) { console.log("SENT BTC: ", response); }
                         if(response.data.success && !response.data.message) {
                             $scope.getTransactions();
+
+                            // PNOTIFY SEND BITCOIN REQUEST RECEIVED BY SERVER
+                            $(function(){
+                                new PNotify({
+                                    title: 'Transaction Processing',
+                                    text: 'Your transaction was sent and will be completed pending confirmation',
+                                    stack: stack_topright,
+                                    type: "notice"
+                                })
+                            });
                         }
                         if(response.data.message == "insufficientFunds") {
-                            $scope.errorMessage = "Insufficient Funds"
+
+                            // PNOTIFY INSUFFICIENT FUNDS FOR TRANSACTION
+                            $(function(){
+                                new PNotify({
+                                    title: 'Insufficient Funds',
+                                    text: 'Your bitcoin transaction could not be processed',
+                                    stack: stack_topright,
+                                    type: "error"
+                                })
+                            });
                         }
                         else if(response.data.message == "invalidAuthToken") {
-                            window.location.href = '/login';
+                            window.location.href = '/login#?sessExpired';
                         }
                     },
                     function (response) {
                         // failure callback
-                        console.log(response);
+                        if(testing) { console.log(response); }
+                        // PNOTIFY SERVER ERROR
+                        $(function(){
+                            new PNotify({
+                                title: 'Server Error',
+                                text: 'Request could not be completed. No response from server',
+                                stack: stack_topright,
+                                type: "error"
+                            })
+                        });
                     }
                 );
 
@@ -66,6 +119,54 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
                 $('#BTC-send-address').addClass('invalid');
             }
         }
+    };
+
+    // TODO: FINISH CHECKING FOR SERVER RESPONSE ON ADDING ACCOUNT
+    $scope.addBtcAccount = function () {
+        // Close the modal and clear the values
+        $('#bitcoin-info-modal').modal('toggle');
+
+        // Send the amount
+        var postObject = {
+            authToken: $scope.authToken,
+            address: $scope.addedBtcAccount
+        };
+
+        // PNOTIFY ADD ACCOUNT REQUEST VALIDATED ON CLIENT SIDE
+        $(function(){
+            new PNotify({
+                title: 'Adding Account to profile',
+                text: 'Adding account '+$scope.addedBtcAccount+' to your user profile',
+                stack: stack_topright,
+                type: "notice"
+            })
+        });
+
+        $http.post(SERVER_PORT + '/api/v1/userops/add_btc_address', postObject).then(
+            function (response) {
+                // success callback
+                if(testing) { console.log("ADDING BTC ADDRESS: ", response); }
+                if(response.data.success) {
+                    // PNOTIFY ADD ACCOUNT REQUEST VALIDATED ON CLIENT SIDE
+                    $(function(){
+                        new PNotify({
+                            title: 'Successfully added account',
+                            text: 'Bitcoin account '+$scope.addedBtcAccount+' has been successfully added to your profile',
+                            stack: stack_topright,
+                            type: "success"
+                        })
+                    });
+                }
+                else if(response.data.message == "invalidAuthToken") {
+                    window.location.href = '/login#?sessExpired';
+                }
+            },
+            function (response) {
+                // failure callback
+                if(testing) { console.log(response); }
+            }
+        );
+
     }
 }]);
 
@@ -83,7 +184,7 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
     };
 
     $scope.sendEthereum = function() {
-        console.log("Sending Ethereum");
+        if(testing) { console.log("Sending Ethereum"); }
         // Check if Address is valid
         if($scope.sendAddress){
             if($('#ETH-send-address').hasClass('invalid')){
@@ -94,30 +195,63 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
                 if($('#ETH-send-amount').hasClass('invalid')){
                     $('#ETH-send-amount').removeClass('invalid');
                 }
+
+                // Close the modal and clear the values
+                $('#ethereum-info-modal').modal('toggle');
+
                 // Send the amount
                 var postObject = {
                     authToken: $scope.authToken,
-                    to: $scope.sendAddress,
+                    toAddress: $scope.sendAddress,
                     amount: $scope.sendAmount
                 };
+                if(testing) {
+                    $(function(){
+                        new PNotify({
+                            title: 'Send Ethereum',
+                            text: 'Sent request to server \n Sending '+$scope.sendAmount+' ETH to '+$scope.sendAddress,
+                            stack: stack_topright,
+                            type: "notice"
+                        })
+                    });
+                }
 
-                $http.post(SERVER_PORT + '/api/v1/walletops/send_ETH', postObject).then(
+                $http.post(SERVER_PORT + '/api/v1/walletops/send_ETH', postObject).then( // valid API url
                     function (response) {
                         // success callback
-                        console.log("SENT ETH: ", response);
+                        if(testing) { console.log("SENT ETH: ", response); }
                         if(response.data.success && !response.data.message) {
                             $scope.getTransactions();
+                            $scope.sendAddress = null;
+                            $scope.sendAmount = null;
+                            $(function(){
+                                new PNotify({
+                                    title: 'Transaction Processing',
+                                    text: 'Your transaction was sent and will be completed pending confirmation',
+                                    stack: stack_topright,
+                                    type: "notice"
+                                })
+                            });
                         }
                         if(response.data.message == "insufficientFunds") {
-                            $scope.errorMessage = "Insufficient Funds"
+                            $scope.sendAddress = null;
+                            $scope.sendAmount = null;
+                            $(function(){
+                                new PNotify({
+                                    title: 'Insufficient Funds',
+                                    text: 'Your ethereum transaction could not be processed',
+                                    stack: stack_topright,
+                                    type: "error"
+                                })
+                            });
                         }
                         else if(response.data.message == "invalidAuthToken"){
-                            window.location.href = '/login';
+                            window.location.href = '/login#?sessExpired';
                         }
                     },
                     function (response) {
                         // failure callback
-                        console.log(response);
+                        if(testing) { console.log(response); }
                     }
                 );
 
@@ -134,6 +268,32 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
                 $('#ETH-send-address').addClass('invalid');
             }
         }
+    };
+
+    // TODO: FINISH CHECKING FOR SERVER RESPONSE ON ADDING ACCOUNT
+    $scope.addEthAccount = function () {
+        // Close the modal and clear the values
+        $('#ethereum-info-modal').modal('toggle');
+
+        // Send the amount
+
+        $http.post(SERVER_PORT + '/api/v1/userops/add_eth_address', postObject).then(
+            function (response) {
+                // success callback
+                if(testing) { console.log("ADDING ETH ADDRESS: ", response); }
+                if(response.data.success) {
+
+                }
+                else if(response.data.message == "invalidAuthToken") {
+                    window.location.href = '/login';
+                }
+            },
+            function (response) {
+                // failure callback
+                if(testing) { console.log(response); }
+            }
+        );
+
     }
 }]);
 
@@ -151,7 +311,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
     };
 
     $scope.sendDinarcoin = function() {
-        console.log("Sending Dinarcoin");
+        if(testing) { console.log("Sending Dinarcoin"); }
         // Check if Address is valid
         if($scope.sendAddress){
             if($('#DNC-send-address').hasClass('invalid')){
@@ -162,6 +322,10 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                 if($('#DNC-send-amount').hasClass('invalid')){
                     $('#DNC-send-amount').removeClass('invalid');
                 }
+
+                // Close the modal and clear the values
+                $('#dinarcoin-info-modal').modal('toggle');
+
                 // Send the amount
                 var postObject = {
                     authToken: $scope.authToken,
@@ -169,23 +333,42 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                     amount: $scope.sendAmount
                 };
 
-                $http.post(SERVER_PORT + '/api/v1/walletops/transfer_DNC', postObject).then(
+                $http.post(SERVER_PORT + '/api/v1/walletops/send_DNC', postObject).then( // valid API url
                     function (response) {
                         // success callback
-                        console.log("SEND DNC: ", response);
+                        if(testing) { console.log("SEND DNC: ", response); }
                         if(response.data.success && !response.data.message) {
                             $scope.getTransactions();
+                            $scope.sendAddress = null;
+                            $scope.sendAmount = null;
+                            $(function(){
+                                new PNotify({
+                                    title: 'Transaction Processing',
+                                    text: 'Your transaction was sent and will be completed pending confirmation',
+                                    stack: stack_topright,
+                                    type: "notice"
+                                })
+                            });
                         }
                         if(response.data.message == "insufficientFunds") {
-                            $scope.errorMessage = "Insufficient Funds"
+                            $scope.sendAddress = null;
+                            $scope.sendAmount = null;
+                            $(function(){
+                                new PNotify({
+                                    title: 'Insufficient Funds',
+                                    text: 'Your dinarcoin transaction could not be processed',
+                                    stack: stack_topright,
+                                    type: "error"
+                                })
+                            });
                         }
                         else if(response.data.message == "invalidAuthToken") {
-                            window.location.href = '/login';
+                            window.location.href = '/login#?sessExpired';
                         }
                     },
                     function (response) {
                         // failure callback
-                        console.log(response);
+                        if(testing) { console.log(response); }
                     }
                 );
 
@@ -206,9 +389,9 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
     }
 
     $scope.mintDinarcoin = function() {
-        console.log("Minting Dinarcoin");
+        if(testing) { console.log("Minting Dinarcoin"); }
         // Check if Currency is valid
-        console.log("SENDING ", $scope.mintCurrency);
+        if(testing) { console.log("SENDING ", $scope.mintCurrency); }
         if($scope.mintCurrency == "BTC" || $scope.mintCurrency == "ETH"){
             if($('#mint-currency').hasClass('invalid')){
                 $('#mint-currency').removeClass('invalid');
@@ -218,30 +401,66 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                 if($('#mint-amount').hasClass('invalid')){
                     $('#mint-amount').removeClass('invalid');
                 }
+
+                // Close the modal and clear the values
+                $('#dinarcoin-info-modal').modal('toggle');
+
                 // mint the amount
                 var postObject = {
                     authToken: $scope.authToken,
                     fromCurrency: $scope.mintCurrency,
-                    amount: $scope.mintAmount
+                    amount: $scope.mintAmount // TODO: Change Amount from BTC/ETH to DNC
                 };
 
-                $http.post(SERVER_PORT + '/api/v1/walletops/buy_DNC', postObject).then(
+                if (testing) {
+                    console.log("MINTING DINARCOIN WITH THE FOLLOWING ATTRIBUTES");
+                    // console.log(postObject.toString());
+                    $(function(){
+                        new PNotify({
+                            title: 'Minting Dinarcoin',
+                            text: 'Sent request to server \n Minting '+$scope.mintAmount+' '+$scope.mintCurrency,
+                            stack: stack_topright,
+                            type: "notice"
+                        })
+                    });
+                }
+
+                $http.post(SERVER_PORT + '/api/v1/walletops/buy_DNC', postObject).then( // valid API url
                     function (response) {
                         // success callback
-                        console.log("BUYING DNC: ", response);
+                        if(testing) { console.log("BUYING DNC: ", response); }
                         if(response.data.success && !response.data.message) {
                             $scope.getTransactions();
+                            $scope.mintCurrency = null;
+                            $scope.mintAmount = null;
+                            $(function(){
+                                new PNotify({
+                                    title: 'Transaction Processing',
+                                    text: 'Your transaction was sent and will be completed pending confirmation',
+                                    stack: stack_topright,
+                                    type: "notice"
+                                })
+                            });
                         }
                         if(response.data.message == "insufficientFunds") {
-                            $scope.errorMessage = "Insufficient Funds"
+                            $scope.mintCurrency = null;
+                            $scope.mintAmount = null;
+                            $(function(){
+                                new PNotify({
+                                    title: 'Insufficient Funds',
+                                    text: 'Your dinarcoin transaction could not be processed',
+                                    stack: stack_topright,
+                                    type: "error"
+                                })
+                            });
                         }
                         else if(response.data.message == "invalidAuthToken") {
-                            window.location.href = '/login';
+                            window.location.href = '/login#?sessExpired';
                         }
                     },
                     function (response) {
                         // failure callback
-                        console.log(response);
+                        if(testing) { console.log(response); }
                     }
                 );
 
@@ -261,9 +480,9 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
     };
 
     $scope.burnDinarcoin = function() {
-        console.log("burning Dinarcoin");
+        if(testing) { console.log("burning Dinarcoin"); }
         // Check if Currency is valid
-        console.log("SENDING ", $scope.burnCurrency);
+        if(testing) { console.log("SENDING ", $scope.burnCurrency); }
         if($scope.burnCurrency == "BTC" || $scope.burnCurrency == "ETH"){
             if($('#burn-currency').hasClass('invalid')){
                 $('#burn-currency').removeClass('invalid');
@@ -273,25 +492,67 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                 if($('#burn-amount').hasClass('invalid')){
                     $('#burn-amount').removeClass('invalid');
                 }
+
+                // Close the modal and clear the values
+                $('#dinarcoin-info-modal').modal('toggle');
+
                 // mint the amount
                 var postObject = {
                     authToken: $scope.authToken,
-                    toCurrency: $scope.mintCurrency,
-                    amount: $scope.mintAmount
+                    toCurrency: $scope.burnCurrency,
+                    amount: $scope.burnAmount // TODO: Change currency from BTC/ETH to DNC
                 };
 
-                $http.post(SERVER_PORT + '/api/v1/walletops/sell_DNC', postObject).then(
+                if (testing) {
+                    console.log("BURNING DINARCOIN WITH THE FOLLOWING ATTRIBUTES");
+                    console.log(postObject.toString());
+                    $(function(){
+                        new PNotify({
+                            title: 'Burning DNC',
+                            text: 'Sent request to server \n Burning '+$scope.burnAmount+' '+$scope.burnCurrency,
+                            stack: stack_topright,
+                            type: "notice"
+                        })
+                    });
+                }
+
+                $http.post(SERVER_PORT + '/api/v1/walletops/sell_DNC', postObject).then( // valid API url
                     function (response) {
                         // success callback
-                        console.log("SELL DNC RESPONSE: ", response);
-                        if(response.data.success) {
+                        if(testing) { console.log("SELL DNC RESPONSE: ", response); }
+                        if(response.data.success && !response.data.message) {
+                            $scope.getTransactions();
+                            $scope.burnCurrency = null;
+                            $scope.burnAmount = null;
+                            $(function(){
+                                new PNotify({
+                                    title: 'Transaction Processing',
+                                    text: 'Your transaction was sent and will be completed pending confirmation',
+                                    stack: stack_topright,
+                                    type: "notice"
+                                })
+                            });
+
                         }
-                        else {
+                        if(response.data.message == "insufficientFunds") {
+                            $scope.burnCurrency = null;
+                            $scope.burnAmount = null;
+                            $(function(){
+                                new PNotify({
+                                    title: 'Insufficient Funds',
+                                    text: 'Your dinarcoin transaction could not be processed',
+                                    stack: stack_topright,
+                                    type: "error"
+                                })
+                            });
+                        }
+                        else if(response.data.message == "invalidAuthToken") {
+                            window.location.href = '/login#?sessExpired';
                         }
                     },
                     function (response) {
                         // failure callback
-                        console.log(response);
+                        if(testing) { console.log(response); }
                     }
                 );
 
@@ -324,8 +585,8 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataS
             txn.metadata.fromCurrency == "GOLD_1G" || txn.metadata.toCurrency == "GOLD_1G" ||
             txn.metadata.fromCurrency == "GOLD_100G" || txn.metadata.toCurrency == "GOLD_100G" ||
             txn.metadata.fromCurrency == "GOLD_1KG" || txn.metadata.toCurrency == "GOLD_1KG" ||
-            txn.metadata.fromCurrency == "SILVER_100OZ" || txn.metadata.toCurrency == "SILVER_100OZ" ||
-            txn.metadata.fromCurrency == "SILVER_1KG" || txn.metadata.toCurrency == "SILVER_1KG"
+            txn.metadata.fromCurrency == "SILVER100Oz" || txn.metadata.toCurrency == "SILVER100Oz" ||
+            txn.metadata.fromCurrency == "SILVER1KG" || txn.metadata.toCurrency == "SILVER1KG"
         ) {
             return txn;
         }
@@ -388,118 +649,242 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataS
     // }
 
     $scope.mintGSC = function() {
-        console.log("Minting GSC");
-        // Check if Currency is valid
-        console.log("SENDING ", $scope.mintCurrency);
+        if(testing) { console.log("Minting GSC"); }
+        // Check if Instrument is valid
+        if(testing) { console.log("SENDING ", $scope.mintCurrency); }
         if(
-            $scope.mintCurrency == "GOLD_1G" ||
-            $scope.mintCurrency == "GOLD_100G" ||
-            $scope.mintCurrency == "GOLD_1KG" ||
-            $scope.mintCurrency == "SILVER_100OZ" ||
-            $scope.mintCurrency == "SILVER_1KG"
-        ){
-            if($('#mint-currency').hasClass('invalid')){
-                $('#mint-currency').removeClass('invalid');
-            }
-            // Check if amount is valid
-            if($scope.mintAmount && $scope.mintAmount > 0 ){
-                if($('#mint-amount').hasClass('invalid')){
-                    $('#mint-amount').removeClass('invalid');
-                }
-                // mint the amount
-                var postObject = {
-                    authToken: $scope.authToken,
-                    instrument: $scope.mintCurrency,
-                    amount: $scope.mintAmount
-                };
+            $scope.mintInstrument == "GOLD_1G" ||
+            $scope.mintInstrument == "GOLD_100G" ||
+            $scope.mintInstrument == "GOLD_1KG" ||
+            $scope.mintInstrument == "SILVER100Oz" ||
+            $scope.mintInstrument == "SILVER1KG"
+        ) {
 
-                $http.post(SERVER_PORT + '/api/v1/walletops/buy_GSC', postObject).then(
-                    function (response) {
-                        // success callback
-                        console.log("BUYING GSC: ", response);
-                        if(response.data.success && !response.data.message) {
-                            $scope.getTransactions();
-                        }
-                        if(response.data.message == "insufficientFunds") {
-                            $scope.errorMessage = "Insufficient Funds"
-                        }
-                        else if(response.data.message == "invalidAuthToken") {
-                            window.location.href = '/login';
-                        }
-                    },
-                    function (response) {
-                        // failure callback
-                        console.log(response);
+            if($('#mint-instrument').hasClass('invalid')){
+                $('#mint-instrument').removeClass('invalid');
+            }
+
+            // Check if Currency is valid
+            if(
+                $scope.mintCurrency == "BTC" ||
+                $scope.mintCurrency == "ETH" ||
+                $scope.mintCurrency == "DNC"
+            ) {
+
+                if($('#mint-currency').hasClass('invalid')){
+                    $('#mint-currency').removeClass('invalid');
+                }
+
+                // Check if amount is valid
+                if($scope.mintAmount && $scope.mintAmount > 0 ){
+                    if($('#mint-amount').hasClass('invalid')){
+                        $('#mint-amount').removeClass('invalid');
                     }
-                );
+
+                    // Close the modal and clear the values
+                    $('#GSC-info-modal').modal('toggle');
+
+                    // mint the amount
+                    var postObject = {
+                        authToken: $scope.authToken,
+                        instrument: $scope.mintInstrument,
+                        fromCurrency: $scope.mintCurrency,
+                        amount: $scope.mintAmount // TODO: Change amount from DNC to GSC unit
+                    };
+
+                    if (testing) {
+                        console.log("MINTING GSC WITH THE FOLLOWING ATTRIBUTES NOW-");
+                        console.log(postObject.toString());
+                        $(function(){
+                            new PNotify({
+                                title: 'Minting GSC',
+                                // text: postObject,
+                                text: 'Sent request to server \n Minting '+$scope.mintAmount+' '+$scope.mintCurrency,
+                                stack: stack_topright,
+                                type: "notice"
+                            })
+                        });
+                    }
+
+                    $scope.tmp_req = postObject;
+
+                    $http.post(SERVER_PORT + '/api/v1/walletops/buy_GSC', postObject).then( // valid API url
+                        function (response) {
+                            // success callback
+                            if(testing) { console.log("BUYING GSC: ", response); }
+                            if(response.data.success && !response.data.message) {
+                                $scope.getTransactions();
+                                $scope.mintCurrency = null;
+                                $scope.mintAmount = null;
+                                $(function(){
+                                    new PNotify({
+                                        title: 'Transaction Processing',
+                                        text: 'Your transaction was sent and will be completed pending confirmation',
+                                        stack: stack_topright,
+                                        type: "notice"
+                                    })
+                                });
+                            }
+                            if(response.data.message == "insufficientFunds") {
+                                $scope.mintCurrency = null;
+                                $scope.mintAmount = null;
+                                $(function(){
+                                    new PNotify({
+                                        title: 'Insufficient Funds',
+                                        text: 'Your GSC transaction could not be processed',
+                                        stack: stack_topright,
+                                        type: "error"
+                                    })
+                                });
+                            }
+                            else if(response.data.message == "invalidAuthToken") {
+                                window.location.href = '/login#?sessExpired';
+                            }
+                        },
+                        function (response) {
+                            // failure callback
+                            if(testing) { console.log(response); }
+                        }
+                    );
+
+                } else {
+                    $scope.mintErrorMessage = "Please specify a valid amount";
+                    if(!($('#mint-amount').hasClass('invalid'))){
+                        $('#mint-amount').addClass('invalid');
+                    }
+                }
+
+
 
             } else {
-                $scope.mintErrorMessage = "Please specify a valid amount";
-                if(!($('#mint-amount').hasClass('invalid'))){
-                    $('#mint-amount').addClass('invalid');
+                $scope.mintErrorMessage = "Please Pick a currency";
+                if(!($('#mint-currency').hasClass('invalid'))){
+                    $('#mint-currency').addClass('invalid');
                 }
             }
-
         } else {
-            $scope.mintErrorMessage = "Please Pick a currency";
-            if(!($('#mint-currency').hasClass('invalid'))){
-                $('#mint-currency').addClass('invalid');
+            $scope.mintErrorMessage = "Please Pick an instrument";
+            if(!($('#mint-instrument').hasClass('invalid'))){
+                $('#mint-instrument').addClass('invalid');
             }
         }
     };
 
     $scope.burnGSC = function() {
-        console.log("burning GSC");
-        // Check if Currency is valid
-        console.log("SENDING ", $scope.burnCurrency);
+        if(testing) { console.log("burning GSC"); }
+        // Check if Instrument is valid
+        if(testing) { console.log("SENDING ", $scope.burnCurrency); }
         if(
-            $scope.burnCurrency == "GOLD_1G" ||
-            $scope.burnCurrency == "GOLD_100G" ||
-            $scope.burnCurrency == "GOLD_1KG" ||
-            $scope.burnCurrency == "SILVER_100OZ" ||
-            $scope.burnCurrency == "SILVER_1KG"
-        ){
-            if($('#burn-currency').hasClass('invalid')){
-                $('#burn-currency').removeClass('invalid');
-            }
-            // Check if amount is valid
-            if($scope.burnAmount && $scope.burnAmount > 0 ){
-                if($('#burn-amount').hasClass('invalid')){
-                    $('#burn-amount').removeClass('invalid');
-                }
-                // mint the amount
-                var postObject = {
-                    authToken: $scope.authToken,
-                    instrument: $scope.burnCurrency,
-                    amount: $scope.mintAmount
-                };
+            $scope.burnInstrument == "GOLD_1G" ||
+            $scope.burnInstrument == "GOLD_100G" ||
+            $scope.burnInstrument == "GOLD_1KG" ||
+            $scope.burnInstrument == "SILVER100Oz" ||
+            $scope.burnInstrument == "SILVER1KG"
+        ) {
 
-                $http.post(SERVER_PORT + '/api/v1/walletops/sell_GSC', postObject).then(
-                    function (response) {
-                        // success callback
-                        console.log("SELL GSC RESPONSE: ", response);
-                        if(response.data.success) {
-                        }
-                        else {
-                        }
-                    },
-                    function (response) {
-                        // failure callback
-                        console.log(response);
+            if($('#burn-instrument').hasClass('invalid')){
+                $('#burn-instrument').removeClass('invalid');
+            }
+
+            // Check if Currency is valid
+            if(
+                $scope.burnCurrency == "BTC" ||
+                $scope.burnCurrency == "ETH" ||
+                $scope.burnCurrency == "DNC"
+            ) {
+
+                if($('#burn-currency').hasClass('invalid')){
+                    $('#burn-currency').removeClass('invalid');
+                }
+
+                // Check if amount is valid
+                if($scope.burnAmount && $scope.burnAmount > 0 ){
+                    if($('#burn-amount').hasClass('invalid')){
+                        $('#burn-amount').removeClass('invalid');
                     }
-                );
+
+                    // Close the modal and clear the values
+                    $('#GSC-info-modal').modal('toggle');
+
+                    // burn the amount
+                    var postObject = {
+                        authToken: $scope.authToken,
+                        instrument: $scope.burnInstrument,
+                        toCurrency: $scope.burnCurrency,
+                        amount: $scope.burnAmount
+                    };
+
+                    if (testing) {
+                        console.log("BURNING GSC WITH THE FOLLOWING ATTRIBUTES");
+                        console.log(postObject.toString());
+                        $(function(){
+                            new PNotify({
+                                title: 'Burning GSC',
+                                text: 'Sent request to server \n Burning '+$scope.burnAmount+' '+$scope.burnCurrency,
+                                stack: stack_topright,
+                                type: "notice"
+                            })
+                        });
+                    }
+
+                    $http.post(SERVER_PORT + '/api/v1/walletops/sell_GSC', postObject).then( // valid API url
+                        function (response) {
+                            // success callback
+                            if(testing) { console.log("SELLING GSC: ", response); }
+                            if(response.data.success && !response.data.message) {
+                                $scope.getTransactions();
+                                $scope.burnCurrency = null;
+                                $scope.burnAmount = null;
+                                $(function(){
+                                    new PNotify({
+                                        title: 'Transaction Processing',
+                                        text: 'Your transaction was sent and will be completed pending confirmation',
+                                        stack: stack_topright,
+                                        type: "notice"
+                                    })
+                                });
+                            }
+                            if(response.data.message == "insufficientFunds") {
+                                $scope.burnCurrency = null;
+                                $scope.burnAmount = null;
+                                $(function(){
+                                    new PNotify({
+                                        title: 'Insufficient Funds',
+                                        text: 'Your GSC transaction could not be processed',
+                                        stack: stack_topright,
+                                        type: "error"
+                                    })
+                                });
+                            }
+                            else if(response.data.message == "invalidAuthToken") {
+                                window.location.href = '/login#?sessExpired';
+                            }
+                        },
+                        function (response) {
+                            // failure callback
+                            if(testing) { console.log(response); }
+                        }
+                    );
+
+                } else {
+                    $scope.burnErrorMessage = "Please specify a valid amount";
+                    if(!($('#burn-amount').hasClass('invalid'))){
+                        $('#burn-amount').addClass('invalid');
+                    }
+                }
+
+
 
             } else {
-                $scope.burnErrorMessage = "Please specify a valid amount";
-                if(!($('burn-amount').hasClass('invalid'))){
-                    $('#burn-amount').addClass('invalid');
+                $scope.burnErrorMessage = "Please Pick a currency";
+                if(!($('#burn-currency').hasClass('invalid'))){
+                    $('#burn-currency').addClass('invalid');
                 }
             }
-
         } else {
-            $scope.burnErrorMessage = "Please Pick a currency";
-            if(!($('#burn-currency').hasClass('invalid'))){
-                $('#burn-currency').addClass('invalid');
+            $scope.burnErrorMessage = "Please Pick an instrument";
+            if(!($('#burn-instrument').hasClass('invalid'))){
+                $('#burn-instrument').addClass('invalid');
             }
         }
     }

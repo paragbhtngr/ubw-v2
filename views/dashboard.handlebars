@@ -1,4 +1,4 @@
-<div id="wrapper" ng-controller="DashboardController">
+<div id="wrapper" ng-controller="DashboardController" class="toggled">
     {{> sidebar}}
 
     <!-- Page Content -->
@@ -43,7 +43,8 @@
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>BTC Balance</p>
                         <h2 class="currency-crypto">{[{BTCbalance | number:4}]} BTC</h2>
-                        <h3 class="currency-fiat">{[{BTCbalance * BTCinUSD || 0 | number:2}]} USD</h3>
+                        <h3 class="currency-fiat">{[{BTCbalance * BTCinUSD || 0 | number:2}]} USD </h3>
+                        <h3 class="currency-fiat">{[{BTCinUSD | number:3}]} USD/BTC</h3>
                         <div class="status-button-container">
                             <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal" ng-click="modalActivate('bitcoin','BTC-receive')"><i class="fa fa-arrow-down"></i> Deposit </button>
                             <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal" ng-click="modalActivate('bitcoin','BTC-send')"><i class="fa fa-arrow-up"></i> Withdraw</button>
@@ -84,7 +85,8 @@
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>ETH Balance</p>
                         <h2 class="currency-crypto">{[{ETHbalance | number:4}]} ETH</h2>
-                        <h3 class="currency-fiat">{[{ETHbalance * ETHinUSD || 0 | number:2}]} USD</h3>
+                        <h3 class="currency-fiat">{[{ETHbalance * ETHinUSD || 0 | number:2}]} USD </h3>
+                        <h3 class="currency-fiat">{[{ETHinUSD | number:2}]} USD/ETH </h3>
                         <div class="status-button-container">
                             <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal" ng-click="modalActivate('ethereum','ETH-receive')"><i class="fa fa-arrow-down"></i> Deposit</button>
                             <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#ethereum-info-modal" ng-click="modalActivate('ethereum','ETH-send')"><i class="fa fa-arrow-up"></i> Withdraw </button>
@@ -124,7 +126,8 @@
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>DNC Balance</p>
                         <h2 class="currency-crypto">{[{DNCbalance | number:4}]} DNC</h2>
-                        <h3 class="currency-fiat">{[{DNCbalance * DNCbidinUSD || 0 | number:2}]} USD</h3>
+                        <h3 class="currency-fiat">{[{DNCbalance * DNCbidinUSD || 0 | number:2}]} USD </h3>
+                        <h3 class="currency-fiat">{[{DNCbidinUSD}]} USD/DNC </h3>
                         <div class="status-button-container">
                             <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-receive')"><i class="fa fa-arrow-down"></i> Receive</button>
                             <button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#dinarcoin-info-modal" ng-click="modalActivate('dinarcoin','DNC-send')"><i class="fa fa-arrow-up"></i> Send</button>
@@ -166,7 +169,8 @@
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
                         <h2 class="currency-crypto">{[{G1Gbalance | number:4}]} GSC</h2>
-                        <h3 class="currency-fiat">{[{G1Gbalance * G1GbidinUSD || 0 | number:2}]} USD</h3>
+                        <h3 class="currency-fiat">{[{G1Gbalance * G1GbidinUSD || 0 | number:2}]} USD </h3>
+                        <h3 class="currency-fiat">{[{G1GbidinUSD}]} USD/Gold(1G)</h3>
                         <!--<div class="status-button-container">-->
                             <!--<button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#G1G-info-modal" ng-click="modalActivate('GSC','GSC-receive')"><i class="fa fa-arrow-down"></i> Receive</button>-->
                             <!--<button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#G1G-info-modal" ng-click="modalActivate('GSC','GSC-send')"><i class="fa fa-arrow-up"></i> Send</button>-->
@@ -209,6 +213,7 @@
                         <p>GSC Balance</p>
                         <h2 class="currency-crypto">{[{G100Gbalance | number:4}]} GSC</h2>
                         <h3 class="currency-fiat">{[{G100Gbalance * G100GbidinUSD || 0 | number:2}]} USD</h3>
+                        <h3 class="currency-fiat">{[{G100GbidinUSD}]} USD/Gold(100G)</h3>
                         <!--<div class="status-button-container">-->
                             <!--<button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#G100G-info-modal" ng-click="modalActivate('G100G','G100G-receive')"><i class="fa fa-arrow-down"></i> Receive</button>-->
                             <!--<button class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#G100G-info-modal" ng-click="modalActivate('G100G','G100G-send')"><i class="fa fa-arrow-up"></i> Send</button>-->
@@ -251,7 +256,8 @@
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
                         <h2 class="currency-crypto">{[{G1KGbalance | number:4}]} GSC</h2>
-                        <h3 class="currency-fiat">{[{G1KGbalance * G1KGbidinUSD || 0 | number:2}]} USD</h3>
+                        <h3 class="currency-fiat">{[{G1KGbalance * G1KGbidinUSD || 0 | number:2}]} USD </h3>
+                        <h3 class="currency-fiat">{[{G1KGbidinUSD}]} USD/Gold(1KG)</h3>
                         <!--<div class="status-button-container">-->
                             <!--<button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>-->
                             <!--<button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>-->
@@ -284,7 +290,7 @@
                             <img style="width:100%; box-shadow: none" src="/img/SSC_Logo.png" alt="">
                         </div>
                         <div class="currency-text">
-                            <h2>SILVER (1Oz)</h2>
+                            <h2>SILVER (100 Oz)</h2>
                             <h4>Silver Smart</h4>
                             <h4>Contract</h4>
                         </div>
@@ -292,8 +298,9 @@
                     <!--Currency status-->
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
-                        <h2 class="currency-crypto">{[{S100OZbalance | number:4}]} GSC</h2>
-                        <h3 class="currency-fiat">{[{S100OZbalance * S100OZbidinUSD || 0 | number:2}]} USD</h3>
+                        <h2 class="currency-crypto">{[{S100Ozbalance | number:4}]} GSC</h2>
+                        <h3 class="currency-fiat">{[{S100Ozbalance * S100OzbidinUSD || 0 | number:2}]} USD </h3>
+                        <h3 class="currency-fiat">{[{S100OzbidinUSD}]} USD/Silver(100 Oz) </h3>
                         <!--<div class="status-button-container">-->
                             <!--<button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>-->
                             <!--<button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>-->
@@ -303,12 +310,12 @@
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Mint GSC</p>
-                            <h3 class="currency-exchange">{[{ S100OZaskinUSD | number:2}]} USD</h3>
+                            <h3 class="currency-exchange">{[{ S100OzaskinUSD | number:2}]} USD</h3>
                             <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#GSC-info-modal" ng-click="modalActivate('GSC','GSC-mint')">Mint GSC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Burn GSC</p>
-                            <h3 class="currency-exchange">{[{ S100OZbidinUSD | number:2}]} USD</h3>
+                            <h3 class="currency-exchange">{[{ S100OzbidinUSD | number:2}]} USD</h3>
                             <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#GSC-info-modal" ng-click="modalActivate('GSC','GSC-burn')">Burn GSC</button>
                         </div>
                     </div>
@@ -335,7 +342,8 @@
                     <div class="currency-status col-md-3 col-sm-8">
                         <p>GSC Balance</p>
                         <h2 class="currency-crypto">{[{S1KGbalance | number:4}]} GSC</h2>
-                        <h3 class="currency-fiat">{[{S1KGbalance * S1KGbidinUSD || 0 | number:2}]} USD</h3>
+                        <h3 class="currency-fiat">{[{S1KGbalance * S1KGbidinUSD || 0 | number:2}]} USD </h3>
+                        <h3 class="currency-fiat">{[{S1KGbidinUSD}]} USD/Silver(1KG)</h3>
                         <!--<div class="status-button-container">-->
                             <!--<button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-down"></i> Receive</button>-->
                             <!--<button disabled class="btn btn-indigo btn-rounded waves-effect" data-toggle="modal" data-target="#bitcoin-info-modal"><i class="fa fa-arrow-up"></i> Send</button>-->
@@ -345,12 +353,12 @@
                     <div class="currency-options col-md-5 col-sm-12">
                         <div class="buy-container col-sm-6">
                             <p>Mint GSC</p>
-                            <h3 class="currency-exchange">{[{ G1KGaskinUSD | number:2}]} USD</h3>
+                            <h3 class="currency-exchange">{[{ S1KGaskinUSD | number:2}]} USD</h3>
                             <button class="btn btn-dark-green btn-rounded waves-effect" data-toggle="modal" data-target="#GSC-info-modal" ng-click="modalActivate('GSC','GSC-mint')">Mint GSC</button>
                         </div>
                         <div class="sell-container col-sm-6">
                             <p>Burn GSC</p>
-                            <h3 class="currency-exchange">{[{ G1KGbidinUSD | number:2}]} USD</h3>
+                            <h3 class="currency-exchange">{[{ S1KGbidinUSD | number:2}]} USD</h3>
                             <button class="btn btn-deep-orange btn-rounded waves-effect" data-toggle="modal" data-target="#GSC-info-modal" ng-click="modalActivate('GSC','GSC-burn')">Burn GSC</button>
                         </div>
                     </div>
@@ -373,6 +381,7 @@
 
 <!-- Menu Toggle Script -->
 <script>
+
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");

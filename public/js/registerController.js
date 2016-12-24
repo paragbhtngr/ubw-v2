@@ -3,26 +3,19 @@
  */
 
 ngapp.controller('RegisterController', ['$http', '$scope', '$cookies', '$window', 'dataStorage', function($http, $scope, $cookies, $window, dataStorage){
-    console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion());
+    if(testing) { console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion()); }
 
-    $http.get(SERVER_PORT+'/api/v1/util/countries').
-    success(function(data, status, headers, config) {
-        $scope.countries = data;
-    }).
-    error(function(data, status, headers, config) {
-        // log error
-        console.log(data);
-    });
+    $scope.countries = COUNTRIES;
 
     $scope.register = function() {
         // Check name input
         var firstName = $('#form-firstname-input');
-        var lastName = $('#form-lastname-input');
-        var email = $('#form-email-input');
-        var dob = $('#form-dob-input');
-        var phone = $('#form-phone-input');
-        var pwd = $('#form-password-input');
-        var pwdc = $('#form-password-input-confirm');
+        var lastName =  $('#form-lastname-input');
+        var email =     $('#form-email-input');
+        var dob =       $('#form-dob-input');
+        var phone =     $('#form-phone-input');
+        var pwd =       $('#form-password-input');
+        var pwdc =      $('#form-password-input-confirm');
 
         if(firstName.val() == "") {
             $('.registration-message.name-error').html("<h4 class='text-danger font-weight-bold'> Please Enter your Full Name </h4>");
@@ -118,24 +111,24 @@ ngapp.controller('RegisterController', ['$http', '$scope', '$cookies', '$window'
         }
 
         if($('.invalid').length > 0 ) {
-            console.log("INVALID FORM!");
+            if(testing) { console.log("INVALID FORM!"); }
         } else {
-            console.log("FORM VALID! Registering");
+            if(testing) { console.log("FORM VALID! Registering"); }
             $scope.dob = $('#form-dob-input').val();
 
             var postObject = {
-                firstName: $scope.firstName,
-                lastName: $scope.lastName,
-                email: $scope.email,
-                dob: $scope.dob,
-                address: ($scope.address?$scope.address:""),
-                address2: ($scope.address2?$scope.address2:""),
-                city: ($scope.city?$scope.city:""),
-                state: ($scope.state?$scope.state:""),
-                country: ($scope.country?$scope.country:""),
+                firstName:   $scope.firstName,
+                lastName:    $scope.lastName,
+                email:       $scope.email,
+                dob:         $scope.dob,
+                address:    ($scope.address?$scope.address:""),
+                address2:   ($scope.address2?$scope.address2:""),
+                city:       ($scope.city?$scope.city:""),
+                state:      ($scope.state?$scope.state:""),
+                country:    ($scope.country?$scope.country:""),
                 postalCode: ($scope.postalCode?$scope.postalCode:""),
                 phoneNumber: $scope.mobile,
-                password: $scope.pwd
+                password:    $scope.pwd
             };
 
             // console.log(postObject);
@@ -144,9 +137,17 @@ ngapp.controller('RegisterController', ['$http', '$scope', '$cookies', '$window'
             $http.post(SERVER_PORT+'/api/v1/userops/create_new_user', postObject).then(
                 function(response){
                     // success callback
-                    console.log(response);
+                    if(testing) { console.log(response); }
+                    $(function(){
+                        new PNotify({
+                            title: 'Registering User',
+                            text: 'Currently creating user. This may take a few minutes. You will be redirected once you have been successfully registered',
+                            stack: stack_topright,
+                            type: "notice"
+                        })
+                    });
                     if(response.data.success){
-                        window.location.href = '/login';
+                        window.location.href = '/login#?registered';
                     }
                     else {
                         if(response.data.message = "userExists") {
@@ -156,7 +157,7 @@ ngapp.controller('RegisterController', ['$http', '$scope', '$cookies', '$window'
                 },
                 function(response){
                     // failure callback
-                    console.log(response);
+                    if(testing) { console.log(response); }
                 }
 
             );

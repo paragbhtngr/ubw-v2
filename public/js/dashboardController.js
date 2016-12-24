@@ -3,7 +3,7 @@
  */
 
 ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window', 'dataStorage', function($http, $scope, $cookies, $window, dataStorage){
-    console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion());
+    if(testing) { console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion()); }
 
     $scope.getUserData = function(){
 
@@ -12,181 +12,94 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
             authToken : $scope.authToken
         };
 
-        $http.post(SERVER_PORT + '/api/v1/userops/get_user_data', postObject).then(
+        $http.post(SERVER_PORT + '/api/v1/userops/get_user_data', postObject).then( // valid API url
             function (response) {
                 // success callback
-                console.log(response);
+                if(testing) { console.log(response); }
                 if(response.data.success) {
-                    $scope.email = response.data.body.email;
+                    // User's particulars
+                    $scope.email                = response.data.body.email;
+                    $scope.firstName            = response.data.body.firstName;
+                    $scope.lastName             = response.data.body.lastName;
+                    // User's Application-based Addresses
+                    $scope.BTCaddress           = response.data.body.BTCaddress;
+                    $scope.ETHaddress           = response.data.body.ETHaddress;
+                    $scope.DNCaddress           = response.data.body.ETHaddress;
+                    // User's Private Addresses
+                    $scope.privateBTCaddress    = response.data.body.privateAccounts.BTCaddress;
+                    $scope.privateETHaddress    = response.data.body.privateAccounts.ETHaddress;
+                    // User's balances
+                    $scope.BTCbalance           = response.data.body.balances.BTC;
+                    $scope.ETHbalance           = response.data.body.balances.ETH;
+                    $scope.DNCbalance           = response.data.body.balances.DNC;
+                    $scope.G1Gbalance           = response.data.body.balances.GOLD_1G;
+                    $scope.G100Gbalance         = response.data.body.balances.GOLD_100G;
+                    $scope.G1KGbalance          = response.data.body.balances.GOLD_1KG;
+                    $scope.S100Ozbalance        = response.data.body.balances.SILVER100Oz;
+                    $scope.S1KGbalance          = response.data.body.balances.SILVER1KG;
 
-                    $scope.BTCaddress = response.data.body.BTCaddress;
-                    $scope.ETHaddress = response.data.body.ETHaddress;
-                    $scope.DNCaddress = response.data.body.ETHaddress;
-                    console.log('BTC address in Dashboard Controller', $scope.BTCaddress);
+                    if(testing) { console.log('BTC address in Dashboard Controller', $scope.BTCaddress); }
                 }
                 else {
-                    window.location.href = '/login';
+                    window.location.href = '/login#?sessExpired';
                 }
             },
             function (response) {
                 // failure callback
-                console.log(response);
-            }
-        );
-    };
-
-    $scope.getUserBalance = function(){
-
-        $scope.authToken = $cookies.get("ubwAuthToken");
-        var postObject = {
-            authToken : $scope.authToken
-        };
-
-        $http.post(SERVER_PORT + '/api/v1/userops/get_user_balance', postObject).then(
-            function (response) {
-                // success callback
-                console.log("GET USER BALANCE: ", response);
-                if(response.data.success) {
-                    $scope.BTCbalance = response.data.body.BTC.free;
-                    $scope.ETHbalance = response.data.body.ETH.free;
-                    $scope.DNCbalance = response.data.body.DNC.free;
-                    $scope.G1Gbalance = response.data.body.GOLD_1G.free;
-                    $scope.G100Gbalance = response.data.body.GOLD_100G.free;
-                    $scope.G1KGbalance = response.data.body.GOLD_1KG.free;
-                    $scope.S100OZbalance = response.data.body.SILVER_100OZ.free;
-                    $scope.S1KGbalance = response.data.body.SILVER_1KG.free;
-                }
-                else {
-                    window.location.href = '/login';
-                }
-            },
-            function (response) {
-                // failure callback
-                console.log(response);
+                if(testing) { console.log(response); }
+                $(function(){
+                    new PNotify({
+                        title: 'Data Request Error',
+                        text: 'Could not fetch User data from server. Please check your connection',
+                        stack: stack_topright,
+                        type: "error"
+                    })
+                });
             }
         );
     };
 
     $scope.getPrices = function(){
 
-        // BITCOIN
-        $http.get(SERVER_PORT + '/api/v1/util/get_btc_price').then(
+        // ALL PRICES
+        $http.get(SERVER_PORT + '/api/v1/util/get_prices').then(
             function (response) {
                 // success callback
-                // console.log("GET BTC IN USD: ", response);
-                $scope.BTCinUSD = response.data.USD.rate_float;
-                $scope.BTCinGBP = response.data.GBP.rate_float;
-                $scope.BTCinEUR = response.data.EUR.rate_float;
+                if(testing) { console.log("GET BTC IN USD: ", response); }
+                $scope.BTCinUSD         = response.data.body.BTC;
+                $scope.ETHinUSD         = response.data.body.ETH;
 
-                console.log("BTC IN USD: ", $scope.BTCinUSD);
+                $scope.DNCbidinUSD      = response.data.DNC.bid;
+                $scope.DNCaskinUSD      = response.data.DNC.ask;
+
+                $scope.G1GbidinUSD      = response.data.GOLD_1G.bid;
+                $scope.G1GaskinUSD      = response.data.GOLD_1G.ask;
+
+                $scope.G100GbidinUSD    = response.data.GOLD_100G.bid;
+                $scope.G100GaskinUSD    = response.data.GOLD_100G.ask;
+
+                $scope.G1KGbidinUSD     = response.data.GOLD_1KG.bid;
+                $scope.G1KGaskinUSD     = response.data.GOLD_1KG.ask;
+
+                $scope.S100OzbidinUSD   = response.data.SILVER100Oz.bid;
+                $scope.S100OzaskinUSD   = response.data.SILVER100Oz.ask;
+
+                $scope.S1KGbidinUSD     = response.data.SILVER1KG.bid;
+                $scope.S1KGaskinUSD     = response.data.SILVER1KG.ask;
+
+                if(testing) { console.log("BTC IN USD: ", $scope.BTCinUSD); }
             },
             function (response) {
                 // failure callback
-                console.log(response);
-            }
-        );
-
-        // ETHEREUM
-        $http.get(SERVER_PORT + '/api/v1/util/get_eth_price').then(
-            function (response) {
-                // success callback
-                // console.log("GET ETH IN USD: ", response);
-
-                $scope.ETHinUSD = response.data.usd;
-            },
-            function (response) {
-                // failure callback
-                console.log(response);
-            }
-        );
-
-        //DINARCOIN
-        $http.get(SERVER_PORT + '/api/v1/util/get_dnc_price').then(
-            function (response) {
-                // success callback
-                // console.log("GET DNC IN USD: ", response);
-
-                $scope.DNCbidinUSD = response.data.bid;
-                $scope.DNCaskinUSD = response.data.ask;
-            },
-            function (response) {
-                // failure callback
-                console.log(response);
-            }
-        );
-
-        // GOLD 1G
-        $http.get(SERVER_PORT + '/api/v1/util/get_GOLD1G_price').then(
-            function (response) {
-                // success callback
-                // console.log("GET GOLD(1G) IN USD: ", response);
-
-                $scope.G1GbidinUSD = response.data.bid;
-                $scope.G1GaskinUSD = response.data.ask;
-            },
-            function (response) {
-                // failure callback
-                console.log(response);
-            }
-        );
-
-        //GOLD 100G
-        $http.get(SERVER_PORT + '/api/v1/util/get_GOLD100G_price').then(
-            function (response) {
-                // success callback
-                // console.log("GET GOLD(100G) IN USD: ", response);
-
-                $scope.G100GbidinUSD = response.data.bid;
-                $scope.G100GaskinUSD = response.data.ask;
-            },
-            function (response) {
-                // failure callback
-                console.log(response);
-            }
-        );
-
-        // GOLD 1KG
-        $http.get(SERVER_PORT + '/api/v1/util/get_GOLD1KG_price').then(
-            function (response) {
-                // success callback
-                // console.log("GET GOLD(1KG) IN USD: ", response);
-
-                $scope.G1KGbidinUSD = response.data.bid;
-                $scope.G1KGaskinUSD = response.data.ask;
-            },
-            function (response) {
-                // failure callback
-                console.log(response);
-            }
-        );
-
-        // SILVER 100OZ
-        $http.get(SERVER_PORT + '/api/v1/util/get_SILVER100OZ_price').then(
-            function (response) {
-                // success callback
-                // console.log("GET SILVER(100oz) IN USD: ", response);
-
-                $scope.S100OZbidinUSD = response.data.bid;
-                $scope.S100OZaskinUSD = response.data.ask;
-            },
-            function (response) {
-                // failure callback
-                console.log(response);
-            }
-        );
-
-        // SILVER 1KG
-        $http.get(SERVER_PORT + '/api/v1/util/get_SILVER1KG_price').then(
-            function (response) {
-                // success callback
-                // console.log("GET SILVER(1KG) IN USD: ", response);
-
-                $scope.S1KGbidinUSD = response.data.bid;
-                $scope.S1KGaskinUSD = response.data.ask;
-            },
-            function (response) {
-                // failure callback
-                console.log(response);
+                if(testing) { console.log(response); }
+                $(function(){
+                    new PNotify({
+                        title: 'Price Request Error',
+                        text: 'Could not fetch prices from server. Please check your connection',
+                        stack: stack_topright,
+                        type: "error"
+                    })
+                });
             }
         );
     };
@@ -197,28 +110,34 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
             authToken : $scope.authToken
         };
 
-        $http.post(SERVER_PORT + '/api/v1/userops/get_user_transactions', postObject).then(
+        $http.post(SERVER_PORT + '/api/v1/userops/get_user_transactions', postObject).then( // valid API url
             function (response) {
                 // success callback
-                console.log("GET TRANSACTIONS: ", response);
+                if(testing) { console.log("GET TRANSACTIONS: ", response); }
                 if(response.data.success) {
                     dataStorage.addTransactions(response.data.body);
                 }
                 else {
-                    window.location.href = '/login';
+                    window.location.href = '/login#?sessExpired';
                 }
             },
             function (response) {
                 // failure callback
-                console.log(response);
+                if(testing) { console.log(response); }
             }
         );
     };
 
     $scope.getUserData();
-    $scope.getUserBalance();
     $scope.getPrices();
     $scope.getTransactions();
+
+    setInterval(function(){
+        //code goes here that will be run every 5 seconds.
+        $scope.getUserData();
+        $scope.getPrices();
+        $scope.getTransactions();
+    }, 30000);
 
 
 
@@ -253,7 +172,7 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
     // dataStorage.addTransactions(txns);
 
     $scope.modalActivate = function(modal, modalTab) {
-        console.log("modalActivate called with: ", modal, modalTab);
+        if(testing) { console.log("modalActivate called with: ", modal, modalTab); }
 
         $('.'+modal+'.nav-tabs>li').each( function(){
             $(this).removeClass('active');
@@ -272,7 +191,7 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
 
     $scope.logout = function () {
         $cookies.remove("ubwAuthToken");
-        window.location.href = '/login'
+        window.location.href = '/login#?loggedOut'
     }
 
 }]);

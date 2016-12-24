@@ -64,50 +64,74 @@
                     <div class="tab-pane" id="GSC-mint">
                         <br>
                         <h3>Mint GSC</h3>
-                        <p>Please enter amount to mint in DNC</p>
+                        <p>Please enter amount of GSC to mint</p>
                         <p>and a currency to mint</p>
                         <div class="mint-error-message">
                             <br>
                             <h4 class='text-danger font-weight-bold'>{[{mintErrorMessage}]}</h4>
                             <br>
                         </div>
-                        <div style="width: 20%; display: inline-block; margin-right: 15px;">
-                            <input type="number" id="mint-amount" class="form-control validate" placeholder="Amount" ng-model="mintAmount">
+                        <div>
+                            <input style="width: 75%; display: inline-block; margin-right: 15px;" type="number" step="1" id="mint-amount" class="form-control validate" placeholder="Amount" ng-model="mintAmount">
                         </div>
-                        <span style="font-size: 16px; margin-right: 15px;">DNC to</span>
-                        <div style="width: 40%; display: inline-block;">
-                            <select name="mint-currency" id="mint-currency" ng-model="mintCurrency">
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 30%; text-align: right; font-size: 16px; margin-right: 15px;">
+                                <span>Instrument: </span>
+                            </div>
+                            <select style="width: 50%; display: inline-block;" name="mint-instrument" id="mint-instrument" ng-model="mintInstrument">
                                 <option value="GOLD_1G">GOLD (1G)</option>
                                 <option value="GOLD_100G">GOLD (100G)</option>
                                 <option value="GOLD_1KG">GOLD (1KG)</option>
-                                <option value="SILVER_100OZ">SILVER (100 OZ)</option>
-                                <option value="SILVER_1KG">SILVER (1KG)</option>
+                                <option value="SILVER100Oz">SILVER (100 Oz)</option>
+                                <option value="SILVER1KG">SILVER (1KG)</option>
                             </select>
                         </div>
+
+                        <div style="display: flex; align-items: center; padding-top: 20px;">
+                            <div style="width: 30%; text-align: right; font-size: 16px; margin-right: 15px;">
+                                <span>Currency: </span>
+                            </div>
+                            <select style="width: 50%; display: inline-block;" name="mint-currency" id="mint-currency" ng-model="mintCurrency">
+                                <option value="ETH">ETH (Ethereum)</option>
+                                <option value="BTC">BTC (Bitcoin)</option>
+                                <option value="DNC">DNC (Dinarcoin)</option>
+                            </select>
+                        </div>
+
                         <br>
 
-                        <div ng-if="mintCurrency == 'GOLD_1G'">
-                            <h4>Minting {[{mintAmount * DNCbidinUSD/G1GaskinUSD || 0 }]} GSC ( {[{mintAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="mintInstrument == 'GOLD_1G'">
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * G1GaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * G1GaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * G1GaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
-                        <div ng-if="mintCurrency == 'GOLD_100G'">
-                            <h4>Minting {[{mintAmount * DNCbidinUSD/G100GaskinUSD || 0 }]} GSC ( {[{mintAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="mintInstrument == 'GOLD_100G'">
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * G100GaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * G100GaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * G100GaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
-                        <div ng-if="mintCurrency == 'GOLD_1KG'">
-                            <h4>Minting {[{mintAmount * DNCbidinUSD/G1KGaskinUSD || 0 }]} GSC ( {[{mintAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="mintInstrument == 'GOLD_1KG'">
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * G1KGaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * G1KGaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * G1KGaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
-                        <div ng-if="mintCurrency == 'SILVER_100OZ'">
-                            <h4>Minting {[{mintAmount * DNCbidinUSD/S100OZaskinUSD || 0 }]} GSC ( {[{mintAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="mintInstrument == 'SILVER100Oz'">
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * S100OzaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * S100OzaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * S100OzaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
-                        <div ng-if="mintCurrency == 'SILVER_1KG'">
-                            <h4>Minting {[{mintAmount * DNCbidinUSD/S1KGaskinUSD || 0 }]} GSC ( {[{mintAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="mintInstrument == 'SILVER1KG'">
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * S1KGaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * S1KGaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * S1KGaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
@@ -115,51 +139,75 @@
                     </div>
                     <div class="tab-pane" id="GSC-burn">
                         <br>
-                        <h3>Mint GSC</h3>
-                        <p>Please enter amount to mint in DNC</p>
-                        <p>and a currency to mint</p>
+                        <h3>Burn GSC</h3>
+                        <p>Please enter amount of GSC to burn</p>
+                        <p>and a currency to burn</p>
                         <div class="burn-error-message">
                             <br>
                             <h4 class='text-danger font-weight-bold'>{[{burnErrorMessage}]}</h4>
                             <br>
                         </div>
-                        <div style="width: 20%; display: inline-block; margin-right: 15px;">
-                            <input type="number" id="burn-amount" class="form-control validate" placeholder="Amount" ng-model="burnAmount">
+                        <div>
+                            <input style="width: 75%; display: inline-block; margin-right: 15px;" type="number" step="1" id="burn-amount" class="form-control validate" placeholder="Amount" ng-model="burnAmount">
                         </div>
-                        <span style="font-size: 16px; margin-right: 15px;">DNC to</span>
-                        <div style="width: 40%; display: inline-block;">
-                            <select name="burn-currency" id="burn-currency" ng-model="burnCurrency">
+                        <div style="display: flex; align-items: center;">
+                            <div style="width: 30%; text-align: right; font-size: 16px; margin-right: 15px;">
+                                <span>Instrument: </span>
+                            </div>
+                            <select style="width: 50%; display: inline-block;" name="burn-instrument" id="burn-instrument" ng-model="burnInstrument">
                                 <option value="GOLD_1G">GOLD (1G)</option>
                                 <option value="GOLD_100G">GOLD (100G)</option>
                                 <option value="GOLD_1KG">GOLD (1KG)</option>
-                                <option value="SILVER_100OZ">SILVER (100 OZ)</option>
-                                <option value="SILVER_1KG">SILVER (1KG)</option>
+                                <option value="SILVER100Oz">SILVER (100 Oz)</option>
+                                <option value="SILVER1KG">SILVER (1KG)</option>
                             </select>
                         </div>
+
+                        <div style="display: flex; align-items: center; padding-top: 20px;">
+                            <div style="width: 30%; text-align: right; font-size: 16px; margin-right: 15px;">
+                                <span>Currency: </span>
+                            </div>
+                            <select style="width: 50%; display: inline-block;" name="burn-currency" id="burn-currency" ng-model="burnCurrency">
+                                <option value="ETH">ETH (Ethereum)</option>
+                                <option value="BTC">BTC (Bitcoin)</option>
+                                <option value="DNC">DNC (Dinarcoin)</option>
+                            </select>
+                        </div>
+
                         <br>
 
-                        <div ng-if="burnCurrency == 'GOLD_1G'">
-                            <h4>Minting {[{burnAmount * DNCbidinUSD/G1GbidinUSD || 0 }]} GSC ( {[{burnAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="burnInstrument == 'GOLD_1G'">
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * G1GbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * G1GbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * G1GbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
-                        <div ng-if="burnCurrency == 'GOLD_100G'">
-                            <h4>Minting {[{burnAmount * DNCbidinUSD/G100GbidinUSD || 0 }]} GSC ( {[{burnAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="burnInstrument == 'GOLD_100G'">
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * G100GbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * G100GbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * G100GbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
-                        <div ng-if="burnCurrency == 'GOLD_1KG'">
-                            <h4>Minting {[{burnAmount * DNCbidinUSD/G1KGbidinUSD || 0 }]} GSC ( {[{burnAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="burnInstrument == 'GOLD_1KG'">
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * G1KGbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * G1KGbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * G1KGbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
-                        <div ng-if="burnCurrency == 'SILVER_100OZ'">
-                            <h4>Minting {[{burnAmount * DNCbidinUSD/S100OZbidinUSD || 0 }]} GSC ( {[{burnAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="burnInstrument == 'SILVER100Oz'">
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * S100OzbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * S100OzbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * S100OzbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
-                        <div ng-if="burnCurrency == 'SILVER_1KG'">
-                            <h4>Minting {[{burnAmount * DNCbidinUSD/S1KGbidinUSD || 0 }]} GSC ( {[{burnAmount || 0 }]} DNC ) </h4>
+                        <div ng-if="burnInstrument == 'SILVER1KG'">
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * S1KGbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * S1KGbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * S1KGbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="burnGSC()">

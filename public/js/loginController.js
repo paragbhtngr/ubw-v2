@@ -2,25 +2,63 @@
  * Created by parag on 11/18/16.
  */
 
-ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', 'dataStorage', function($http, $scope, $cookies, $window, dataStorage){
-    console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion());
-    console.log($cookies.get("testToken"));
-    console.log(SERVER_PORT);
+ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '$location', 'dataStorage', function($http, $scope, $cookies, $window, $location, dataStorage){
+    if (testing) {
+        console.log('dataStorage successfully loaded: v', dataStorage.getAppVersion());
+        console.log($cookies.get("testToken"));
+        console.log(SERVER_PORT);
+    }
 
     if($cookies.get("ubwAuthToken")) {
         $http.post(SERVER_PORT + '/api/v1/userops/get_user_data', {authToken : $cookies.get("ubwAuthToken")}).then(
             function (response) {
                 // success callback
-                console.log(response);
+                if (testing) { console.log(response); }
                 if(response.data.success) {
                     window.location.href = '/dashboard';
                 }
             },
             function (response) {
                 // failure callback
-                console.log(response);
+                if (testing) { console.log(response); }
             }
         );
+    }
+    if(testing) {
+        console.log($location.absUrl());
+        console.log($location.search());
+    }
+    if($location.search().registered) {
+        $(function(){
+            new PNotify({
+                title: 'Successfully Registered',
+                text: 'You may now login using your email and password',
+                stack: stack_topright,
+                type: "success"
+            })
+        });
+    }
+
+    if($location.search().sessExpired) {
+        $(function(){
+            new PNotify({
+                title: 'Session Expired',
+                text: 'Please log in again',
+                stack: stack_topright,
+                type: "error"
+            })
+        });
+    }
+
+    if($location.search().loggedOut) {
+        $(function(){
+            new PNotify({
+                title: 'Logged out',
+                text: 'You have been successfully logged out',
+                stack: stack_topright,
+                type: "notice"
+            })
+        });
     }
 
     $scope.login = function() {
@@ -36,12 +74,12 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
                 $http.post(SERVER_PORT + '/api/v1/userops/login', postObject).then(
                     function (response) {
                         // success callback
-                        console.log(response);
+                        if (testing) { console.log(response); }
                         if(response.data.success) {
-                            console.log(response.data.authToken);
+                            if (testing) { console.log(response.data.authToken); }
 
                             $cookies.put("ubwAuthToken",response.data.authToken);
-                            console.log($cookies.get("ubwAuthToken"));
+                            if (testing) { console.log($cookies.get("ubwAuthToken")); }
 
                             window.location.href = '/dashboard';
                         } else {
@@ -55,7 +93,7 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
                     },
                     function (response) {
                         // failure callback
-                        console.log(response);
+                        if (testing) { console.log(response); }
                     });
             }
             else {

@@ -12,7 +12,16 @@ var morgan = require('morgan');
 var routes = require('./routes');
 var api = require('./routes/api');
 var http = require('http');
+
 var https = require('https');
+var tls = require('tls');
+var fs = require('fs');
+
+var options = {
+	key: fs.readFileSync('./ssl/key.pem'),
+	cert: fs.readFileSync('./ssl/cert.pem')
+};
+
 var url = require('url');
 var fs = require('fs');
 // var sio = require('socket.io');
@@ -46,8 +55,6 @@ var env = process.env.NODE_ENV || 'development';
 
 require('./router')(app);
 
-
-
 /**
  * Start Server
  */
@@ -66,6 +73,7 @@ require('./router')(app);
 // var httpsio = https.createServer(ssl_options, app).listen(iosPort);
 // global.ios = sio.listen(httpsio);
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));

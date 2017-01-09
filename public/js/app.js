@@ -2,8 +2,9 @@
 
 // Server for Dinar Dirham backend
 // var SERVER_PORT = "http://139.59.244.237:3000";
-var SERVER_PORT = "http://128.199.224.194";
+var SERVER_PORT = "http://128.199.237.167";
 var testing = true;
+var redirect = false;
 
 // Declare app level module which depends on filters, and services
 
@@ -13,7 +14,7 @@ ngapp.config(function ($interpolateProvider, $httpProvider, $locationProvider) {
   $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
 
   $httpProvider.defaults.useXDomain = true;
-  delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  delete $httpProvider.defaults.headers.common['X-Requested-With'];  
 });
 
 

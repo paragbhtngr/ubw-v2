@@ -15,7 +15,7 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
                 // success callback
                 if (testing) { console.log(response); }
                 if(response.data.success) {
-                    window.location.href = '/dashboard';
+                    if (redirect) { window.location.href = '/dashboard'; }
                 }
             },
             function (response) {
@@ -61,6 +61,18 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
         });
     }
 
+    /**
+     * LOGIN CLIENT FUNCTION
+     * Sends a login request to server backend
+     * 
+     * TIME: 01/01/2017 01:05
+     * STATUS:  
+     * - Receiving all information correctly from browser
+     * - Validation of required input complete
+     * - Post Object is in correct format at current time
+     * - Posting to correct URL
+     * - Handling all Post Responses
+     */
     $scope.login = function() {
         // console.log($scope.email);
         // console.log($scope.pwd);
@@ -76,12 +88,13 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
                         // success callback
                         if (testing) { console.log(response); }
                         if(response.data.success) {
-                            if (testing) { console.log(response.data.authToken); }
+                            if (testing) { console.log(response.data.body); }
 
-                            $cookies.put("ubwAuthToken",response.data.authToken);
+                            $cookies.put("ubwAuthToken",response.data.body);
                             if (testing) { console.log($cookies.get("ubwAuthToken")); }
 
-                            window.location.href = '/dashboard';
+                            if (redirect) { window.location.href = '/dashboard'; }
+
                         } else {
                             if(response.data.message == "invalidEmail") {
                                 $scope.errorMessage = "Invalid Email Address";

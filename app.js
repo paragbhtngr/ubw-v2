@@ -73,8 +73,6 @@ require('./router')(app);
 // var httpsio = https.createServer(ssl_options, app).listen(iosPort);
 // global.ios = sio.listen(httpsio);
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });

@@ -6,7 +6,19 @@ ngapp.controller('RegisterController', ['$http', '$scope', '$cookies', '$window'
     if(testing) { console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion()); }
 
     $scope.countries = COUNTRIES;
-
+    
+    /**
+     * REGISTER CLIENT FUNCTION
+     * Sends a register user request to server backend
+     * 
+     * TIME: 01/01/2017 00:54
+     * STATUS:  
+     * - Receiving all information correctly from browser
+     * - Validation of required input complete
+     * - Post Object is in correct format at current time
+     * - Posting to correct URL
+     * - Handling all Post Responses
+     */
     $scope.register = function() {
         // Check name input
         var firstName = $('#form-firstname-input');

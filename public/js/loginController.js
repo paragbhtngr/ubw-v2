@@ -96,9 +96,9 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
                             if (redirect) { window.location.href = '/dashboard'; }
 
                         } else {
-                            if(response.data.message == "invalidEmail") {
+                            if(response.data.msg == "invalidEmail") {
                                 $scope.errorMessage = "Invalid Email Address";
-                            } else if (response.data.message == "incorrectPassword") {
+                            } else if (response.data.msg == "incorrectPassword") {
                                 $scope.errorMessage = "Incorrect Password";
                             }
                         }

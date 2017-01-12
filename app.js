@@ -37,7 +37,7 @@ var app = module.exports = express();
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 // all environments
-app.set('port', process.env.PORT || 80);
+app.set('port', process.env.PORT || 8080);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 app.use(cors());
@@ -73,6 +73,6 @@ require('./router')(app);
 // var httpsio = https.createServer(ssl_options, app).listen(iosPort);
 // global.ios = sio.listen(httpsio);
 
-http.createServer(app).listen(app.get('port'), function () {
+http.createServer(app).listen(app.get('port'), 'localhost', function () {
   console.log('Express server listening on port ' + app.get('port'));
 });

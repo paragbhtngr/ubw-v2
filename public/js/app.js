@@ -2,7 +2,9 @@
 
 // Server for Dinar Dirham backend
 // var SERVER_PORT = "http://139.59.244.237:3000";
-var SERVER_PORT = "http://128.199.237.167";
+// var SERVER_PORT = "http://128.199.237.167";
+var SERVER_PORT = "https://node.universalblockchains.com";
+
 var testing = true;
 var redirect = false;
 

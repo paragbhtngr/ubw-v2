@@ -5,8 +5,14 @@
 
 
 ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
-    $controller('DashboardController', {$scope: $scope});
+    $controller('SuperController', {$scope: $scope});
     // $scope.transactions = dataStorage.getTransactions();
+
+    setInterval(function(){
+        //code goes here that will be run every 5 seconds.
+        $scope.getUserDataFromDataStorage();
+        $scope.getPricesFromDataStorage();
+    }, 5000);
 
     $scope.bitcoinFilter = function (txn) {
         if(txn.metadata.fromCurrency == "BTC" || txn.metadata.toCurrency == "BTC") {
@@ -171,11 +177,14 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
 }]);
 
 ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
-    $controller('DashboardController', {$scope: $scope});
+    $controller('SuperController', {$scope: $scope});
 
-    $scope.transactions = dataStorage.getTransactions();
-    $scope.email = dataStorage.getEmail();
-    $scope.ETHaddress = dataStorage.getClientETHAddress();
+    setInterval(function(){
+        //code goes here that will be run every 5 seconds.
+        $scope.getUserDataFromDataStorage();
+        $scope.getPricesFromDataStorage();
+        $scope.transactions = dataStorage.getTransactions();
+    }, 5000);
 
     $scope.ethereumFilter = function (txn) {
         if(txn.metadata.fromCurrency == "ETH" || txn.metadata.toCurrency == "ETH") {
@@ -298,11 +307,14 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
 }]);
 
 ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
-    $controller('DashboardController', {$scope: $scope});
+    $controller('SuperController', {$scope: $scope});
 
-    $scope.transactions = dataStorage.getTransactions();
-    $scope.email = dataStorage.getEmail();
-    $scope.DNCaddress = dataStorage.getClientDNCAddress();
+    setInterval(function(){
+        //code goes here that will be run every 5 seconds.
+        $scope.getUserDataFromDataStorage();
+        $scope.getPricesFromDataStorage();
+        $scope.transactions = dataStorage.getTransactions();
+    }, 5000);
 
     $scope.dinarcoinFilter = function (txn) {
         if(txn.metadata.fromCurrency == "DNC" || txn.metadata.toCurrency == "DNC") {
@@ -574,11 +586,14 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
 }]);
 
 ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
-    $controller('DashboardController', {$scope: $scope});
+    $controller('SuperController', {$scope: $scope});
 
-    $scope.transactions = dataStorage.getTransactions();
-    $scope.email = dataStorage.getEmail();
-    $scope.DNCaddress = dataStorage.getClientDNCAddress();
+    setInterval(function(){
+        //code goes here that will be run every 5 seconds.
+        $scope.getUserDataFromDataStorage();
+        $scope.getPricesFromDataStorage();
+        $scope.transactions = dataStorage.getTransactions();
+    }, 5000);
 
     $scope.GSCFilter = function (txn) {
         if(

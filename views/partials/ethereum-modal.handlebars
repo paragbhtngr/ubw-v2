@@ -26,7 +26,8 @@
                         <a href="#ETH-transactions" data-toggle="tab">Transactions</a>
                     </li>
                     <li id="ETH-account-tab">
-                        <a href="#ETH-account" data-toggle="tab">Add account</a>
+                        <a ng-if="user.privateETHaddress" href="#ETH-account" data-toggle="tab">Your account</a>
+                        <a ng-if="!user.privateETHaddress" href="#ETH-account" data-toggle="tab">Add account</a>
                     </li>
                 </ul>
 
@@ -36,12 +37,12 @@
                         <h3>Your Ethereum Account Information</h3>
                         <br>
                         <p>Address:</p>
-                        <h4>{[{ETHaddress}]}</h4>
-                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{ETHaddress}]}" alt="">
+                        <h4>{[{user.ETHaddress}]}</h4>
+                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.ETHaddress}]}" alt="">
                     </div>
                     <div class="tab-pane" id="ETH-send">
                         <br>
-                        <h3>Send Ethereum to an Address</h3>
+                        <h3>Send Ether to an Address</h3>
                         <div class="error-message">
                             <br>
                             <h4 class='text-danger font-weight-bold'>{[{errorMessage}]}</h4>
@@ -54,7 +55,7 @@
                             <input type="number" id="ETH-send-amount" class="form-control validate" placeholder="Amount" ng-model="sendAmount">
                         </div>
                         <br>
-                        <h4>Sending {[{sendAmount || 0 | number:2}]} ETH ( {[{sendAmount * ETHinUSD || 0 | number:2}]} USD ) </h4>
+                        <h4>Sending {[{sendAmount || 0 | number:2}]} ETH ( {[{sendAmount * prices.ETHinUSD || 0 | number:2}]} USD ) </h4>
                         <br>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="sendEthereum()">
 

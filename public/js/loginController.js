@@ -5,6 +5,7 @@
 ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '$location', 'dataStorage', function($http, $scope, $cookies, $window, $location, dataStorage){
     if (testing) {
         console.log('dataStorage successfully loaded: v', dataStorage.getAppVersion());
+        console.log('dataStorage authtoken: ', dataStorage.getAuthToken());
         console.log($cookies.get("testToken"));
         console.log(SERVER_PORT);
     }

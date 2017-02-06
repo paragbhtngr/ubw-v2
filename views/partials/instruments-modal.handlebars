@@ -101,37 +101,37 @@
                         <br>
 
                         <div ng-if="mintInstrument == 'GOLD_1G'">
-                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * G1GaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * G1GaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * G1GaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * prices.G1GaskinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * prices.G1GaskinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 1G ( {[{mintAmount * prices.G1GaskinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
                         <div ng-if="mintInstrument == 'GOLD_100G'">
-                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * G100GaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * G100GaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * G100GaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * prices.G100GaskinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * prices.G100GaskinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 100G ( {[{mintAmount * prices.G100GaskinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
                         <div ng-if="mintInstrument == 'GOLD_1KG'">
-                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * G1KGaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * G1KGaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * G1KGaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * prices.G1KGaskinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * prices.G1KGaskinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} GOLD 1KG ( {[{mintAmount * prices.G1KGaskinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
                         <div ng-if="mintInstrument == 'SILVER100Oz'">
-                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * S100OzaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * S100OzaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * S100OzaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * prices.S100OzaskinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * prices.S100OzaskinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} SILVER 100 Oz ( {[{mintAmount * prices.S100OzaskinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
                         <div ng-if="mintInstrument == 'SILVER1KG'">
-                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * S1KGaskinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * S1KGaskinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * S1KGaskinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="mintCurrency == 'DNC'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * prices.S1KGaskinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="mintCurrency == 'ETH'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * prices.S1KGaskinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="mintCurrency == 'BTC'" >Minting {[{mintAmount || 0 }]} SILVER 1KG ( {[{mintAmount * prices.S1KGaskinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
@@ -177,37 +177,37 @@
                         <br>
 
                         <div ng-if="burnInstrument == 'GOLD_1G'">
-                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * G1GbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * G1GbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * G1GbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * prices.G1GbidinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * prices.G1GbidinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 1G ( {[{burnAmount * prices.G1GbidinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
                         <div ng-if="burnInstrument == 'GOLD_100G'">
-                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * G100GbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * G100GbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * G100GbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * prices.G100GbidinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * prices.G100GbidinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 100G ( {[{burnAmount * prices.G100GbidinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
                         <div ng-if="burnInstrument == 'GOLD_1KG'">
-                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * G1KGbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * G1KGbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * G1KGbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * prices.G1KGbidinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * prices.G1KGbidinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} GOLD 1KG ( {[{burnAmount * prices.G1KGbidinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
                         <div ng-if="burnInstrument == 'SILVER100Oz'">
-                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * S100OzbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * S100OzbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * S100OzbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * prices.S100OzbidinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * prices.S100OzbidinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} SILVER 100 Oz ( {[{burnAmount * prices.S100OzbidinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
 
                         <div ng-if="burnInstrument == 'SILVER1KG'">
-                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * S1KGbidinUSD/DNCbidinUSD || 0 }]} DNC ) </h4>
-                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * S1KGbidinUSD/ETHinUSD || 0 }]} ETH ) </h4>
-                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * S1KGbidinUSD/BTCinUSD || 0 }]} BTC ) </h4>
+                            <h4 ng-if="burnCurrency == 'DNC'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * prices.S1KGbidinUSD/prices.DNCbidinUSD || 0 }]} DNC ) </h4>
+                            <h4 ng-if="burnCurrency == 'ETH'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * prices.S1KGbidinUSD/prices.ETHinUSD || 0 }]} ETH ) </h4>
+                            <h4 ng-if="burnCurrency == 'BTC'" >Burning {[{burnAmount || 0 }]} SILVER 1KG ( {[{burnAmount * prices.S1KGbidinUSD/prices.BTCinUSD || 0 }]} BTC ) </h4>
                             <br>
                         </div>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="burnGSC()">

@@ -26,7 +26,8 @@
                         <a href="#BTC-transactions" data-toggle="tab">Transactions</a>
                     </li>
                     <li id="BTC-account-tab">
-                        <a href="#BTC-account" data-toggle="tab">Add account</a>
+                        <a ng-if="user.privateBTCaddress" href="#BTC-account" data-toggle="tab">Your account</a>
+                        <a ng-if="!user.privateBTCaddress" href="#BTC-account" data-toggle="tab">Add account</a>
                     </li>
                 </ul>
 
@@ -36,8 +37,8 @@
                         <h3>Your Bitcoin Account Information</h3>
                         <br>
                         <p>Address:</p>
-                        <h4>{[{BTCaddress}]}</h4>
-                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{BTCaddress}]}" alt="">
+                        <h4>{[{user.BTCaddress}]}</h4>
+                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.BTCaddress}]}" alt="">
                     </div>
                     <div class="tab-pane" id="BTC-send">
                         <br>
@@ -55,7 +56,7 @@
                         </div>
                         <br>
 
-                        <h4>Sending {[{sendAmount || 0 | number:2}]} BTC ( {[{sendAmount * BTCinUSD || 0 | number: 2}]} USD ) </h4>
+                        <h4>Sending {[{sendAmount || 0 | number:2}]} BTC ( {[{sendAmount * prices.BTCinUSD || 0 | number: 2}]} USD ) </h4>
                         <br>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="sendBitcoin()">
 
@@ -104,10 +105,10 @@
 
                         </div>
                         <div ng-if="false">
-                            <h4>Your Ethereum Account Information</h4>
+                            <h4>Your Bitcoin Account Information</h4>
                             <br>
                             <p>Address:</p>
-                            <h4>{[{BTCaddress}]}</h4>
+                            <h4>{[{user.BTCaddress}]}</h4>
                             <br>
                             <h4>199 BTC</h4>
 

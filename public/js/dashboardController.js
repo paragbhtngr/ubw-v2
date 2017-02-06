@@ -2,12 +2,12 @@
  * Created by parag on 11/18/16.
  */
 
-ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window', 'dataStorage', function($http, $scope, $cookies, $window, dataStorage){
-    if(testing) { console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion()); }
-
+ngapp.controller('SuperController', ['$http', '$scope', '$cookies', '$window', 'dataStorage', function($http, $scope, $cookies, $window, dataStorage){
     $scope.getUserData = function(){
 
         $scope.authToken = $cookies.get("ubwAuthToken");
+        dataStorage.setAuthToken($scope.authToken);
+
         var postObject = {
             authToken : $scope.authToken
         };
@@ -15,30 +15,42 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
         $http.post(SERVER_PORT + '/api/v1/userops/get_user_data', postObject).then( // valid API url
             function (response) {
                 // success callback
-                if(testing) { console.log(response); }
+                if(testing) {
+                    console.log("GETTING USER DATA");
+                    console.log(response);
+                }
                 if(response.data.success) {
-                    // User's particulars
-                    $scope.email                = response.data.body.email;
-                    $scope.firstName            = response.data.body.firstName;
-                    $scope.lastName             = response.data.body.lastName;
-                    // User's Application-based Addresses
-                    $scope.BTCaddress           = response.data.body.BTCaddress;
-                    $scope.ETHaddress           = response.data.body.ETHaddress;
-                    $scope.DNCaddress           = response.data.body.ETHaddress;
-                    // User's Private Addresses
-                    $scope.privateBTCaddress    = response.data.body.privateAccounts.BTCaddress;
-                    $scope.privateETHaddress    = response.data.body.privateAccounts.ETHaddress;
-                    // User's balances
-                    $scope.BTCbalance           = response.data.body.balances.BTC;
-                    $scope.ETHbalance           = response.data.body.balances.ETH;
-                    $scope.DNCbalance           = response.data.body.balances.DNC;
-                    $scope.G1Gbalance           = response.data.body.balances.GOLD_1G;
-                    $scope.G100Gbalance         = response.data.body.balances.GOLD_100G;
-                    $scope.G1KGbalance          = response.data.body.balances.GOLD_1KG;
-                    $scope.S100Ozbalance        = response.data.body.balances.SILVER100Oz;
-                    $scope.S1KGbalance          = response.data.body.balances.SILVER1KG;
+                    $scope.user = {};
 
-                    if(testing) { console.log('BTC address in Dashboard Controller', $scope.BTCaddress); }
+                    // User's particulars
+                    $scope.user.email                = response.data.body.email;
+                    $scope.user.firstName            = response.data.body.firstName;
+                    $scope.user.lastName             = response.data.body.lastName;
+                    // User's Application-based Addresses
+                    $scope.user.BTCaddress           = response.data.body.BTCaddress;
+                    $scope.user.ETHaddress           = response.data.body.ETHaddress;
+                    $scope.user.DNCaddress           = response.data.body.ETHaddress;
+                    // User's Private Addresses
+                    $scope.user.privateBTCaddress    = response.data.body.privateAccounts.BTCaddress;
+                    $scope.user.privateETHaddress    = response.data.body.privateAccounts.ETHaddress;
+                    // User's balances
+                    $scope.user.BTCbalance           = response.data.body.balances.BTC;
+                    $scope.user.ETHbalance           = response.data.body.balances.ETH;
+                    $scope.user.DNCbalance           = response.data.body.balances.DNC;
+                    $scope.user.G1Gbalance           = response.data.body.balances.GOLD_1G;
+                    $scope.user.G100Gbalance         = response.data.body.balances.GOLD_100G;
+                    $scope.user.G1KGbalance          = response.data.body.balances.GOLD_1KG;
+                    $scope.user.S100Ozbalance        = response.data.body.balances.SILVER100Oz;
+                    $scope.user.S1KGbalance          = response.data.body.balances.SILVER1KG;
+
+                    dataStorage.setAuthToken($scope.authToken);
+                    dataStorage.setUser($scope.user);
+
+                    if(testing) {
+                        console.log('BTC address in Dashboard Controller', $scope.user.BTCaddress);
+                        console.log('dataStorage authtoken: ', dataStorage.getAuthToken());
+                        console.log('Datastorage user' , dataStorage.getUser());
+                    }
                 }
                 else {
                     window.location.href = '/login#?sessExpired';
@@ -58,7 +70,17 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
             }
         );
     };
-
+    /**
+     * GET PRICES FUNCTION
+     * Gets all prices for currencies from server
+     *
+     * TIME: 13/01/2017 03:00
+     * STATUS:
+     * - Receiving all information correctly from browser
+     * - Get request is in correct format at current time
+     * - Getting from correct URL
+     * - Handling Get response correctly
+     */
     $scope.getPrices = function(){
 
         // ALL PRICES
@@ -66,28 +88,35 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
             function (response) {
                 // success callback
                 if(testing) { console.log("GET BTC IN USD: ", response); }
-                $scope.BTCinUSD         = response.data.body.BTC;
-                $scope.ETHinUSD         = response.data.body.ETH;
+                $scope.prices = {};
 
-                $scope.DNCbidinUSD      = response.data.DNC.bid;
-                $scope.DNCaskinUSD      = response.data.DNC.ask;
+                $scope.prices.BTCinUSD         = response.data.BTC;
+                $scope.prices.ETHinUSD         = response.data.ETH;
 
-                $scope.G1GbidinUSD      = response.data.GOLD_1G.bid;
-                $scope.G1GaskinUSD      = response.data.GOLD_1G.ask;
+                $scope.prices.DNCbidinUSD      = response.data.DNC.bid;
+                $scope.prices.DNCaskinUSD      = response.data.DNC.ask;
 
-                $scope.G100GbidinUSD    = response.data.GOLD_100G.bid;
-                $scope.G100GaskinUSD    = response.data.GOLD_100G.ask;
+                $scope.prices.G1GbidinUSD      = response.data.GOLD_1G.bid;
+                $scope.prices.G1GaskinUSD      = response.data.GOLD_1G.ask;
 
-                $scope.G1KGbidinUSD     = response.data.GOLD_1KG.bid;
-                $scope.G1KGaskinUSD     = response.data.GOLD_1KG.ask;
+                $scope.prices.G100GbidinUSD    = response.data.GOLD_100G.bid;
+                $scope.prices.G100GaskinUSD    = response.data.GOLD_100G.ask;
 
-                $scope.S100OzbidinUSD   = response.data.SILVER100Oz.bid;
-                $scope.S100OzaskinUSD   = response.data.SILVER100Oz.ask;
+                $scope.prices.G1KGbidinUSD     = response.data.GOLD_1KG.bid;
+                $scope.prices.G1KGaskinUSD     = response.data.GOLD_1KG.ask;
 
-                $scope.S1KGbidinUSD     = response.data.SILVER1KG.bid;
-                $scope.S1KGaskinUSD     = response.data.SILVER1KG.ask;
+                $scope.prices.S100OzbidinUSD   = response.data.SILVER_100OZ.bid;
+                $scope.prices.S100OzaskinUSD   = response.data.SILVER_100OZ.ask;
 
-                if(testing) { console.log("BTC IN USD: ", $scope.BTCinUSD); }
+                $scope.prices.S1KGbidinUSD     = response.data.SILVER_1KG.bid;
+                $scope.prices.S1KGaskinUSD     = response.data.SILVER_1KG.ask;
+
+                dataStorage.setPrices($scope.prices);
+
+                if(testing) {
+                    console.log("BTC IN USD: ", $scope.prices.BTCinUSD);
+                    console.log("datastorage prices: ", dataStorage.getPrices());
+                }
             },
             function (response) {
                 // failure callback
@@ -128,6 +157,32 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
         );
     };
 
+    $scope.getUserDataFromDataStorage = function () {
+        $scope.user = dataStorage.getUser();
+        if(testing) {
+            console.log("getUserDataFromDataStorage: successfully retrieved data");
+            console.log($scope.user);
+        }
+    }
+
+    $scope.getPricesFromDataStorage = function () {
+        $scope.prices = dataStorage.getPrices();
+        if(testing) {
+            console.log("getPricesFromDataStorage: successfully retrieved data");
+            console.log($scope.prices);
+        }
+    }
+}]);
+
+
+ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window', 'dataStorage', '$controller', function($http, $scope, $cookies, $window, dataStorage, $controller){
+    $controller('SuperController', {$scope: $scope});
+
+    if(testing) {
+        console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion());
+        console.log('dataStorage authtoken: ', dataStorage.getAuthToken());
+    }
+
     $scope.getUserData();
     $scope.getPrices();
     $scope.getTransactions();
@@ -138,7 +193,6 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$cookies', '$window
         $scope.getPrices();
         $scope.getTransactions();
     }, 30000);
-
 
 
     // var txns = [

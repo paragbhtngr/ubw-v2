@@ -23,35 +23,20 @@ ngapp.config(function ($interpolateProvider, $httpProvider, $locationProvider) {
 
 ngapp.service('dataStorage', function () {
   var appVersion = "0.2.0";
+  var user;
   var authToken = "";
-  var email = "";
+  var prices;
   var addresses = [];
   var transactions = [];
   // Getters and Setters for Client Factory
   this.getAppVersion = function () { return appVersion; };
   this.getAuthToken = function () { return authToken; };
-  this.getEmail = function () { return email; };
-  this.getClientBTCAddress = function () { return addresses[0]; };
-  this.getClientETHAddress = function () { return addresses[1]; };
-  this.getClientDNCAddress = function () { return addresses[2]; };
-  this.getAddresses = function() { return addresses; };
+  this.getUser = function () { return user; };
+  this.getPrices = function () { return prices; };
   this.getTransactions = function() { return transactions; };
-
   this.setAuthToken = function (newAuthToken) { authToken = (newAuthToken); };
-  this.setEmail = function (newEmail) { email = (newEmail); };
-
-  this.setClientBTCAddress = function (newClientBTCAddress) {
-    addresses[0] = (newClientBTCAddress);
-  };
-
-  this.setClientETHAddress = function (newClientETHAddress) {
-    addresses[1] = (newClientETHAddress);
-  };
-
-  this.setClientDNCAddress = function (newClientDNCAddress) {
-    addresses[2] = (newClientDNCAddress);
-  };
-
+  this.setUser = function (newUser) { user = (newUser); };
+  this.setPrices = function (newPrices) { prices = newPrices; };
   this.addTransactions = function(newTransactions) {
     newTransactions.sort(function(a,b){
       a = a.requestedAt;

@@ -6,12 +6,15 @@
 
 ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
     $controller('SuperController', {$scope: $scope});
+    $scope.authToken = $cookies.get("ubwAuthToken");
+
     // $scope.transactions = dataStorage.getTransactions();
 
     setInterval(function(){
         //code goes here that will be run every 5 seconds.
         $scope.getUserDataFromDataStorage();
         $scope.getPricesFromDataStorage();
+        $scope.transactions = dataStorage.getTransactions()[0];
     }, 5000);
 
     $scope.bitcoinFilter = function (txn) {
@@ -93,7 +96,13 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
                             });
                         }
                         else if(response.data.message == "invalidAuthToken") {
-                            window.location.href = '/login#?sessExpired';
+                            if(redirect){
+                                if(testing){
+                                    window.location.href = '/login#?sessExpired&BitcoinController&SendBTC';
+                                } else {
+                                    window.location.href = '/login#?sessExpired';    
+                                }
+                            }
                         }
                     },
                     function (response) {
@@ -164,7 +173,13 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
                     });
                 }
                 else if(response.data.message == "invalidAuthToken") {
-                    window.location.href = '/login#?sessExpired';
+                    if(redirect){
+                        if(testing){
+                            window.location.href = '/login#?sessExpired&BitcoinController&AddBTCAccount';
+                        } else {
+                            window.location.href = '/login#?sessExpired';    
+                        }
+                    }
                 }
             },
             function (response) {
@@ -178,12 +193,13 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
 
 ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
     $controller('SuperController', {$scope: $scope});
+    $scope.authToken = $cookies.get("ubwAuthToken");
 
     setInterval(function(){
         //code goes here that will be run every 5 seconds.
         $scope.getUserDataFromDataStorage();
         $scope.getPricesFromDataStorage();
-        $scope.transactions = dataStorage.getTransactions();
+        $scope.transactions = dataStorage.getTransactions()[1];
     }, 5000);
 
     $scope.ethereumFilter = function (txn) {
@@ -255,7 +271,13 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
                             });
                         }
                         else if(response.data.message == "invalidAuthToken"){
-                            window.location.href = '/login#?sessExpired';
+                            if(redirect){
+                                if(testing){
+                                    window.location.href = '/login#?sessExpired&EthereumController&SendETH';
+                                } else {
+                                    window.location.href = '/login#?sessExpired';    
+                                }
+                            }
                         }
                     },
                     function (response) {
@@ -294,7 +316,13 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
 
                 }
                 else if(response.data.message == "invalidAuthToken") {
-                    window.location.href = '/login';
+                    if(redirect){
+                        if(testing){
+                            window.location.href = '/login#?sessExpired&EthereumController&AddETHAccount';
+                        } else {
+                            window.location.href = '/login#?sessExpired';    
+                        }
+                    }
                 }
             },
             function (response) {
@@ -308,12 +336,13 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
 
 ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
     $controller('SuperController', {$scope: $scope});
+    $scope.authToken = $cookies.get("ubwAuthToken");
 
     setInterval(function(){
         //code goes here that will be run every 5 seconds.
         $scope.getUserDataFromDataStorage();
         $scope.getPricesFromDataStorage();
-        $scope.transactions = dataStorage.getTransactions();
+        $scope.transactions = dataStorage.getTransactions()[2];
     }, 5000);
 
     $scope.dinarcoinFilter = function (txn) {
@@ -375,7 +404,13 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                             });
                         }
                         else if(response.data.message == "invalidAuthToken") {
-                            window.location.href = '/login#?sessExpired';
+                            if(redirect){
+                                if(testing){
+                                    window.location.href = '/login#?sessExpired&DinarcoinController&SendDNC';
+                                } else {
+                                    window.location.href = '/login#?sessExpired';    
+                                }
+                            }
                         }
                     },
                     function (response) {
@@ -430,7 +465,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                     $(function(){
                         new PNotify({
                             title: 'Minting Dinarcoin',
-                            text: 'Sent request to server \n Minting '+$scope.mintAmount+' '+$scope.mintCurrency,
+                            text: 'Sent request to server \n Minting '+$scope.mintAmount+' DNC',
                             stack: stack_topright,
                             type: "notice"
                         })
@@ -467,7 +502,13 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                             });
                         }
                         else if(response.data.message == "invalidAuthToken") {
-                            window.location.href = '/login#?sessExpired';
+                            if(redirect) {
+                                if(testing){
+                                    window.location.href = '/login#?sessExpired&DinarcoinController&BuyDNC';
+                                } else {
+                                    window.location.href = '/login#?sessExpired';    
+                                }
+                            }
                         }
                     },
                     function (response) {
@@ -521,7 +562,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                     $(function(){
                         new PNotify({
                             title: 'Burning DNC',
-                            text: 'Sent request to server \n Burning '+$scope.burnAmount+' '+$scope.burnCurrency,
+                            text: 'Sent request to server \n Burning '+$scope.burnAmount+' DNC',
                             stack: stack_topright,
                             type: "notice"
                         })
@@ -559,7 +600,13 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
                             });
                         }
                         else if(response.data.message == "invalidAuthToken") {
-                            window.location.href = '/login#?sessExpired';
+                            if(redirect) {
+                                if(testing){
+                                    window.location.href = '/login#?sessExpired&DinarcoinController&SellDNC';
+                                } else {
+                                    window.location.href = '/login#?sessExpired';    
+                                }
+                            }
                         }
                     },
                     function (response) {
@@ -587,12 +634,13 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
 
 ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
     $controller('SuperController', {$scope: $scope});
+    $scope.authToken = $cookies.get("ubwAuthToken");
 
     setInterval(function(){
         //code goes here that will be run every 5 seconds.
         $scope.getUserDataFromDataStorage();
         $scope.getPricesFromDataStorage();
-        $scope.transactions = dataStorage.getTransactions();
+        $scope.transactions = dataStorage.getTransactions()[3];
     }, 5000);
 
     $scope.GSCFilter = function (txn) {
@@ -690,8 +738,8 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataS
                     $('#mint-currency').removeClass('invalid');
                 }
 
-                // Check if amount is valid
-                if($scope.mintAmount && $scope.mintAmount > 0 ){
+                // Check if amount is valid and at least 0.1
+                if($scope.mintAmount && $scope.mintAmount > 0 && $scope.mintAmount%0.1 == 0 ){
                     if($('#mint-amount').hasClass('invalid')){
                         $('#mint-amount').removeClass('invalid');
                     }
@@ -753,7 +801,13 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataS
                                 });
                             }
                             else if(response.data.message == "invalidAuthToken") {
-                                window.location.href = '/login#?sessExpired';
+                                if(redirect){
+                                    if(testing){
+                                    window.location.href = '/login#?sessExpired&InstrumentController&BuyGSC';
+                                } else {
+                                    window.location.href = '/login#?sessExpired';    
+                                }
+                                }
                             }
                         },
                         function (response) {
@@ -763,6 +817,12 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataS
                     );
 
                 } else {
+                    if($scope.mintAmount > 0 && $scope.mintAmount < 0.1){
+                        $scope.mintErrorMessage = "Minimum mint amount is 0.1 DNC";
+                    }
+                    else if($scope.mintAmount > 0 && $scope.mintAmount%0.1 != 0){
+                        $scope.mintErrorMessage = "Please enter an amount that is divisible ";
+                    }
                     $scope.mintErrorMessage = "Please specify a valid amount";
                     if(!($('#mint-amount').hasClass('invalid'))){
                         $('#mint-amount').addClass('invalid');
@@ -872,7 +932,13 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataS
                                 });
                             }
                             else if(response.data.message == "invalidAuthToken") {
-                                window.location.href = '/login#?sessExpired';
+                                if(redirect){
+                                    if(testing){
+                                        window.location.href = '/login#?sessExpired&InstrumentController&SellGSC';
+                                    } else {
+                                        window.location.href = '/login#?sessExpired';    
+                                    }
+                                }
                             }
                         },
                         function (response) {

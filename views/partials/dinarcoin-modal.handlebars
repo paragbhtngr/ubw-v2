@@ -71,7 +71,7 @@
                             <br>
                         </div>
                         <div style="width: 20%; display: inline-block; margin-right: 35px;">
-                            <input type="number" step="1" id="mint-amount" class="form-control validate" placeholder="Amount" ng-model="mintAmount">
+                            <input type="text" step="1" id="mint-amount" class="form-control validate" placeholder="Amount" ng-model="mintAmount" onkeypress="return validateFloatKeyPress(this,event);">
 
                         </div>
                         <div style="width: 60%; display: inline-block;">
@@ -97,7 +97,7 @@
                             <br>
                         </div>
                         <div style="width: 20%; display: inline-block; margin-right: 35px;">
-                            <input type="number" step="1" id="burn-amount" class="form-control validate" placeholder="Amount" ng-model="burnAmount">
+                            <input type="text" step="1" id="burn-amount" class="form-control validate" placeholder="Amount" ng-model="burnAmount" onkeypress="return validateFloatKeyPress(this,event);">
                         </div>
                         <div style="width: 60%; display: inline-block;">
                             <select name="burn-currency" id="burn-currency" ng-model="burnCurrency">
@@ -127,13 +127,13 @@
                                     <th>from</th>
                                     <th>to</th>
                                 </tr>
-                                <tr ng-repeat="txn in transactions | filter: dinarcoinFilter ">
-                                    <td> {[{txn.requestedAt | date:'dd-MM-yy HH:mm'}]} </td>
-                                    <td> {[{txn.hash}]} </td>
-                                    <td> {[{txn.typeOf}]} </td>
-                                    <td> {[{(txn.metadata.fromAmount > txn.metadata.toAmount ? txn.metadata.fromAmount : txn.metadata.toAmount)}]} </td>
-                                    <td> {[{txn.metadata.fromAddress}]} </td>
-                                    <td> {[{txn.metadata.toAddress}]} </td>
+                                <tr ng-repeat="txn in transactions">
+                                    <td> {[{txn.createdAt | date:'dd-MM-yy HH:mm'}]} </td>
+                                    <td> {[{txn.address}]} </td>
+                                    <td> {[{txn.funcName}]} </td>
+                                    <td> {[{(txn.quantity}]} </td>
+                                    <td> {[{txn.fromAddress}]} </td>
+                                    <td> {[{txn.toAddress}]} </td>
 
                                 </tr>
                             </table>

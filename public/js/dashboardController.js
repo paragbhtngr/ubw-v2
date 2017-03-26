@@ -53,7 +53,13 @@ ngapp.controller('SuperController', ['$http', '$scope', '$cookies', '$window', '
                     }
                 }
                 else {
-                    window.location.href = '/login#?sessExpired';
+                    if(redirect){
+                        if(testing){
+                            window.location.href = '/login#?sessExpired&SuperController&GetUserData';
+                        } else {
+                            window.location.href = '/login#?sessExpired';    
+                        }
+                    }
                 }
             },
             function (response) {
@@ -135,11 +141,21 @@ ngapp.controller('SuperController', ['$http', '$scope', '$cookies', '$window', '
 
     $scope.getTransactions = function(){
         $scope.authToken = $cookies.get("ubwAuthToken");
+        // $scope.ETHaddress = datastorage
+        console.log("GET TRANSACTIONS GET USER DATA:");
+        console.log(dataStorage.getUser());
+        user = dataStorage.getUser();
+        if (user) {
+            $scope.ETHaddress = user.ETHaddress;
+            $scope.DNCaddress = user.DNCaddress;
+            $scope.BTCaddress = user.BTCaddress;
+        }
+
         var postObject = {
             authToken : $scope.authToken
         };
 
-        $http.post(SERVER_PORT + '/api/v1/userops/get_user_transactions', postObject).then( // valid API url
+        $http.post(SERVER_PORT + '/api/v1/userops/get_transactions', postObject).then( // valid API url
             function (response) {
                 // success callback
                 if(testing) { console.log("GET TRANSACTIONS: ", response); }
@@ -147,7 +163,13 @@ ngapp.controller('SuperController', ['$http', '$scope', '$cookies', '$window', '
                     dataStorage.addTransactions(response.data.body);
                 }
                 else {
-                    window.location.href = '/login#?sessExpired';
+                    if(redirect) {
+                        if(testing){
+                            window.location.href = '/login#?sessExpired&SuperController&GetTransactions';
+                        } else {
+                            window.location.href = '/login#?sessExpired';    
+                        }
+                    }
                 }
             },
             function (response) {
@@ -155,21 +177,39 @@ ngapp.controller('SuperController', ['$http', '$scope', '$cookies', '$window', '
                 if(testing) { console.log(response); }
             }
         );
+        // Add the 200 latest Ethereum Transactions
+        // if($scope.ETHaddress) {
+        //     addr_1 = "http://api.etherscan.io/api?module=account&action=txlist&address="
+        //     addr_2 = "&startblock=0&endblock=200&sort=asc&apikey=T2E8YQZ849SAEN3KCWC4T1C4DVA9YKPHDT"
+
+        //     $http.post(addr_1+$scope.ETHaddress+addr_2).then(
+        //         function (response) {
+        //             result = response.body.result;
+        //             result.forEach(function(newtxn){
+        //                 txn = new Transaction(null, newtxn.hash, null, newtxn.contractAddress, null, newtxn.from, newtxn.to, newtxn.value, Date(newtxn.timeStamp), Date(newtxn.timeStamp));
+        //                 dataStorage.addTransactions(txn);
+        //             });
+        //         },
+        //         function () {
+        //             if(testing) {console.log(response); }
+        //         }
+        //     )
+        // }
     };
 
     $scope.getUserDataFromDataStorage = function () {
         $scope.user = dataStorage.getUser();
         if(testing) {
-            console.log("getUserDataFromDataStorage: successfully retrieved data");
-            console.log($scope.user);
+            // console.log("getUserDataFromDataStorage: successfully retrieved data");
+            // console.log($scope.user);
         }
     }
 
     $scope.getPricesFromDataStorage = function () {
         $scope.prices = dataStorage.getPrices();
         if(testing) {
-            console.log("getPricesFromDataStorage: successfully retrieved data");
-            console.log($scope.prices);
+            // console.log("getPricesFromDataStorage: successfully retrieved data");
+            // console.log($scope.prices);
         }
     }
 }]);

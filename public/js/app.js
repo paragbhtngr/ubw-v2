@@ -8,6 +8,12 @@ var SERVER_PORT = "https://node.universalblockchains.com";
 var testing = true;
 var redirect = false;
 
+var sortFunc = function(a,b){
+    a = a.createdAt;
+    b = b.createdAt;
+    return a>b? -1 : a<b ? 1 : 0;
+};
+
 // Declare app level module which depends on filters, and services
 
 var ngapp = angular.module('UBW', ['ngCookies']);
@@ -19,7 +25,18 @@ ngapp.config(function ($interpolateProvider, $httpProvider, $locationProvider) {
   delete $httpProvider.defaults.headers.common['X-Requested-With'];  
 });
 
-
+function Transaction(id, address, funcName, contractAddress, targetAddress, from, to, quantity, createdAt, updatedAt){
+  this.id = id;
+  this.funcName = funcName;
+  this.address = address;
+  this.contractAddress = contractAddress;
+  this.targetAddress = targetAddress;
+  this.from = from;
+  this.to = to;
+  this.quantity = quantity;
+  this.createdAt = createdAt;
+  this.updatedAt = updatedAt;
+}
 
 ngapp.service('dataStorage', function () {
   var appVersion = "0.2.0";
@@ -27,39 +44,103 @@ ngapp.service('dataStorage', function () {
   var authToken = "";
   var prices;
   var addresses = [];
-  var transactions = [];
+  var BTCtransactions = [];
+  var ETHtransactions = [];
+  var DNCtransactions = [];
+  var GSCtransactions = [];
   // Getters and Setters for Client Factory
   this.getAppVersion = function () { return appVersion; };
   this.getAuthToken = function () { return authToken; };
   this.getUser = function () { return user; };
   this.getPrices = function () { return prices; };
-  this.getTransactions = function() { return transactions; };
+  this.getTransactions = function() { return [BTCtransactions, ETHtransactions, DNCtransactions, GSCtransactions]; };
   this.setAuthToken = function (newAuthToken) { authToken = (newAuthToken); };
   this.setUser = function (newUser) { user = (newUser); };
   this.setPrices = function (newPrices) { prices = newPrices; };
   this.addTransactions = function(newTransactions) {
-    newTransactions.sort(function(a,b){
-      a = a.requestedAt;
-      b = b.requestedAt;
-      return a>b? -1 : a<b ? 1 : 0;
-    });
 
-    var wasAdded = false;
-    newTransactions.forEach(function(txn){
+    newTransactions.BTC.forEach(function(txn_1){
+      params = JSON.parse(txn_1.params);
+      txn = new Transaction(txn_1.id, txn_1.address, txn_1.funcName, txn_1.contractAddress, txn_1.targetAddress, params.from, params.to, params.quantity, txn_1.createdAt, txn_1.updatedAt);
       // console.log(txn.requestedAt);
-      transactions.forEach(function(oldtxn){
-        if(oldtxn.hash == txn.hash) {
+      BTCtransactions.forEach(function(oldtxn){
+        var wasAdded = false;
+        if(oldtxn.address == txn.address) {
           wasAdded = true;
         }
-      });
-      if(testing) {
-        // console.log("TRANSACTION:::::: ", wasAdded, txn)
-      };
+        if(testing) {
+          // console.log("TRANSACTION:::::: ", wasAdded, txn);
+        }
 
-      if(!wasAdded){
-        transactions.push(txn);
-      }
+        if(!wasAdded){
+          BTCtransactions.push(txn);
+        }
+      });
     });
+
+    newTransactions.ETH.forEach(function(txn_1){
+      params = JSON.parse(txn_1.params);
+      txn = new Transaction(txn_1.id, txn_1.address, txn_1.funcName, txn_1.contractAddress, txn_1.targetAddress, params.from, params.to, params.quantity, txn_1.createdAt, txn_1.updatedAt);
+      // console.log(txn.requestedAt);
+      ETHtransactions.forEach(function(oldtxn){
+        var wasAdded = false;
+        if(oldtxn.address == txn.address) {
+            wasAdded = true;
+        }
+
+        if(testing) {
+          // console.log("TRANSACTION:::::: ", wasAdded, txn);
+        }
+
+        if(!wasAdded){
+          ETHtransactions.push(txn);
+        }
+      });
+    });
+
+    newTransactions.DNC.forEach(function(txn_1){
+      params = JSON.parse(txn_1.params);
+      txn = new Transaction(txn_1.id, txn_1.address, txn_1.funcName, txn_1.contractAddress, txn_1.targetAddress, params.from, params.to, params.quantity, txn_1.createdAt, txn_1.updatedAt);
+      // console.log(txn.requestedAt);
+      DNCtransactions.forEach(function(oldtxn){
+        var wasAdded = false;
+        if(oldtxn.address == txn.address) {
+            wasAdded = true;
+        }
+
+        if(testing) {
+          // console.log("TRANSACTION:::::: ", wasAdded, txn);
+        }
+
+        if(!wasAdded){
+          DNCtransactions.push(txn);
+        }
+      });
+    });
+    
+    newTransactions.GSC.forEach(function(txn_1){
+      params = JSON.parse(txn_1.params);
+      txn = new Transaction(txn_1.id, txn_1.address, txn_1.funcName, txn_1.contractAddress, txn_1.targetAddress, params.from, params.to, params.quantity, txn_1.createdAt, txn_1.updatedAt);
+      // console.log(txn.requestedAt);
+      GSCtransactions.forEach(function(oldtxn){
+        var wasAdded = false;
+        if(oldtxn.address == txn.address) {
+            wasAdded = true;
+        }
+        if(testing) {
+          // console.log("TRANSACTION:::::: ", wasAdded, txn);
+        }
+        
+        if(!wasAdded){
+          GSCtransactions.push(txn);
+        }
+      });
+    });
+
+    newTransactions.BTC.sort(sortFunc);
+    newTransactions.ETH.sort(sortFunc);
+    newTransactions.DNC.sort(sortFunc);
+    newTransactions.GSC.sort(sortFunc);
   };
 
 });
@@ -91,7 +172,7 @@ function isValidDate(date) {
   if ( (!(y % 4) && y % 100) || !(y % 400)) {
     daysInMonth[1] = 29;
   }
-  isValid = (d <= daysInMonth[--m] ? true : false);
+  isValid = (d <= daysInMonth[--m]);
 
   if(isValid){
     // Return today's date and time
@@ -124,6 +205,6 @@ function isValidDate(date) {
     }
   }
 
-  return isValid;
-  console.log(isValid);
+    if(testing){console.log(isValid);}
+    return isValid;
 }

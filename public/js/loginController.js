@@ -94,7 +94,7 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
                             $cookies.put("ubwAuthToken",response.data.body);
                             if (testing) { console.log($cookies.get("ubwAuthToken")); }
 
-                            if (redirect) { window.location.href = '/dashboard'; }
+                            window.location.href = '/dashboard';
 
                         } else {
                             if(response.data.msg == "invalidEmail") {

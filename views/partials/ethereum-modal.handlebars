@@ -74,13 +74,13 @@
                                     <th>from</th>
                                     <th>to</th>
                                 </tr>
-                                <tr ng-repeat="txn in transactions | filter: ethereumFilter ">
-                                    <td> {[{txn.requestedAt | date:'dd-MM-yy HH:mm'}]} </td>
-                                    <td> {[{txn.hash}]} </td>
-                                    <td> {[{txn.typeOf}]} </td>
-                                    <td> {[{(txn.metadata.fromAmount > txn.metadata.toAmount ? txn.metadata.fromAmount : txn.metadata.toAmount)}]} </td>
-                                    <td> {[{txn.metadata.fromAddress}]} </td>
-                                    <td> {[{txn.metadata.toAddress}]} </td>
+                                <tr ng-repeat="txn in transactions">
+                                    <td> {[{txn.createdAt | date:'dd-MM-yy HH:mm'}]} </td>
+                                    <td> {[{txn.address}]} </td>
+                                    <td> {[{txn.funcName}]} </td>
+                                    <td> {[{(txn.quantity}]} </td>
+                                    <td> {[{txn.fromAddress}]} </td>
+                                    <td> {[{txn.toAddress}]} </td>
 
                                 </tr>
                             </table>

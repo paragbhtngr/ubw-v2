@@ -1,0 +1,63 @@
+<script src="/js/countries.js"></script>
+
+<div class="register-page container-fluid" id="ResetPasswordController" ng-controller="ResetPasswordController">
+    <br>
+    <br>
+    <div class="col-md-6 col-md-offset-3 card">
+        <form class="col-md-10 col-md-offset-1">
+            <br>
+            <h3>Reset Password</h3>
+            <br>
+            <h4 class='text-danger font-weight-bold'>{[{resetErrorMessage}]} </h4>
+
+            <br>
+            <br>
+
+            <div class="col-md-12">
+                <input type="text" id="form-email-input" class="form-control validate" placeholder="Email Address" ng-model="email">
+            </div>
+
+            <br>
+            <br>
+
+            <div class="col-md-12">
+                <input type="text" id="form-code-input" class="form-control validate" placeholder="Password Reset Code" ng-model="code">
+            </div>
+            
+            <br>
+            <br>
+
+            <div class="registration-message password-error"></div>
+
+            <input type="password" id="form-password-input" class="form-control validate" placeholder="New Password" ng-model="pwd">
+            <input type="password" id="form-password-input-confirm" class="form-control validate" placeholder="Confirm Password" ng-model="pwdc">
+            <br>
+            <br>
+            <input class="btn btn-primary btn-lg" id="form-reset" type="submit" value="Reset Password" ng-click="resetConfirm()">
+        </form>
+
+    </div>
+</div>
+
+<style>
+    .intl-tel-input.allow-dropdown {
+        width:85%;
+        margin-left: -15%;
+    }
+
+    #datetimepicker1, #form-password-input, #form-password-input-confirm {
+        width: 94%;
+        margin-left: 3%;
+    }
+
+    .register-page>.card {
+        margin-bottom:50px;
+    }
+
+    form {
+        text-align: center;
+    }
+</style>
+
+<script type="text/javascript">
+</script>

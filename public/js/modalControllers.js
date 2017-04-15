@@ -23,9 +23,30 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
         }
     };
 
+    console.log("BITCOIN MODAL CONTROLLER: ", $scope.user);
+
     // SEND BITCOIN FUNCTION
     $scope.sendBitcoin = function() {
-        if(testing) { console.log("Sending Bitcoin"); }
+        if(testing) { 
+            console.log("Sending Bitcoin"); 
+            console.log($scope.user.KYCAML);
+        }
+
+        if (!$scope.user.KYCAML) {
+
+            $('#bitcoin-info-modal').modal('toggle');
+
+            $(function(){
+                new PNotify({
+                    title: 'KYCAML Not Complete',
+                    text: 'Please go to the Profile section and Complete KYCAML before performing transactions',
+                    stack: stack_topright,
+                    type: "error"
+                })
+            });
+            return;
+        }
+
         // Check if Address is valid
         // TODO: Maybe check that the bitcoin address is an actual valid address on the server?=
         if($scope.sendAddress){
@@ -39,6 +60,8 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
                 }
                 // Close the modal and clear the values
                 $('#bitcoin-info-modal').modal('toggle');
+
+                // if($scope.user.KYCAML) 
 
                 // Send the amount
 
@@ -209,7 +232,24 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
     };
 
     $scope.sendEthereum = function() {
-        if(testing) { console.log("Sending Ethereum"); }
+        if(testing) { console.log("Sending Ethereum"); 
+        console.log($scope.user.KYCAML);
+    }
+
+        if (!$scope.user.KYCAML) {
+            
+            $('#ethereum-info-modal').modal('toggle');
+
+            $(function(){
+                new PNotify({
+                    title: 'KYCAML Not Complete',
+                    text: 'Please go to the Profile section and Complete KYCAML before performing transactions',
+                    stack: stack_topright,
+                    type: "error"
+                })
+            });
+            return;
+        }
         // Check if Address is valid
         if($scope.sendAddress){
             if($('#ETH-send-address').hasClass('invalid')){
@@ -353,6 +393,22 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
 
     $scope.sendDinarcoin = function() {
         if(testing) { console.log("Sending Dinarcoin"); }
+
+        if (!$scope.user.KYCAML) {
+            
+            $('#dinarcoin-info-modal').modal('toggle');
+
+            $(function(){
+                new PNotify({
+                    title: 'KYCAML Not Complete',
+                    text: 'Please go to the Profile section and Complete KYCAML before performing transactions',
+                    stack: stack_topright,
+                    type: "error"
+                })
+            });
+            return;
+        }
+
         // Check if Address is valid
         if($scope.sendAddress){
             if($('#DNC-send-address').hasClass('invalid')){
@@ -437,6 +493,22 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
 
     $scope.mintDinarcoin = function() {
         if(testing) { console.log("Minting Dinarcoin"); }
+
+        if (!$scope.user.KYCAML) {
+            
+            $('#dinarcoin-info-modal').modal('toggle');
+
+            $(function(){
+                new PNotify({
+                    title: 'KYCAML Not Complete',
+                    text: 'Please go to the Profile section and Complete KYCAML before performing transactions',
+                    stack: stack_topright,
+                    type: "error"
+                })
+            });
+            return;
+        }
+
         // Check if Currency is valid
         if(testing) { console.log("SENDING ", $scope.mintCurrency); }
         if($scope.mintCurrency == "BTC" || $scope.mintCurrency == "ETH"){
@@ -534,6 +606,22 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
 
     $scope.burnDinarcoin = function() {
         if(testing) { console.log("burning Dinarcoin"); }
+
+        if (!$scope.user.KYCAML) {
+            
+            $('#dinarcoin-info-modal').modal('toggle');
+
+            $(function(){
+                new PNotify({
+                    title: 'KYCAML Not Complete',
+                    text: 'Please go to the Profile section and Complete KYCAML before performing transactions',
+                    stack: stack_topright,
+                    type: "error"
+                })
+            });
+            return;
+        }
+
         // Check if Currency is valid
         if(testing) { console.log("SENDING ", $scope.burnCurrency); }
         if($scope.burnCurrency == "BTC" || $scope.burnCurrency == "ETH"){
@@ -713,6 +801,22 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataS
 
     $scope.mintGSC = function() {
         if(testing) { console.log("Minting GSC"); }
+
+        if (!$scope.user.KYCAML) {
+            
+            $('#GSC-info-modal').modal('toggle');
+
+            $(function(){
+                new PNotify({
+                    title: 'KYCAML Not Complete',
+                    text: 'Please go to the Profile section and Complete KYCAML before performing transactions',
+                    stack: stack_topright,
+                    type: "error"
+                })
+            });
+            return;
+        }
+
         // Check if Instrument is valid
         if(testing) { console.log("SENDING ", $scope.mintCurrency); }
         if(
@@ -847,6 +951,22 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataS
 
     $scope.burnGSC = function() {
         if(testing) { console.log("burning GSC"); }
+
+        if (!$scope.user.KYCAML) {
+            
+            $('#GSC-info-modal').modal('toggle');
+
+            $(function(){
+                new PNotify({
+                    title: 'KYCAML Not Complete',
+                    text: 'Please go to the Profile section and Complete KYCAML before performing transactions',
+                    stack: stack_topright,
+                    type: "error"
+                })
+            });
+            return;
+        }
+
         // Check if Instrument is valid
         if(testing) { console.log("SENDING ", $scope.burnCurrency); }
         if(

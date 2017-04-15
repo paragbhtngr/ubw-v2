@@ -1,0 +1,180 @@
+<script src="/js/countries.js"></script>
+
+
+<div id="wrapper" ng-controller="ProfileController" class="toggled">
+    {{> sidebar}}
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <!--Navigation bar-->
+            <nav class="navbar navbar-dark bg-primary">
+                <a href="#menu-toggle" id="menu-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <img style="width: 25px; padding-top: 15px; margin-left: 15px;" src="/img/icon-hamburger.png" alt="">
+                </a>
+                <div class="container">
+                    <!--Toggle sidebar-->
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item btn-group">
+                            <div class="btn-group">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <!--End Navigation bar-->
+
+            <!--Dashboard content-->
+            <div class="col-lg-10 col-lg-offset-1 col-md-12">
+
+                <div>
+                    <form class="col-md-10 col-md-offset-1">
+                        <br>
+                        <h3>Add/Change Profile Information</h3>
+                        <br>
+                        <div class="registration-message name-error"></div>
+
+                        <div class="col-md-6"><input type="text" id="form-firstname-input" class="form-control validate" placeholder={[{user.firstName}]} ng-model="firstName" required disabled></div>
+                        <div class="col-md-6"><input type="text" id="form-lastname-input" class="form-control validate" placeholder={[{user.lastName}]} ng-model="lastName" required disabled></div>
+
+                        <div class="registration-message email-error"></div>
+
+                        <div class="col-md-12">
+                            <input type="text" id="form-email-input" class="form-control validate" placeholder={[{user.email}]} ng-model="email" required disabled>
+                        </div>
+
+                        <div class="registration-message date-error"></div>
+
+                        <div class="col-md-12">
+                            <div class='input-group date' id='datetimepicker1'>
+                                <input type='text' id="form-dob-input" class="form-control validate" placeholder="{[{ user.dob | date:'dd/MM/yyyy' || 'Date of Birth' }]}" aria-describedby="dob-addon" required disabled>
+                                <span class="input-group-addon" id="dob-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>    
+                        </div>
+                        
+
+                        <div class="registration-message address-error"></div>
+
+                        <div class="col-md-12">
+                            <input type="text" id="form-address-input" class="form-control validate" placeholder="{[{ user.address || 'Address' }]}" ng-model="address" required disabled>
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" id="form-address-two-input" class="form-control validate" placeholder="{[{ user.address2 || 'Address Line 2' }]}" ng-model="address2" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="form-city-input" class="form-control validate" placeholder="{[{ user.city || 'City' }]}" ng-model="city" required disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="form-state-input" class="form-control validate" placeholder="{[{ user.state || 'State' }]}" ng-model="state" required disabled>
+                        </div>
+                        <div class="col-md-12">
+                            <!--<input type="text" id="form-country-input" class="form-control validate" placeholder="Country" ng-model="country">-->
+                            <div class="country-value" id="{[{user.country}]}"></div>
+                            <select name="country" id="form-country-input" ng-model="country" disabled>
+                                <option value="" disabled selected hidden style="color: #999;">{[{user.countryname}]}</option>
+                                <option ng-repeat="country in countries" value= {[{country.code}]} >{[{country.name}]}</option>
+                            </select>   
+
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" id="form-postal-code-input" class="form-control validate" placeholder="{[{ user.postalCode || 'Postal Code' }]}" ng-model="postalCode" required disabled>
+                        </div>
+
+                        <div class="registration-message phone-error"></div>
+                        <br>
+                        <div class="col-md-12">
+                            <input type="text" id="form-phone-input" class="form-control validate" placeholder={[{user.phoneNumber}]} ng-model="mobile" required disabled>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="registration-message password-error"></div>
+
+                        <div class="col-md-12">
+                            <input type="password" id="form-password-input" class="form-control validate" placeholder="********" ng-model="pwd" required disabled>
+                           <!--  <input type="password" id="form-password-input-confirm" class="form-control validate" placeholder="Confirm Password" ng-model="pwdc" style="display:none;">     -->
+                        </div>
+
+                        
+                        <br>
+
+                        <br>
+                        <button class="btn btn-primary btn-lg" id="enable-change-form">Edit Personal Information</button>
+                        <input class="btn btn-primary btn-lg" id="form-register" type="submit" value="Update KYCAML Information" ng-click="update()" disabled>
+                    </form>
+
+                </div>
+
+            </div>
+            <!--End Dashboard content-->
+        </div>
+
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+
+<!-- Menu Toggle Script -->
+<script>
+    if ($(window).width() <= 768) {
+        $("#wrapper").toggleClass("toggled");
+    }
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });    
+    
+    $("#form-phone-input").intlTelInput();
+    $(".intl-tel-input").css('width', 'calc(100% - 45px)');
+
+    $(function () {
+        $('#datetimepicker1').datepicker({
+            format: 'dd/mm/yyyy'
+        });
+    });
+
+    $("#enable-change-form").click(function(e) {
+        $(".form-control").each(function(index, el) {
+           $(this).prop('disabled', false); 
+        });
+        
+        $("#form-country-input").prop('disabled', false);
+        $("#form-country-input").val($(".country-value").attr('id'));
+
+        $("#form-firstname-input").val($("#form-firstname-input").attr('placeholder'));
+        $("#form-lastname-input").val($("#form-lastname-input").attr('placeholder'));
+        $("#form-email-input").val($("#form-email-input").attr('placeholder'));
+        $("#form-phone-input").val($("#form-phone-input").attr('placeholder'));
+        $("#form-password-input").attr('placeholder', 'Password');
+
+
+        if ($("#form-dob-input").attr('placeholder') != "Date of Birth") {
+            $("#form-dob-input").val($("#form-dob-input").attr('placeholder'));
+        }
+        if ($("#form-address-input").attr('placeholder') != "Address") {
+            console.log();
+            $("#form-address-input").val($("#form-address-input").attr('placeholder'));
+        }
+        if ($("#form-address-two-input").attr('placeholder') != "Address Line 2") {
+            $("#form-address-two-input").val($("#form-address-two-input").attr('placeholder'));
+        }
+
+        if ($("#form-city-input").attr('placeholder') != "City") {
+            $("#form-city-input").val($("#form-city-input").attr('placeholder'));
+        }
+
+        if ($("#form-state-input").attr('placeholder') != "State") {
+            $("#form-state-input").val($("#form-state-input").attr('placeholder'));
+        }
+
+        if ($("#form-postal-code-input").attr('placeholder') != "Postal Code") {
+            $("#form-postal-code-input").val($("#form-postal-code-input").attr('placeholder'));
+        }
+
+        $("#form-register").prop('disabled', false);
+        // $("#form-password-input-confirm").css('display', 'block');
+    });
+
+</script>

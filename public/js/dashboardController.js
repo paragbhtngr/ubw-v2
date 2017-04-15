@@ -43,6 +43,9 @@ ngapp.controller('SuperController', ['$http', '$scope', '$cookies', '$window', '
                     $scope.user.S100Ozbalance        = response.data.body.balances.SILVER100Oz;
                     $scope.user.S1KGbalance          = response.data.body.balances.SILVER1KG;
 
+                    // User KYCAML completed
+                    $scope.user.KYCAML               = response.data.body.KYCAML;
+
                     dataStorage.setAuthToken($scope.authToken);
                     dataStorage.setUser($scope.user);
 

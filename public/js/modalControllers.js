@@ -4,17 +4,18 @@
 
 
 
-ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
+ngapp.controller('BitcoinController', ['$http', '$scope', '$rootScope', '$cookies', '$controller', function($http, $scope, $rootScope, $cookies, $controller){
     $controller('SuperController', {$scope: $scope});
     $scope.authToken = $cookies.get("ubwAuthToken");
 
-    // $scope.transactions = dataStorage.getTransactions();
 
     setInterval(function(){
         //code goes here that will be run every 5 seconds.
-        $scope.getUserDataFromDataStorage();
-        $scope.getPricesFromDataStorage();
-        $scope.transactions = dataStorage.getTransactions()[0];
+        $scope.gotBTCTransactions = $rootScope.gotBTCTransactions;
+        $scope.user = $rootScope.user;
+        $scope.prices = $rootScope.prices;
+        $scope.BTCtransactions = $rootScope.BTCtransactions;
+        if(testing) { console.log("BITCOIN TRANSACTIONS IN BITCOIN CONTROLLER: ", $rootScope.BTCtransactions);}
     }, 5000);
 
     $scope.bitcoinFilter = function (txn) {
@@ -214,15 +215,21 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$cookies', 'dataStora
     }
 }]);
 
-ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
+ngapp.controller('EthereumController', ['$http', '$scope', '$rootScope', '$cookies', '$controller', function($http, $scope, $rootScope, $cookies, $controller){
     $controller('SuperController', {$scope: $scope});
     $scope.authToken = $cookies.get("ubwAuthToken");
 
     setInterval(function(){
         //code goes here that will be run every 5 seconds.
-        $scope.getUserDataFromDataStorage();
-        $scope.getPricesFromDataStorage();
-        $scope.transactions = dataStorage.getTransactions()[1];
+        $scope.gotETHTransactions = $rootScope.gotETHTransactions;
+        $scope.user = $rootScope.user;
+        $scope.prices = $rootScope.prices;
+        $scope.ETHtransactions = $rootScope.ETHtransactions;
+
+        if(testing) {
+            console.log("ETHEREUM TRANSACTIONS IN ETHEREUM CONTROLLER", $rootScope.ETHtransactions);
+            console.log("DNC TRANSACTIONS IN ETHEREUM CONTROLLER", $rootScope.DNCtransactions);
+        }
     }, 5000);
 
     $scope.ethereumFilter = function (txn) {
@@ -374,15 +381,16 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$cookies', 'dataStor
     }
 }]);
 
-ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
+ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cookies', '$controller', function($http, $scope, $rootScope, $cookies, $controller){
     $controller('SuperController', {$scope: $scope});
     $scope.authToken = $cookies.get("ubwAuthToken");
 
     setInterval(function(){
         //code goes here that will be run every 5 seconds.
-        $scope.getUserDataFromDataStorage();
-        $scope.getPricesFromDataStorage();
-        $scope.transactions = dataStorage.getTransactions()[2];
+        $scope.gotDNCTransactions = $rootScope.gotDNCTransactions;
+        $scope.user = $rootScope.user;
+        $scope.prices = $rootScope.prices;
+        $scope.DNCtransactions = $rootScope.DNCtransactions;
     }, 5000);
 
     $scope.dinarcoinFilter = function (txn) {
@@ -720,15 +728,16 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$cookies', 'dataSto
 
 }]);
 
-ngapp.controller('instrumentsController', ['$http', '$scope', '$cookies', 'dataStorage', '$controller', function($http, $scope, $cookies, dataStorage, $controller){
+ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$cookies', '$controller', function($http, $scope, $rootScope, $cookies, $controller){
     $controller('SuperController', {$scope: $scope});
     $scope.authToken = $cookies.get("ubwAuthToken");
 
     setInterval(function(){
         //code goes here that will be run every 5 seconds.
-        $scope.getUserDataFromDataStorage();
-        $scope.getPricesFromDataStorage();
-        $scope.transactions = dataStorage.getTransactions()[3];
+        $scope.gotTransactions = $rootScope.gotTransactions;
+        $scope.user = $rootScope.user;
+        $scope.prices = $rootScope.prices;
+        $scope.GSCtransactions = $rootScope.GSCtransactions;
     }, 5000);
 
     $scope.GSCFilter = function (txn) {

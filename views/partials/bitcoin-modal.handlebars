@@ -37,8 +37,13 @@
                         <h3>Your Bitcoin Account Information</h3>
                         <br>
                         <p>Address:</p>
-                        <h4>{[{user.BTCaddress}]}</h4>
-                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.BTCaddress}]}" alt="">
+                        <div ng-if="!user.BTCaddress">
+                            <br>
+                            <h4> Loading User Information... </h4>
+                            <br>
+                        </div>
+                        <h4 style="word-wrap: break-word;">{[{user.BTCaddress}]}</h4>
+                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.BTCaddress}]}" alt="" style="width:100%; max-width:600px;">
                     </div>
                     <div class="tab-pane" id="BTC-send">
                         <br>
@@ -65,23 +70,30 @@
                         <br>
                         <h3>Transactions</h3>
                         <br>
-                        <div class="table-responsive">
+                        <div ng-if="!gotBTCTransactions">
+                            <br>
+                            <h4> Fetching Transactions </h4>
+                            <br>
+                        </div>
+                        <div class="table-responsive" ng-if="gotBTCTransactions">
                             <table class="table table-striped" style="text-align: left">
                                 <tr>
-                                    <th>Date</th>
+                                    <th style="min-width: 120px;">Date</th>
                                     <th>Txn Hash</th>
-                                    <th>Type</th>
+                                    {{!-- <th>Type</th> --}}
                                     <th>Amount</th>
-                                    <th>from</th>
-                                    <th>to</th>
+                                    {{!-- <th>from</th> --}}
+                                    {{!-- <th>to</th> --}}
+                                    <th>Confirmations</th>
                                 </tr>
-                                <tr ng-repeat="txn in transactions">
+                                <tr ng-repeat="txn in BTCtransactions">
                                     <td> {[{txn.createdAt | date:'dd-MM-yy HH:mm'}]} </td>
-                                    <td> {[{txn.address}]} </td>
-                                    <td> {[{txn.funcName}]} </td>
-                                    <td> {[{(txn.quantity}]} </td>
-                                    <td> {[{txn.fromAddress}]} </td>
-                                    <td> {[{txn.toAddress}]} </td>
+                                    <td> <a href="https://blockchain.info/tx/{[{txn.address}]}">{[{txn.address}]}</a> </td>
+                                    {{!-- <td> {[{txn.funcName}]} </td> --}}
+                                    <td> {[{txn.quantity}]} </td>
+                                    {{!-- <td> {[{txn.from}]} </td> --}}
+                                    {{!-- <td> {[{txn.to}]} </td> --}}
+                                    <td> {[{txn.confirmations}]} </td>
 
                                 </tr>
                             </table>
@@ -110,7 +122,7 @@
                             <p>Address:</p>
                             <h4>{[{user.BTCaddress}]}</h4>
                             <br>
-                            <h4>199 BTC</h4>
+                            <h4>0 BTC</h4>
 
                         </div>
                     </div>

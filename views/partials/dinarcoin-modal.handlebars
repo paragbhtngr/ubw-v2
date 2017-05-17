@@ -38,8 +38,13 @@
                         <h3>Your Dinarcoin Account Information</h3>
                         <br>
                         <p>Address:</p>
-                        <h4>{[{user.DNCaddress}]}</h4>
-                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.DNCaddress}]}" alt="">
+                        <div ng-if="!user.ETHaddress">
+                            <br>
+                            <h4> Loading User Information... </h4>
+                            <br>
+                        </div>
+                        <h4 style="word-wrap: break-word;">{[{user.DNCaddress}]}</h4>
+                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.DNCaddress}]}" alt="" style="width:100%; max-width:600px;">
                     </div>
                     <div class="tab-pane" id="DNC-send">
                         <br>
@@ -56,7 +61,7 @@
                             <input type="number" step="1" id="DNC-send-amount" class="form-control validate" placeholder="Amount" ng-model="sendAmount">
                         </div>
                         <br>
-                        <h4>Sending {[{sendAmount || 0 | number:2}]} DNC ( {[{sendAmount * prices.DNCinUSD || 0 | number:2}]} USD ) </h4>
+                        <h4>Sending {[{sendAmount || 0 | number:2}]} DNC ( {[{ (sendAmount * prices.DNCaskinUSD) || 0 | number:2}]} USD ) </h4>
                         <br>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="sendDinarcoin()">
 
@@ -82,7 +87,7 @@
                         </div>
                         <br>
                         <div ng-if="mintCurrency == 'BTC' || mintCurrency == 'ETH'">
-                            <h4>Minting {[{mintAmount || 0 }]} DNC (  {[{mintAmount * (mintCurrency == "BTC" ? prices.DNCaskinUSD/prices.BTCinUSD: prices.DNCbidinUSD/prices.ETHinUSD) || 0 }]} {[{mintCurrency}]} ) </h4>
+                            <h4>Minting {[{mintAmount || 0 }]} DNC (  {[{mintAmount * (mintCurrency == "BTC" ? prices.DNCaskinUSD/prices.BTCinUSD: prices.DNCaskinUSD/prices.ETHinUSD) || 0 }]} {[{mintCurrency}]} ) </h4>
                             <br>
                         </div>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="mintDinarcoin()">
@@ -108,7 +113,7 @@
                         </div>
                         <br>
                         <div ng-if="burnCurrency == 'BTC' || burnCurrency == 'ETH'">
-                            <h4>Burning {[{burnAmount || 0}]} DNC ( {[{burnAmount * (burnCurrency == "BTC" ? prices.DNCbidinUSD/prices.BTCinUSD : prices.DNCaskinUSD/prices.ETHinUSD) || 0 }]} {[{burnCurrency}]} ) </h4>
+                            <h4>Burning {[{burnAmount || 0}]} DNC ( {[{burnAmount * (burnCurrency == "BTC" ? prices.DNCbidinUSD/prices.BTCinUSD : prices.DNCbidinUSD/prices.ETHinUSD) || 0 }]} {[{burnCurrency}]} ) </h4>
                             <br>
                         </div>
                         <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="burnDinarcoin()">
@@ -117,24 +122,28 @@
                         <br>
                         <h3>Transactions</h3>
                         <br>
-                        <div class="table-responsive">
+                        <div ng-if="!gotDNCTransactions">
+                            <br>
+                            <h4> Fetching Transactions </h4>
+                            <br>
+                        </div>
+                        <div class="table-responsive" ng-if="gotDNCTransactions">
                             <table class="table table-striped" style="text-align: left">
                                 <tr>
-                                    <th>Date</th>
+                                    <th style="min-width: 120px;">Date</th>
                                     <th>Txn Hash</th>
                                     <th>Type</th>
                                     <th>Amount</th>
                                     <th>from</th>
                                     <th>to</th>
                                 </tr>
-                                <tr ng-repeat="txn in transactions">
+                                <tr ng-repeat="txn in DNCtransactions">
                                     <td> {[{txn.createdAt | date:'dd-MM-yy HH:mm'}]} </td>
-                                    <td> {[{txn.address}]} </td>
+                                    <td> <a href="https://etherscan.io/tx/{[{txn.address}]}">{[{txn.address}]}</a> </td>
                                     <td> {[{txn.funcName}]} </td>
-                                    <td> {[{(txn.quantity}]} </td>
-                                    <td> {[{txn.fromAddress}]} </td>
-                                    <td> {[{txn.toAddress}]} </td>
-
+                                    <td> {[{txn.quantity}]} </td>
+                                    <td> {[{txn.from}]} </td>
+                                    <td> {[{txn.to}]} </td>
                                 </tr>
                             </table>
                         </div>

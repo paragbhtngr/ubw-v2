@@ -32,35 +32,36 @@
             <a data-toggle="modal" data-target="#password-reset-modal">Forgot Password?</a>
         </form>
     </div>
-</div>
 
-<!-- Modal -->
-<div class="modal fade" id="password-reset-modal" tabindex="-1" role="dialog" aria-labelledby="password-reset-modal-label" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title w-100" id="password-reset-modal-label">Request Password Reset</h4>
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <h4 class='text-danger font-weight-bold'>{[{resetErrorMessage}]} </h4>
-                <div class="md-form form-group">
-                    <i class="fa fa-envelope prefix"></i>
-                    <input type="email" id="password-reset-email-input" class="form-control validate" placeholder="Your Email Address" ng-model="resetEmail">
-                    <!--<label for="form-email-input" data-error="wrong" data-success="right" class="">Example label</label>-->
-                </div>
-                <div class="md-form">
-                    <input class="btn btn-primary btn-lg" type="submit" value="Reset Password" ng-click="resetPassword()">
-                </div>
-            </div>
-        </div>
-        <!--/.Content-->
-    </div>
+	<!-- Modal -->
+	<div class="modal fade" id="password-reset-modal" tabindex="-1" role="dialog" aria-labelledby="password-reset-modal-label" aria-hidden="true">
+	    <div class="modal-dialog" role="document">
+	        <!--Content-->
+	        <div class="modal-content">
+	            <!--Header-->
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	               	     <span aria-hidden="true">&times;</span>
+	                </button>
+	                <h4 class="modal-title w-100" id="password-reset-modal-label">Request Password Reset</h4>
+	            </div>
+	            <!--Body-->
+	            <div class="modal-body">
+        	        <h4 class='text-danger font-weight-bold'>{[{resetErrorMessage}]} </h4>
+	                <div class="md-form form-group">
+	                    <i class="fa fa-envelope prefix"></i>
+	                    <input type="email" id="password-reset-email-input" class="form-control validate" placeholder="Your Email Address" ng-model="resetEmail">
+                	    <!--<label for="form-email-input" data-error="wrong" data-success="right" class="">Example label</label>-->
+        	        </div>
+	                <div class="md-form">
+                    	<input class="btn btn-primary btn-lg" type="submit" value="Reset Password" id="resetPassword" ng-click="reset()">
+                	</div>
+            	</div>
+       		</div>
+        	<!--/.Content-->
+    	</div>
+	</div>
+
 </div>
 
 <style>

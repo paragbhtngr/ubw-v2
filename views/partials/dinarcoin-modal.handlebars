@@ -139,6 +139,7 @@
                                 </tr>
                                 <tr ng-repeat="txn in DNCtransactions">
                                     <td> {[{txn.createdAt*1000 | date:'dd-MM-yy HH:mm'}]} </td>
+                                    <td> {[{txn.createdAt | date:'dd-MM-yy HH:mm'}]} </td>
                                     <td> <a href="https://etherscan.io/tx/{[{txn.address}]}">{[{txn.address}]}</a> </td>
                                     <td> {[{txn.funcName}]} </td>
                                     <td> {[{txn.quantity}]} </td>

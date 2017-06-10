@@ -1,6 +1,7 @@
 var exports = module.exports = {};
 
 exports.ETHERSCAN_API_KEY = "T2E8YQZ849SAEN3KCWC4T1C4DVA9YKPHDT";
+exports.BLOCKCYPHER_API_KEY = "598b739b13ca46aeae7bbe2199481a11";
 
 exports.SMTP_USERNAME = "7ae27485-87c2-4382-8f07-937c6a54c45f";
 exports.SMTP_PASSWORD = "7ae27485-87c2-4382-8f07-937c6a54c45f";
@@ -10,3 +11,8 @@ exports.SMTP_SERVER_TOKEN_API = "7ae27485-87c2-4382-8f07-937c6a54c45f";
 exports.SMS_API_USER = "ubwsingapore";
 exports.SMS_API_PASSWORD = "ubwsg8899!!";
 exports.SMS_API_ID = "3637930";
+
+exports.POSTMARK_API_ID = "78b90393-1367-4589-a5ab-68968eced526";
+
+exports.UBW_ADMIN_ADDRESS = "0xc63bcefdae4369291f4a1407c05c3c48220ae4a4";
+exports.UBW_CONTRACT_ADDRESS = "0x6b8e4ba9e7eb50cf8ca6baa23df11af09963e742";

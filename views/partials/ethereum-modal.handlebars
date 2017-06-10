@@ -37,8 +37,13 @@
                         <h3>Your Ethereum Account Information</h3>
                         <br>
                         <p>Address:</p>
-                        <h4>{[{user.ETHaddress}]}</h4>
-                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.ETHaddress}]}" alt="">
+                        <div ng-if="!user.ETHaddress">
+                            <br>
+                            <h4> Loading User Information... </h4>
+                            <br>
+                        </div>
+                        <h4 style="word-wrap: break-word;">{[{user.ETHaddress}]}</h4>
+                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.ETHaddress}]}" alt="" style="width:100%; max-width:600px;">
                     </div>
                     <div class="tab-pane" id="ETH-send">
                         <br>
@@ -64,24 +69,28 @@
                         <br>
                         <h3>Transactions</h3>
                         <br>
-                        <div class="table-responsive">
+                        <div ng-if="!gotETHTransactions">
+                            <br>
+                            <h4> Fetching Transactions </h4>
+                            <br>
+                        </div>
+                        <div class="table-responsive" ng-if="gotETHTransactions">
                             <table class="table table-striped" style="text-align: left">
                                 <tr>
-                                    <th>Date</th>
+                                    <th style="min-width: 120px;">Date</th>
                                     <th>Txn Hash</th>
-                                    <th>Type</th>
+                                    {{!-- <th>Type</th> --}}
                                     <th>Amount</th>
                                     <th>from</th>
                                     <th>to</th>
                                 </tr>
-                                <tr ng-repeat="txn in transactions">
-                                    <td> {[{txn.createdAt | date:'dd-MM-yy HH:mm'}]} </td>
-                                    <td> {[{txn.address}]} </td>
-                                    <td> {[{txn.funcName}]} </td>
-                                    <td> {[{(txn.quantity}]} </td>
-                                    <td> {[{txn.fromAddress}]} </td>
-                                    <td> {[{txn.toAddress}]} </td>
-
+                                <tr ng-repeat="txn in ETHtransactions">
+                                    <td> {[{txn.createdAt*1000 | date:'dd-MM-yy HH:mm'}]} </td>
+                                    <td> <a href="https://etherscan.io/tx/{[{txn.address}]}">{[{txn.address}]}</a> </td>
+                                    {{!-- <td> {[{txn.funcName}]} </td> --}}
+                                    <td> {[{txn.quantity / 1000000000000000000}]} </td>
+                                    <td> {[{txn.from}]} </td>
+                                    <td> {[{txn.to}]} </td>
                                 </tr>
                             </table>
                         </div>
@@ -104,7 +113,7 @@
                             <p>Address:</p>
                             <h4>{[{ETHaddress}]}</h4>
                             <br>
-                            <h4>199 ETH</h4>
+                            <h4>0 ETH</h4>
 
                         </div>
                     </div>

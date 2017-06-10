@@ -2,9 +2,8 @@
  * Created by parag on 11/18/16.
  */
 
-ngapp.controller('RegisterController', ['$http', '$scope', '$cookies', '$window', 'dataStorage', function($http, $scope, $cookies, $window, dataStorage){
-    if(testing) { console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion()); }
-
+ngapp.controller('RegisterController', ['$http', '$scope', '$rootScope', '$cookies', '$window', function($http, $scope, $rootScope, $cookies, $window){
+    
     $scope.countries = COUNTRIES;
     
     /**
@@ -168,8 +167,8 @@ ngapp.controller('RegisterController', ['$http', '$scope', '$cookies', '$window'
                     if(response.data.success){
                         window.location.href = '/login#?registered';
 
-                        $http.post('/registration-success-sms', {number:$scope.mobile});
-                        $http.post('/registration-success-email', {email:$scope.email});
+                        $http.post('/registration_success_sms', {number:$scope.mobile});
+                        $http.post('/registration_success_email', {email:$scope.email});
                     }
                     else {
                         if(response.data.message = "userExists") {
@@ -187,8 +186,7 @@ ngapp.controller('RegisterController', ['$http', '$scope', '$cookies', '$window'
     }
 }]);
 
-ngapp.controller('ProfileController', ['$http', '$scope', '$cookies', '$window', 'dataStorage', function($http, $scope, $cookies, $window, dataStorage){
-    if(testing) { console.log('dataStorage successfully loaded: v',dataStorage.getAppVersion()); }
+ngapp.controller('ProfileController', ['$http', '$scope', '$rootScope', '$cookies', '$window', function($http, $scope, $rootScope, $cookies, $window){
 
     $scope.authToken = $cookies.get("ubwAuthToken");
     $scope.countries = COUNTRIES;
@@ -197,7 +195,7 @@ ngapp.controller('ProfileController', ['$http', '$scope', '$cookies', '$window',
         if (testing) {
             console.log("GETTING USER METADATA");
         }
-        dataStorage.setAuthToken($scope.authToken);
+        $rootScope.authToken = $scope.authToken;
 
         var postObject = {
             authToken : $scope.authToken
@@ -217,8 +215,8 @@ ngapp.controller('ProfileController', ['$http', '$scope', '$cookies', '$window',
                     // User's particulars
                     $scope.user = response.data.body;
 
-                    dataStorage.setAuthToken($scope.authToken);
-                    dataStorage.setUser($scope.user);
+                    $rootScope.authToken = $scope.authToken;
+                    $rootScope.user = $scope.user;
                     function findHelper(country) { 
                         return country.code === $scope.user.country;
                     }

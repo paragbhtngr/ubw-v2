@@ -1,11 +1,12 @@
+
+
 /**
  * Created by parag on 11/18/16.
  */
 
-ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '$location', 'dataStorage', function($http, $scope, $cookies, $window, $location, dataStorage){
+ngapp.controller('LoginController', ['$http', '$scope', '$rootScope', '$cookies', '$window', '$location', function($http, $scope, $rootScope, $cookies, $window, $location){
     if (testing) {
-        console.log('dataStorage successfully loaded: v', dataStorage.getAppVersion());
-        console.log('dataStorage authtoken: ', dataStorage.getAuthToken());
+        console.log('authtoken: ', $rootScope.authToken);
         console.log($cookies.get("testToken"));
         console.log(SERVER_PORT);
     }
@@ -58,6 +59,17 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
                 text: 'You have been successfully logged out',
                 stack: stack_topright,
                 type: "notice"
+            })
+        });
+    }
+
+    if($location.search().resetPW) {
+        $(function(){
+            new PNotify({
+                title: 'Password Reset',
+                text: 'You may now log in with your new password',
+                stack: stack_topright,
+                type: "success"
             })
         });
     }
@@ -120,14 +132,14 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
 
     }
 
-    $scope.resetPassword = function() {
+    $scope.reset = function() {
+	if(testing) {console.log($scope.resetEmail);}
         if ($scope.resetEmail) {
             var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
             if (re.test($scope.resetEmail)){
-                $('#password-reset-modal').modal('toggle');
 
                 var postObject = {
-                    email: $scope.email
+                    email: $scope.resetEmail
                 };
                 
                 $http.post(SERVER_PORT + '/api/v1/userops/reset_password', postObject).then(
@@ -136,8 +148,9 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
                         if (testing) { console.log(response); }
                         if(response.data.success) {
                             if (testing) { console.log(response.data.body); }
-                            $http.post('/reset-password-success-email', {email:$scope.resetEmail, code:response.data.code});
-                            
+
+                            $('#password-reset-modal').modal('toggle');
+                            window.location.href = '/resetpassword#?email='+$scope.resetEmail;
 
                         } else {
                             if(response.data.msg == "invalidEmail") {
@@ -161,10 +174,9 @@ ngapp.controller('LoginController', ['$http', '$scope', '$cookies', '$window', '
     }
 }]);
 
-ngapp.controller('ResetPasswordController', ['$http', '$scope', '$cookies', '$window', '$location', 'dataStorage', function($http, $scope, $cookies, $window, $location, dataStorage){
+ngapp.controller('ResetPasswordController', ['$http', '$scope', '$rootScope', '$cookies', '$window', '$location', function($http, $scope, $rootScope, $cookies, $window, $location){
     if (testing) {
-        console.log('dataStorage successfully loaded: v', dataStorage.getAppVersion());
-        console.log('dataStorage authtoken: ', dataStorage.getAuthToken());
+        console.log('authtoken: ', $rootScope.authToken);
         console.log($cookies.get("testToken"));
         console.log(SERVER_PORT);
     }
@@ -185,10 +197,22 @@ ngapp.controller('ResetPasswordController', ['$http', '$scope', '$cookies', '$wi
         );
     }
 
+    if($location.search().email) {
+        $scope.email = $location.search().email;
+        $(function(){
+            new PNotify({
+                title: 'Password Reset Request Sent',
+                text: 'Please check your email address for the password reset code',
+                stack: stack_topright,
+                type: "success"
+            })
+        });
+    }
+
     $scope.resetConfirm = function() {
         if ($scope.email) {
             var re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-            if (!re.test($scope.resetEmail)){
+            if (!re.test($scope.email)){
                 $scope.resetErrorMessage = "Please enter a valid email address";
                 return;    
             }
@@ -225,7 +249,7 @@ ngapp.controller('ResetPasswordController', ['$http', '$scope', '$cookies', '$wi
                 if (testing) { console.log(response); }
                 if(response.data.success) {
                     if (testing) { console.log(response.data.body); }
-                    
+
                     $(function(){
                         new PNotify({
                             title: 'Password successfully changed',
@@ -235,6 +259,7 @@ ngapp.controller('ResetPasswordController', ['$http', '$scope', '$cookies', '$wi
                         })
                     });
                     
+                    window.location.href = '/login#?resetPW';
 
                 } else {
                     if(response.data.msg == "invalidEmail") {

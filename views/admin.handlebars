@@ -1,0 +1,180 @@
+<div id="wrapper" ng-controller="AdminController" class="toggled">
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <!--Dashboard content-->
+            <div>
+                <div id="DNC-transactions">
+                    <br>
+                    <h3>DNC Ledger</h3>
+                    <br>
+                    {{!-- <div ng-if="!dinarAdminTransactions">
+                        <br>
+                        <h4> Fetching Transactions </h4>
+                        <br>
+                    </div> --}}
+{{!--                     <div class="panel-body">
+                        <table class="table table-bordered bordered table-striped table-condensed datatable" ui-jq="dataTable" ui-options="dataTableOpt">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Position</th>
+                                    <th>Office</th>
+                                    <th>Age</th>
+                                    <th>Start Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="n in data">
+                                    <td>{[{$index+1}]}</td>
+                                    <td>{[{n[0]}]}</td>
+                                    <td>{[{n[1]}]}</td>
+                                    <td>{[{n[2]}]}</td>
+                                    <td>{[{n[3]}]}</td>
+                                    <td>{[{n[4] | date:'dd/MM/yyyy'}]}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div> --}}
+
+                    <div ng-if="!areTransactionsPresent">
+                        <br>
+                        <h4> Fetching Transactions </h4>
+                        <br>
+                    </div>
+
+                    <div ng-if="areTransactionsPresent">
+                        <table class="table table-striped table-bordered bordered table-condensed datatable display responsive no-wrap" ui-jq="dataTable" ui-options="dataTableOpt" id="ledgerTable" style="text-align: left">
+                            <thead> 
+                                <tr>
+                                    <th>#</th>
+                                    <th style="min-width: 150px;">Date</th>
+                                    <th>Txn Hash</th>
+                                    <th>Type</th>
+                                    <th>Amt</th>
+                                    <th>from</th>
+                                    <th>to</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{!-- <tr ng-repeat="txn in dinarAdminTransactions">
+                                    <td class="index"> {[{$index+1}]} </td>
+                                    <td class="createdAt"> {[{txn.createdAt*1000 | date : 'medium'}]} </td>
+                                    <td class="address" style="max-width: 300px;"> <a href="https://etherscan.io/tx/{[{txn.address}]}" style="word-wrap: break-word;" class="address">{[{txn.address}]}</a> </td>
+                                    <td class="funcName"> {[{txn.funcName}]} </td>
+                                    <td class="quantity"> {[{txn.quantity}]} </td>
+                                    <td class="from" style="max-width: 250px; word-wrap: break-word;"> {[{txn.from}]} </td>
+                                    <td class="to" style="max-width: 250px; word-wrap: break-word;"> {[{txn.to}]} </td>
+                                </tr> --}}
+                            </tbody>
+                        </table>
+                        <table id="hiddenLedgerTable">
+                            <thead> 
+                                <tr>
+                                    <th>#</th>
+                                    <th style="min-width: 150px;">Date</th>
+                                    <th>Txn Hash</th>
+                                    <th>Type</th>
+                                    <th>Amt</th>
+                                    <th>from</th>
+                                    <th>to</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="txn in dinarAdminTransactions">
+                                    <td class="index"> {[{$index+1}]} </td>
+                                    <td class="createdAt"> {[{txn.createdAt*1000 | date : 'medium'}]} </td>
+                                    <td class="address" style="max-width: 300px;" class="address"> <a href="https://etherscan.io/tx/{[{txn.address}]}" style="word-wrap: break-word;" class="address">{[{txn.address}]}</a> </td>
+                                    <td class="funcName"> {[{txn.funcName}]} </td>
+                                    <td class="quantity"> {[{txn.quantity}]} </td>
+                                    <td class="from" style="max-width: 250px; word-wrap: break-word;"> {[{txn.from}]} </td>
+                                    <td class="to" style="max-width: 250px; word-wrap: break-word;"> {[{txn.to}]} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!--End Dashboard content-->
+        </div>
+
+    </div>
+    <!-- /#page-content-wrapper -->
+</div>
+
+<style type="text/css">
+    body {
+        font-family: "Montserrat", "Roboto", sans-serif;
+        font-weight: normal;
+    }
+    .container-fluid {
+        max-width: 1280px;
+        width: 90%;
+        margin: auto;
+    }
+
+    h3 {
+        color: #121931;
+        font-size: 30px;
+        text-transform: uppercase;
+        font-weight: 600;
+
+    }
+
+    th {
+        background-color: #354174;
+        color: #ffffff;
+        text-transform: uppercase;
+        padding-top: 20px;
+        padding-bottom: 20px;
+
+    }
+
+    .pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+        color: #fff;
+        background-color: #354174;
+        border-color: #354174;
+    }
+
+</style>
+
+<script>
+
+// $('#ledgerTable').DataTable();
+var t1 = $('#ledgerTable');
+// var t2 = $('#hiddenLedgerTable').DataTable();
+
+window.setInterval(function(){
+    $("#hiddenLedgerTable>tbody>tr").each(function() {
+        tableRow = $(this);
+        var value = tableRow.find("td.index").html();
+        if ($('#ledgerTable>tbody>tr').filter(function() {return $(this).text() == value}).length > 0) {
+            // do nothing. element is already in there
+        } else {
+            // $('#ledgerTable').DataTable().row.add([
+            //     tableRow.find("td.index").html(),
+            //     tableRow.find("td.createdAt").html(),
+            //     tableRow.find("td.address").html(),
+            //     tableRow.find("td.funcName").html(),
+            //     tableRow.find("td.quantity").html(),
+            //     tableRow.find("td.from").html(),
+            //     tableRow.find("td.to").html(),
+            // ]).draw( false );
+        }
+        
+        // $('#ledgerTable').DataTable.row.add([
+        //         "1",
+        //         "Jun 6, 2017 10:25:21 PM",
+        //         "0x0edc50e63eeb48938fd0eba329841552e0bf99c8114fc0d121b45922bc050993",
+        //         "burn",
+        //         "20",
+        //         "0x2f62607854a40938132070306514b6e2948cc807",
+        //         "0x2f62607854a40938132070306514b6e2948cc807",
+        //     ]).draw( false );
+
+    });
+}, 5000); 
+    
+</script>

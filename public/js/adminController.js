@@ -1,7 +1,7 @@
 ngapp.controller('AdminController', ['$http', '$scope', '$rootScope', '$cookies', '$controller', function($http, $scope, $rootScope, $cookies, $controller){
     // $controller('SuperController', {$scope: $scope});
     $scope.authToken = $cookies.get("ubwAuthToken");
-    $scope.dinarAdminTransactions = [];
+    $scope.latestDate = 0;
 
 
     $scope.dataTableOpt = {
@@ -12,6 +12,7 @@ ngapp.controller('AdminController', ['$http', '$scope', '$rootScope', '$cookies'
     
     $scope.areTransactionsPresent = false;
     $scope.dinarAdminTransactions = [];
+    $scope.dinarAdminTransactionsNew = [];
     
     $scope.getDinarAdminTransactions = function(){
 
@@ -21,16 +22,13 @@ ngapp.controller('AdminController', ['$http', '$scope', '$rootScope', '$cookies'
     
         console.log("Getting Dinarcoin Admin Transactions");
 
-
-
         $http.get( DNC_URL ).then( // valid API url
             function (response) {
                 // success callback
                 if(testing) { console.log("DINARCOIN TRANSACTIONS: ", response); }
 
-                var transactions = new Object();
                 result = response.data.result;
-                result.reverse();
+                console.log("NUMBER OF TRANSACTIONS IN RESULT", result.length)
 
                 for(r in result) {
                     if(result[r].to == UBW_CONTRACT_ADDRESS || result[r].from == UBW_CONTRACT_ADDRESS) {
@@ -42,7 +40,7 @@ ngapp.controller('AdminController', ['$http', '$scope', '$rootScope', '$cookies'
 
                         if(input.startsWith(mintsig)){
 
-                            a = new Object();
+                            var a = new Object();
                             a.id = result[r].transactionIndex;
                             a.address = result[r].hash;
                             a.funcName = "mint";
@@ -54,18 +52,12 @@ ngapp.controller('AdminController', ['$http', '$scope', '$rootScope', '$cookies'
                             a.to = "0x" + input.slice(34,74);
                             a.quantity = parseInt(input.slice(-64), 16)/10;
 
-                            if ($scope.dinarAdminTransactions.filter(function(e){ return e.createdAt == a.createdAt })) {
-                                console.log("MINT: Found a duplicate transaction!");                                
-                            } else {
-                                $scope.dinarAdminTransactions.push(a);
-                            }
-                        
-
+                            $scope.dinarAdminTransactionsNew.push(a);
                         }
 
                         else if(input.startsWith(burnsig)){
 
-                            a = new Object();
+                            var a = new Object();
                             a.id = result[r].transactionIndex;
                             a.address = result[r].hash;
                             a.funcName = "burn";
@@ -76,14 +68,8 @@ ngapp.controller('AdminController', ['$http', '$scope', '$rootScope', '$cookies'
                             a.from = "0x" + input.slice(34,74);
                             a.to = "0x" + input.slice(34,74);
                             a.quantity = parseInt(input.slice(-64), 16)/10;
-                            $scope.dinarAdminTransactions.push(a);
 
-                            if ($scope.dinarAdminTransactions.filter(function(e){ return e.createdAt == a.createdAt })) {
-                                console.log("BURN: Found a duplicate transaction!");                                
-                            } else {
-                                $scope.dinarAdminTransactions.push(a);
-                            }
-                        
+                            $scope.dinarAdminTransactionsNew.push(a);
                         } 
 
                         else if(input.startsWith(transfersig)) {
@@ -91,7 +77,7 @@ ngapp.controller('AdminController', ['$http', '$scope', '$rootScope', '$cookies'
                             to = input.slice( (10 + 64), (10 + 2*64) ).replace(/^0+/, '');
                             value = input.slice( (10 + 2*64), (10 + 3*64) ).replace(/^0+/, '')/10;
 
-                            a = new Object();
+                            var a = new Object();
                             a.id = result[r].transactionIndex;
                             a.address = result[r].hash;
                             a.funcName = "transfer";
@@ -102,20 +88,20 @@ ngapp.controller('AdminController', ['$http', '$scope', '$rootScope', '$cookies'
                             a.from = from;
                             a.to = to;
                             a.quantity = parseInt(value, 16);
-                            $scope.dinarAdminTransactions.push(a);
 
-                            if ($scope.dinarAdminTransactions.filter(function(e){ return e.createdAt == a.createdAt })) {
-                                console.log("TRANSFER: Found a duplicate transaction!");                                
-                            } else {
-                                $scope.dinarAdminTransactions.push(a);
-                            }
+                            $scope.dinarAdminTransactionsNew.push(a);
                         }
                     }
                 }
 
                 $scope.areTransactionsPresent = true;
+                $scope.dinarAdminTransactionsNew.reverse();
+                $scope.dinarAdminTransactions = $scope.dinarAdminTransactionsNew;
+                $scope.dinarAdminTransactionsNew = [];
+                $scope.latestDate = $scope.dinarAdminTransactions[0].createdAt;
 
                 if(testing) {
+                    console.log("LATEST DATE", $scope.latestDate);
                     console.log("UPDATED DNC ADMIN TRANSACTIONS: ", $scope.dinarAdminTransactions);
                 }
             },

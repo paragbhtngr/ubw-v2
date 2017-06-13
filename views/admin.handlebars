@@ -50,7 +50,7 @@
                             <thead> 
                                 <tr>
                                     <th>#</th>
-                                    <th style="min-width: 150px;">Date</th>
+                                    <th style="min-width: 75px;">Date</th>
                                     <th>Txn Hash</th>
                                     <th>Type</th>
                                     <th>Amt</th>
@@ -70,7 +70,7 @@
                                 </tr> --}}
                             </tbody>
                         </table>
-                        <table id="hiddenLedgerTable">
+                        <table id="hiddenLedgerTable" style="display:none;">
                             <thead> 
                                 <tr>
                                     <th>#</th>
@@ -83,7 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="txn in dinarAdminTransactions">
+                                <tr ng-repeat="txn in dinarAdminTransactions track by $index">
                                     <td class="index"> {[{$index+1}]} </td>
                                     <td class="createdAt"> {[{txn.createdAt*1000 | date : 'medium'}]} </td>
                                     <td class="address" style="max-width: 300px;" class="address"> <a href="https://etherscan.io/tx/{[{txn.address}]}" style="word-wrap: break-word;" class="address">{[{txn.address}]}</a> </td>
@@ -137,6 +137,24 @@
         background-color: #354174;
         border-color: #354174;
     }
+    
+    #ledgerTable>tbody>tr>td:nth-child(2) {
+        width: 150px;
+    }
+    #ledgerTable>tbody>tr>td:nth-child(3) {
+        max-width: 300px;
+        word-wrap: break-word;
+    }
+
+    #ledgerTable>tbody>tr>td:nth-child(6) {
+        max-width: 200px;
+        word-wrap: break-word;
+    }
+
+    #ledgerTable>tbody>tr>td:nth-child(7) {
+        max-width: 200px;
+        word-wrap: break-word;
+    }
 
 </style>
 
@@ -150,18 +168,19 @@ window.setInterval(function(){
     $("#hiddenLedgerTable>tbody>tr").each(function() {
         tableRow = $(this);
         var value = tableRow.find("td.index").html();
-        if ($('#ledgerTable>tbody>tr').filter(function() {return $(this).text() == value}).length > 0) {
+        if ($('#ledgerTable').DataTable().columns(0).data()[0].includes(value)) {
             // do nothing. element is already in there
+            // console.log("NOT ADDING TO LEDGER TABLE");
         } else {
-            // $('#ledgerTable').DataTable().row.add([
-            //     tableRow.find("td.index").html(),
-            //     tableRow.find("td.createdAt").html(),
-            //     tableRow.find("td.address").html(),
-            //     tableRow.find("td.funcName").html(),
-            //     tableRow.find("td.quantity").html(),
-            //     tableRow.find("td.from").html(),
-            //     tableRow.find("td.to").html(),
-            // ]).draw( false );
+            $('#ledgerTable').DataTable().row.add([
+                tableRow.find("td.index").html(),
+                tableRow.find("td.createdAt").html(),
+                tableRow.find("td.address").html(),
+                tableRow.find("td.funcName").html(),
+                tableRow.find("td.quantity").html(),
+                tableRow.find("td.from").html(),
+                tableRow.find("td.to").html(),
+            ]).draw( false );
         }
         
         // $('#ledgerTable').DataTable.row.add([

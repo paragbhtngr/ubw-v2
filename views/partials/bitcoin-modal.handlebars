@@ -1,153 +1,183 @@
-<!-- Modal -->
-<div class="modal fade" id="bitcoin-info-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="BitcoinController">
-    <div class="modal-dialog" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">Bitcoin</h4>
+<div ng-controller="BitcoinController">
+    <!-- Modal -->
+    <div class="modal fade" id="bitcoin-info-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Bitcoin</h4>
 
 
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <!-- Nav tabs -->
-                <ul class="nav bitcoin nav-tabs">
-                    <li id="BTC-receive-tab" class="active">
-                        <a  href="#BTC-receive" data-toggle="tab">Receive</a>
-                    </li>
-                    <li id="BTC-send-tab">
-                        <a href="#BTC-send" data-toggle="tab">Send</a>
-                    </li>
-                    <li id="BTC-transactions-tab">
-                        <a href="#BTC-transactions" data-toggle="tab">Transactions</a>
-                    </li>
-                    <li id="BTC-account-tab">
-                            <a ng-if="user.privateBTCaddress" href="#BTC-account" data-toggle="tab">Your account</a>
-                            <a ng-if="!user.privateBTCaddress" href="#BTC-account" data-toggle="tab">Add account</a>
-                    </li>
-                </ul>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav bitcoin nav-tabs">
+                        <li id="BTC-receive-tab" class="active">
+                            <a  href="#BTC-receive" data-toggle="tab">Receive</a>
+                        </li>
+                        <li id="BTC-send-tab">
+                            <a href="#BTC-send" data-toggle="tab">Send</a>
+                        </li>
+                        <li id="BTC-transactions-tab">
+                            <a href="#BTC-transactions" data-toggle="tab">Transactions</a>
+                        </li>
+                        <li id="BTC-account-tab">
+                                <a ng-if="user.privateBTCaddress" href="#BTC-account" data-toggle="tab">Your account</a>
+                                <a ng-if="!user.privateBTCaddress" href="#BTC-account" data-toggle="tab">Add account</a>
+                        </li>
+                    </ul>
 
-                <div class="bitcoin tab-content ">
-                    <div class="tab-pane active" id="BTC-receive">
-                        <br>
-                        <h3>Your Bitcoin Account Information</h3>
-                        <br>
-                        <p>Address:</p>
-                        <div ng-if="!user.BTCaddress">
+                    <div class="bitcoin tab-content ">
+                        <div class="tab-pane active" id="BTC-receive">
                             <br>
-                            <h4> Loading User Information... </h4>
-                            <br>
-                        </div>
-                        <h4 style="word-wrap: break-word;">{[{user.BTCaddress}]}</h4>
-                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.BTCaddress}]}" alt="" style="width:100%; max-width:600px;">
-                    </div>
-                    <div class="tab-pane" id="BTC-send">
-                        <br>
-                        <h3>Send Bitcoin to an Address</h3>
-                        <div class="error-message">
-                            <br>
-                            <h4 class='text-danger font-weight-bold'>{[{errorMessage}]}</h4>
-                            <br>
-                        </div>
-                        <div style="width: 60%; display: inline-block; margin-right: 35px;">
-                            <input type="text" id="BTC-send-address" class="form-control validate" placeholder="Receiving Address" ng-model="sendAddress">
-                        </div>
-                        <div style="width: 20%; display: inline-block;">
-                            <input type="number" id="BTC-send-amount" class="form-control validate" placeholder="Amount" ng-model="sendAmount">
-                        </div>
-                        <div style="width: 100%; display: inline-block; margin-right: 35px;">   
-                            <div style="width: 35%; display: inline-block;">
-                                <h4>BTC FEE (in Bitcoin): </h4>
-                            </div>
-                            <div style="width: 50%; display: inline-block;">
-                                <input type="number" id="BTC-fee" class="form-control validate" placeholder={[{BTCfee}]} value={[{BTCfee}]} ng-model="minerFee">
-                            </div>
-                        </div>
-                        <br>
-
-                        <h4>Sending {[{sendAmount || 0 | number:2}]} BTC ( {[{sendAmount * prices.BTCinUSD || 0 | number: 2}]} USD ) </h4>
-                        <br>
-                        <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="sendBitcoin()">
-
-                    </div>
-                    <div class="tab-pane" id="BTC-transactions">
-                        <br>
-                        <h3>Transactions</h3>
-                        <br>
-                        <div ng-if="!gotBTCTransactions">
-                            <br>
-                            <h4> Fetching Transactions </h4>
-                            <br>
-                        </div>
-                        <div class="table-responsive" ng-if="gotBTCTransactions">
-                            <table class="table table-striped" style="text-align: left">
-                                <tr>
-                                    <th style="min-width: 120px;">Date</th>
-                                    <th>Txn Hash</th>
-                                    {{!-- <th>Type</th> --}}
-                                    <th>Amount</th>
-                                    {{!-- <th>from</th> --}}
-                                    {{!-- <th>to</th> --}}
-                                    <th>Confirmations</th>
-                                </tr>
-                                <tr ng-repeat="txn in BTCtransactions">
-                                    <td> {[{txn.createdAt | date:'dd-MM-yy HH:mm'}]} </td>
-                                    <td> <a href="https://blockchain.info/tx/{[{txn.address}]}">{[{txn.address}]}</a> </td>
-                                    {{!-- <td> {[{txn.funcName}]} </td> --}}
-                                    <td> {[{txn.quantity}]} </td>
-                                    {{!-- <td> {[{txn.from}]} </td> --}}
-                                    {{!-- <td> {[{txn.to}]} </td> --}}
-                                    <td> {[{txn.confirmations}]} </td>
-
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="BTC-account">
-                        <br>
-                        <h3>Add a Bitcoin account</h3>
-                        <br>
-                        <!--Add a check to see if account is added-->
-                        <div ng-if="true">
-                            <h4> No account registered yet</h4>
-                            <div class="error-message">
-                                <br>
-                                <h4 class='text-danger font-weight-bold'>{[{addAccountErrorMessage}]}</h4>
-                                <br>
-                            </div>
-                            <br>
-                            <input type="text" id="BTC-add-account" class="form-control validate" placeholder="Add an account" ng-model="addedBtcAccount">
-                            <input class="btn btn-primary btn-lg" type="submit" value="Add" ng-click="addBtcAccount()">
-
-                        </div>
-                        <div ng-if="false">
-                            <h4>Your Bitcoin Account Information</h4>
+                            <h3>Your Bitcoin Account Information</h3>
                             <br>
                             <p>Address:</p>
-                            <h4>{[{user.BTCaddress}]}</h4>
+                            <div ng-if="!user.BTCaddress">
+                                <br>
+                                <h4> Loading User Information... </h4>
+                                <br>
+                            </div>
+                            <h4 style="word-wrap: break-word;">{[{user.BTCaddress}]}</h4>
+                            <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.BTCaddress}]}" alt="" style="width:100%; max-width:600px;">
+                        </div>
+                        <div class="tab-pane" id="BTC-send">
                             <br>
-                            <h4>0 BTC</h4>
+                            <h3>Send Bitcoin to an Address</h3>
+                            <div class="error-message">
+                                <br>
+                                <h4 class='text-danger font-weight-bold'>{[{errorMessage}]}</h4>
+                                <br>
+                            </div>
+                            <div style="width: 60%; display: inline-block; margin-right: 35px;">
+                                <input type="text" id="BTC-send-address" class="form-control validate" placeholder="Receiving Address" ng-model="sendAddress">
+                            </div>
+                            <div style="width: 20%; display: inline-block;">
+                                <input type="number" id="BTC-send-amount" class="form-control validate" placeholder="Amount" ng-model="sendAmount">
+                            </div>
+                            <div style="width: 100%; display: inline-block; margin-right: 35px;">   
+                                <div style="width: 35%; display: inline-block;">
+                                    <h4>BTC FEE (in Bitcoin): </h4>
+                                </div>
+                                <div style="width: 50%; display: inline-block;">
+                                    <input type="number" id="BTC-fee" class="form-control validate" placeholder={[{BTCfee | number}]} value={[{BTCfee | number}]} ng-model="minerFee">
+                                </div>
+                            </div>
+                            <br>
+
+                            <h4>Sending {[{sendAmount || 0 | number:2}]} BTC ( {[{sendAmount * prices.BTCinUSD || 0 | number: 2}]} USD ) </h4>
+                            <br>
+                            <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="validateSendBitcoin()">
 
                         </div>
+                        <div class="tab-pane" id="BTC-transactions">
+                            <br>
+                            <h3>Transactions</h3>
+                            <br>
+                            <div ng-if="!gotBTCTransactions">
+                                <br>
+                                <h4> Fetching Transactions </h4>
+                                <br>
+                            </div>
+                            <div class="table-responsive" ng-if="gotBTCTransactions">
+                                <table class="table table-striped" style="text-align: left">
+                                    <tr>
+                                        <th style="min-width: 120px;">Date</th>
+                                        <th>Txn Hash</th>
+                                        {{!-- <th>Type</th> --}}
+                                        <th>Amount</th>
+                                        {{!-- <th>from</th> --}}
+                                        {{!-- <th>to</th> --}}
+                                        <th>Confirmations</th>
+                                    </tr>
+                                    <tr ng-repeat="txn in BTCtransactions">
+                                        <td> {[{txn.createdAt | date:'dd-MM-yy HH:mm'}]} </td>
+                                        <td> <a href="https://blockchain.info/tx/{[{txn.address}]}">{[{txn.address}]}</a> </td>
+                                        {{!-- <td> {[{txn.funcName}]} </td> --}}
+                                        <td> {[{txn.quantity}]} </td>
+                                        {{!-- <td> {[{txn.from}]} </td> --}}
+                                        {{!-- <td> {[{txn.to}]} </td> --}}
+                                        <td> {[{txn.confirmations}]} </td>
+
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="BTC-account">
+                            <br>
+                            <h3>Add a Bitcoin account</h3>
+                            <br>
+                            <!--Add a check to see if account is added-->
+                            <div ng-if="true">
+                                <h4> No account registered yet</h4>
+                                <div class="error-message">
+                                    <br>
+                                    <h4 class='text-danger font-weight-bold'>{[{addAccountErrorMessage}]}</h4>
+                                    <br>
+                                </div>
+                                <br>
+                                <input type="text" id="BTC-add-account" class="form-control validate" placeholder="Add an account" ng-model="addedBtcAccount">
+                                <input class="btn btn-primary btn-lg" type="submit" value="Add" ng-click="addBtcAccount()">
+
+                            </div>
+                            <div ng-if="false">
+                                <h4>Your Bitcoin Account Information</h4>
+                                <br>
+                                <p>Address:</p>
+                                <h4>{[{user.BTCaddress}]}</h4>
+                                <br>
+                                <h4>0 BTC</h4>
+
+                            </div>
+                        </div>
                     </div>
+
                 </div>
 
+                <!--&lt;!&ndash;Footer&ndash;&gt;-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                <!--</div>-->
             </div>
-
-            <!--&lt;!&ndash;Footer&ndash;&gt;-->
-            <!--<div class="modal-footer">-->
-                <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-            <!--</div>-->
+            <!--/.Content-->
         </div>
-        <!--/.Content-->
     </div>
+    <!-- /.Live preview-->
+
+    <!-- Modal -->
+    <div class="modal fade" id="bitcoin-send-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="BTCSendConfirm" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Send Bitcoin</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <h3>Sending {[{sendAmount}]} BTC to {[{sendAddress}]}</h3>
+                    <br>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <button class="btn btn-lg" ng-click="cancelSendBitcoin()">Cancel</button>
+                        <button class="btn btn-primary btn-lg" ng-click="sendBitcoin()">Confirm</button>
+                    </div>          
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!-- /.Live preview-->
 </div>
-<!-- /.Live preview-->
+
 
 <script type="text/javascript">
  $('#bitcoin-info-modal').on('shown.bs.modal', function () {

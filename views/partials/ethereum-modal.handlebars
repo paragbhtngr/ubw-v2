@@ -1,136 +1,166 @@
-<!-- Modal -->
-<div class="modal fade" id="ethereum-info-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="EthereumController">
-    <div class="modal-dialog" role="document">
-        <!--Content-->
-        <div class="modal-content">
-            <!--Header-->
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">Ethereum</h4>
+<div ng-controller="EthereumController">
+    <!-- Modal -->
+    <div class="modal fade" id="ethereum-info-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Ethereum</h4>
 
 
-            </div>
-            <!--Body-->
-            <div class="modal-body">
-                <!-- Nav tabs -->
-                <ul class="nav ethereum nav-tabs">
-                    <li id="ETH-receive-tab" class="active">
-                        <a  href="#ETH-receive" data-toggle="tab">Receive</a>
-                    </li>
-                    <li id="ETH-send-tab">
-                        <a href="#ETH-send" data-toggle="tab">Send</a>
-                    </li>
-                    <li id="ETH-transactions-tab">
-                        <a href="#ETH-transactions" data-toggle="tab">Transactions</a>
-                    </li>
-                    <li id="ETH-account-tab">
-                        <a ng-if="user.privateETHaddress" href="#ETH-account" data-toggle="tab">Your account</a>
-                        <a ng-if="!user.privateETHaddress" href="#ETH-account" data-toggle="tab">Add account</a>
-                    </li>
-                </ul>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <!-- Nav tabs -->
+                    <ul class="nav ethereum nav-tabs">
+                        <li id="ETH-receive-tab" class="active">
+                            <a  href="#ETH-receive" data-toggle="tab">Receive</a>
+                        </li>
+                        <li id="ETH-send-tab">
+                            <a href="#ETH-send" data-toggle="tab">Send</a>
+                        </li>
+                        <li id="ETH-transactions-tab">
+                            <a href="#ETH-transactions" data-toggle="tab">Transactions</a>
+                        </li>
+                        <li id="ETH-account-tab">
+                            <a ng-if="user.privateETHaddress" href="#ETH-account" data-toggle="tab">Your account</a>
+                            <a ng-if="!user.privateETHaddress" href="#ETH-account" data-toggle="tab">Add account</a>
+                        </li>
+                    </ul>
 
-                <div class="ethereum tab-content ">
-                    <div class="tab-pane active" id="ETH-receive">
-                        <br>
-                        <h3>Your Ethereum Account Information</h3>
-                        <br>
-                        <p>Address:</p>
-                        <div ng-if="!user.ETHaddress">
+                    <div class="ethereum tab-content ">
+                        <div class="tab-pane active" id="ETH-receive">
                             <br>
-                            <h4> Loading User Information... </h4>
-                            <br>
-                        </div>
-                        <h4 style="word-wrap: break-word;">{[{user.ETHaddress}]}</h4>
-                        <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.ETHaddress}]}" alt="" style="width:100%; max-width:600px;">
-                    </div>
-                    <div class="tab-pane" id="ETH-send">
-                        <br>
-                        <h3>Send Ether to an Address</h3>
-                        <div class="error-message">
-                            <br>
-                            <h4 class='text-danger font-weight-bold'>{[{errorMessage}]}</h4>
-                            <br>
-                        </div>
-                        <div style="width: 60%; display: inline-block; margin-right: 35px;">
-                            <input type="text" id="ETH-send-address" class="form-control validate" placeholder="Receiving Address" ng-model="sendAddress">
-                        </div>
-                        <div style="width: 20%; display: inline-block;">
-                            <input type="number" id="ETH-send-amount" class="form-control validate" placeholder="Amount" ng-model="sendAmount">
-                        </div>
-                        <br>
-                        <h4>Sending {[{sendAmount || 0 | number:2}]} ETH ( {[{sendAmount * prices.ETHinUSD || 0 | number:2}]} USD ) </h4>
-                        <br>
-                        <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="sendEthereum()">
-
-                    </div>
-                    <div class="tab-pane" id="ETH-transactions">
-                        <br>
-                        <h3>Transactions</h3>
-                        <br>
-                        <div ng-if="!gotETHTransactions">
-                            <br>
-                            <h4> Fetching Transactions </h4>
-                            <br>
-                        </div>
-                        <div class="table-responsive" ng-if="gotETHTransactions">
-                            <table class="table table-striped" style="text-align: left">
-                                <tr>
-                                    <th style="min-width: 120px;">Date</th>
-                                    <th>Txn Hash</th>
-                                    {{!-- <th>Type</th> --}}
-                                    <th>Amount</th>
-                                    <th>from</th>
-                                    <th>to</th>
-                                </tr>
-                                <tr ng-repeat="txn in ETHtransactions">
-                                    <td> {[{txn.createdAt*1000 | date:'dd-MM-yy HH:mm'}]} </td>
-                                    <td> <a href="https://etherscan.io/tx/{[{txn.address}]}">{[{txn.address}]}</a> </td>
-                                    {{!-- <td> {[{txn.funcName}]} </td> --}}
-                                    <td> {[{txn.quantity / 1000000000000000000}]} </td>
-                                    <td> {[{txn.from}]} </td>
-                                    <td> {[{txn.to}]} </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="ETH-account">
-                        <br>
-                        <h3>Add an Ethereum account</h3>
-                        <br>
-                        <!--Add a check to see if account is added-->
-                        <div ng-if="true">
-                            <h4> No account registered yet</h4>
-                            <br>
-                            <input type="text" id="ETH-add-account" class="form-control validate" placeholder="Add an account" ng-model="addedEthAccount">
-                            <input class="btn btn-primary btn-lg" type="submit" value="Add" ng-click="addEthAccount()">
-
-                        </div>
-                        <div ng-if="false">
-                            <h4>Your Ethereum Account Information</h4>
+                            <h3>Your Ethereum Account Information</h3>
                             <br>
                             <p>Address:</p>
-                            <h4>{[{ETHaddress}]}</h4>
+                            <div ng-if="!user.ETHaddress">
+                                <br>
+                                <h4> Loading User Information... </h4>
+                                <br>
+                            </div>
+                            <h4 style="word-wrap: break-word;">{[{user.ETHaddress}]}</h4>
+                            <img src="https://chart.googleapis.com/chart?chs=350x350&cht=qr&chl={[{user.ETHaddress}]}" alt="" style="width:100%; max-width:600px;">
+                        </div>
+                        <div class="tab-pane" id="ETH-send">
                             <br>
-                            <h4>0 ETH</h4>
+                            <h3>Send Ether to an Address</h3>
+                            <div class="error-message">
+                                <br>
+                                <h4 class='text-danger font-weight-bold'>{[{errorMessage}]}</h4>
+                                <br>
+                            </div>
+                            <div style="width: 60%; display: inline-block; margin-right: 35px;">
+                                <input type="text" id="ETH-send-address" class="form-control validate" placeholder="Receiving Address" ng-model="sendAddress">
+                            </div>
+                            <div style="width: 20%; display: inline-block;">
+                                <input type="number" id="ETH-send-amount" class="form-control validate" placeholder="Amount" ng-model="sendAmount">
+                            </div>
+                            <br>
+                            <h4>Sending {[{sendAmount || 0 | number:2}]} ETH ( {[{sendAmount * prices.ETHinUSD || 0 | number:2}]} USD ) </h4>
+                            <br>
+                            <input class="btn btn-primary btn-lg" type="submit" value="Send" ng-click="validateSendEthereum()">
 
                         </div>
+                        <div class="tab-pane" id="ETH-transactions">
+                            <br>
+                            <h3>Transactions</h3>
+                            <br>
+                            <div ng-if="!gotETHTransactions">
+                                <br>
+                                <h4> Fetching Transactions </h4>
+                                <br>
+                            </div>
+                            <div class="table-responsive" ng-if="gotETHTransactions">
+                                <table class="table table-striped" style="text-align: left">
+                                    <tr>
+                                        <th style="min-width: 120px;">Date</th>
+                                        <th>Txn Hash</th>
+                                        {{!-- <th>Type</th> --}}
+                                        <th>Amount</th>
+                                        <th>from</th>
+                                        <th>to</th>
+                                    </tr>
+                                    <tr ng-repeat="txn in ETHtransactions">
+                                        <td> {[{txn.createdAt*1000 | date:'dd-MM-yy HH:mm'}]} </td>
+                                        <td> <a href="https://etherscan.io/tx/{[{txn.address}]}">{[{txn.address}]}</a> </td>
+                                        {{!-- <td> {[{txn.funcName}]} </td> --}}
+                                        <td> {[{txn.quantity / 1000000000000000000}]} </td>
+                                        <td> {[{txn.from}]} </td>
+                                        <td> {[{txn.to}]} </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="ETH-account">
+                            <br>
+                            <h3>Add an Ethereum account</h3>
+                            <br>
+                            <!--Add a check to see if account is added-->
+                            <div ng-if="true">
+                                <h4> No account registered yet</h4>
+                                <br>
+                                <input type="text" id="ETH-add-account" class="form-control validate" placeholder="Add an account" ng-model="addedEthAccount">
+                                <input class="btn btn-primary btn-lg" type="submit" value="Add" ng-click="addEthAccount()">
+
+                            </div>
+                            <div ng-if="false">
+                                <h4>Your Ethereum Account Information</h4>
+                                <br>
+                                <p>Address:</p>
+                                <h4>{[{ETHaddress}]}</h4>
+                                <br>
+                                <h4>0 ETH</h4>
+
+                            </div>
+                        </div>
                     </div>
+
                 </div>
 
+                <!--&lt;!&ndash;Footer&ndash;&gt;-->
+                <!--<div class="modal-footer">-->
+                    <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                <!--</div>-->
             </div>
-
-            <!--&lt;!&ndash;Footer&ndash;&gt;-->
-            <!--<div class="modal-footer">-->
-                <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-            <!--</div>-->
+            <!--/.Content-->
         </div>
-        <!--/.Content-->
     </div>
+    <!-- /.Live preview-->
+
+    <!-- Modal -->
+    <div class="modal fade" id="ethereum-send-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="ETHSendConfirm" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <!--Content-->
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Confirm Send Ether</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body">
+                    <h3>Sending {[{sendAmount}]} ETH to {[{sendAddress}]}</h3>
+                    <br>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <button class="btn btn-lg" ng-click="cancelSendEthereum()">Cancel</button>
+                        <button class="btn btn-primary btn-lg" ng-click="sendEthereum()">Confirm</button>
+                    </div>
+                    
+                </div>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+    <!-- /.Live preview-->
 </div>
-<!-- /.Live preview-->
 
 <style>
     .tab-content {

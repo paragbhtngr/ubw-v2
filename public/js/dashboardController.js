@@ -13,7 +13,7 @@ ngapp.controller('SuperController', ['$http', '$scope', '$rootScope', '$cookies'
         $scope.authToken = $cookies.get("ubwAuthToken");
         $rootScope.authToken = $scope.authToken;
 
-        var postObject = {
+        let postObject = {
             authToken : $scope.authToken
         };
 
@@ -193,6 +193,57 @@ ngapp.controller('SuperController', ['$http', '$scope', '$rootScope', '$cookies'
         );
     };
 
+    $scope.getPrivateBalances = function(){
+        console.log("GETTING PRIVATE BALANCES:");
+        if($rootScope.user) {
+	    console.log('https://btc.blockr.io/api/v1/address/balance/'+$rootScope.user.privateBTCaddress);
+            $http.get('https://btc.blockr.io/api/v1/address/balance/'+$rootScope.user.privateBTCaddress).then(
+                // $http.get('https://shapeshift.io/btcfee').then(
+                function (response) {
+                    // success callback
+                    if(testing) { console.log("PRIVATE BTC ADDRESS: ", response.data); }
+                    // $rootScope.BTCfee = response.data.recommendedFeeInSatoshi_btc;
+                    $rootScope.user.privateBTCbalance = response.data.data.balance;
+                },
+                function (response) {
+                    // failure callback
+                    if(testing) { console.log('ERROR IN FETCHING PRIVATE BTC ADDRESS:', response); }
+                    $(function(){
+                        new PNotify({
+                            title: 'Private BTC balance request error',
+                            text: 'Could not fetch Private BTC balance from server',
+                            stack: stack_topright,
+                            type: "error"
+                        })
+                    });
+                }
+            );
+
+            $http.get('https://api.etherscan.io/api?module=account&action=balance&address='+$rootScope.user.privateETHaddress+'&tag=latest').then(
+                // $http.get('https://shapeshift.io/btcfee').then(
+                function (response) {
+                    // success callback
+                    if(testing) { console.log("PRIVATE ETH ADDRESS: ", response.data); }
+                    // $rootScope.BTCfee = response.data.recommendedFeeInSatoshi_btc;
+                    $rootScope.user.privateETHbalance = response.data.result/1000000000000000000;
+                },
+                function (response) {
+                    // failure callback
+                    if(testing) { console.log(response); }
+                    $(function(){
+                        new PNotify({
+                            title: 'Private ETH balance request error',
+                            text: 'Could not fetch Private ETH balance from server',
+                            stack: stack_topright,
+                            type: "error"
+                        })
+                    });
+                }
+            );
+        }
+
+    };
+
     $scope.getTransactions = function(){
         $scope.authToken = $cookies.get("ubwAuthToken");
         console.log("GET TRANSACTIONS GET USER DATA:");
@@ -206,7 +257,7 @@ ngapp.controller('SuperController', ['$http', '$scope', '$rootScope', '$cookies'
             return;
         }
 
-        var postObject = {
+        let postObject = {
             authToken : $scope.authToken
         };
 
@@ -597,6 +648,7 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$rootScope', '$cook
     function loop() {
         $scope.getUserData();
         $scope.getPrices();
+        $scope.getPrivateBalances();
         $scope.getTransactions();
         if($rootScope.gotBTCTransactions){
             window.setTimeout(loop, 30000);           
@@ -636,14 +688,14 @@ ngapp.controller('DashboardController', ['$http', '$scope', '$rootScope', '$cook
 
         $('.'+modal+'.nav-tabs>li').each( function(){
             $(this).removeClass('active');
-            if($(this).attr('id') == (modalTab+'-tab')){
+            if($(this).attr('id') === (modalTab+'-tab')){
                 $(this).addClass('active');
             }
         });
 
         $('.'+modal+'.tab-content>div').each( function(){
             $(this).removeClass('active');
-            if($(this).attr('id') == (modalTab)){
+            if($(this).attr('id') === (modalTab)){
                 $(this).addClass('active');
             }
         });

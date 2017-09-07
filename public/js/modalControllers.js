@@ -18,7 +18,7 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$rootScope', '$cookie
     }, 5000);
 
     $scope.bitcoinFilter = (txn) => {
-        if (txn.metadata.fromCurrency == "BTC" || txn.metadata.toCurrency == "BTC") {
+        if (txn.metadata.fromCurrency === "BTC" || txn.metadata.toCurrency === "BTC") {
             return txn;
         }
     };
@@ -43,44 +43,47 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$rootScope', '$cookie
             return;
         }
         // TODO: Maybe check that the bitcoin address is an actual valid address on the server?
+        let btcAddress = $('#BTC-send-address');
+        let btcSendAmount = $('#BTC-send-amount');
+
         if ($scope.sendAddress) { //check if address is valid
-            if ($('#BTC-send-address').hasClass('invalid')) {
-                $('#BTC-send-address').removeClass('invalid');
+            if(btcAddress.hasClass('invalid')) {
+                btcAddress.removeClass('invalid');
             }
         } else {
             $scope.errorMessage = "Please specify a recipient address";
-            if (!($('#BTC-send-address').hasClass('invalid'))) {
-                $('#BTC-send-address').addClass('invalid');
+            if (!(btcAddress.hasClass('invalid'))) {
+                btcAddress.addClass('invalid');
             }
             return;
         }
         if ($scope.sendAmount && $scope.sendAmount > 0) { // Check if amount is valid
-            if ($('#BTC-send-amount').hasClass('invalid')) {
-                $('#BTC-send-amount').removeClass('invalid');
+            if (btcSendAmount.hasClass('invalid')) {
+                btcSendAmount.removeClass('invalid');
             }
         } else {
             $scope.errorMessage = "Please specify a valid amount";
-            if (!($('#BTC-send-amount').hasClass('invalid'))) {
-                $('#BTC-send-amount').addClass('invalid');
+            if (!(btcSendAmount.hasClass('invalid'))) {
+                btcSendAmount.addClass('invalid');
             }
             return;
         }
         //all fields are valid. Confirm with user
         $('#bitcoin-info-modal').modal('toggle');
         $('#bitcoin-send-confirm-modal').modal('toggle');
-    }
+    };
 
     $scope.cancelSendBitcoin = () => {
         $('#bitcoin-send-confirm-modal').modal('toggle');
         $('#bitcoin-info-modal').modal('toggle');
-    }
+    };
 
     // SEND BITCOIN FUNCTION
     $scope.sendBitcoin = () => {
         // Close the modal and clear the values
         $('#bitcoin-send-confirm-modal').modal('toggle');
         // Send the amount
-        var postObject = {
+        let postObject = {
             authToken: $scope.authToken,
             toAddress: $scope.sendAddress,
             minerFee: $scope.minerFee,
@@ -117,7 +120,7 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$rootScope', '$cookie
                         })
                     });
                 }
-                if (response.data.message == "insufficientFunds") {
+                if (response.data.message === "insufficientFunds") {
                     // PNOTIFY INSUFFICIENT FUNDS FOR TRANSACTION
                     $(() => {
                         new PNotify({
@@ -127,7 +130,7 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$rootScope', '$cookie
                             type: "error"
                         })
                     });
-                } else if (response.data.message == "invalidAuthToken") {
+                } else if (response.data.message === "invalidAuthToken") {
                     if (redirect) {
                         if (testing) { window.location.href = '/login#?sessExpired&BitcoinController&SendBTC'; } else { window.location.href = '/login#?sessExpired'; }
                     }
@@ -153,16 +156,17 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$rootScope', '$cookie
     $scope.addBtcAccount = () => {
         // Close the modal and clear the values
         $('#bitcoin-info-modal').modal('toggle');
+        console.log("ADDING BTC ACCOUNT:", $scope.user.newBTCaddress);
         // Send the address
-        var postObject = {
+        let postObject = {
             authToken: $scope.authToken,
-            address: $scope.addedBtcAccount
+            address: $scope.user.newBTCaddress
         };
         // PNOTIFY ADD ACCOUNT REQUEST VALIDATED ON CLIENT SIDE
         $(() => {
             new PNotify({
                 title: 'Adding Account to profile',
-                text: 'Adding account ' + $scope.addedBtcAccount + ' to your user profile',
+                text: 'Adding account ' + $scope.user.newBTCaddress + ' to your user profile',
                 stack: stack_topright,
                 type: "notice"
             })
@@ -176,12 +180,12 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$rootScope', '$cookie
                     $(() => {
                         new PNotify({
                             title: 'Successfully added account',
-                            text: 'Bitcoin account ' + $scope.addedBtcAccount + ' has been successfully added to your profile',
+                            text: 'Bitcoin account ' + $scope.user.newBTCaddress + ' has been successfully added to your profile',
                             stack: stack_topright,
                             type: "success"
                         })
                     });
-                } else if (response.data.message == "invalidAuthToken") {
+                } else if (response.data.message === "invalidAuthToken") {
                     if (redirect) {
                         if (testing) {
                             window.location.href = '/login#?sessExpired&BitcoinController&AddBTCAccount';
@@ -218,7 +222,7 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$rootScope', '$cooki
     }, 5000);
 
     $scope.ethereumFilter = (txn) => {
-        if (txn.metadata.fromCurrency == "ETH" || txn.metadata.toCurrency == "ETH") {
+        if (txn.metadata.fromCurrency === "ETH" || txn.metadata.toCurrency === "ETH") {
             return txn;
         }
     };
@@ -228,8 +232,9 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$rootScope', '$cooki
             console.log($scope.user.KYCAML);
         }
         // Check KYCAML
+        let ethereumInfoModal = $('#ethereum-info-modal');
         if (!$scope.user.KYCAML) {
-            $('#ethereum-info-modal').modal('toggle');
+            ethereumInfoModal.modal('toggle');
             $(() => {
                 new PNotify({
                     title: 'KYCAML Not Complete',
@@ -240,40 +245,42 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$rootScope', '$cooki
             });
             return;
         }
+        let ethAddress = $('#ETH-send-address');
+        let ethSendAmount = $('#ETH-send-amount');
         if ($scope.sendAddress) { // Check if Address is valid
-            if ($('#ETH-send-address').hasClass('invalid')) {
-                $('#ETH-send-address').removeClass('invalid');
+            if (ethAddress.hasClass('invalid')) {
+                ethAddress.removeClass('invalid');
             }
         } else {
             $scope.errorMessage = "Please specify a recipient address";
-            if (!($('#ETH-send-address').hasClass('invalid'))) {
-                $('#ETH-send-address').addClass('invalid');
+            if (!(ethAddress.hasClass('invalid'))) {
+                ethAddress.addClass('invalid');
             }
             return;
         }
         if ($scope.sendAmount && $scope.sendAmount > 0) { // Check if amount is valid
-            if ($('#ETH-send-amount').hasClass('invalid')) {
-                $('#ETH-send-amount').removeClass('invalid');
+            if (ethSendAmount.hasClass('invalid')) {
+                ethSendAmount.removeClass('invalid');
             }
         } else {
             $scope.errorMessage = "Please specify a valid amount";
-            if (!($('#ETH-send-amount').hasClass('invalid'))) {
-                $('#ETH-send-amount').addClass('invalid');
+            if (!(ethSendAmount.hasClass('invalid'))) {
+                ethSendAmount.addClass('invalid');
             }
             return;
         }
-        $('#ethereum-info-modal').modal('toggle');
+        ethereumInfoModal.modal('toggle');
         $('#ethereum-send-confirm-modal').modal('toggle');
-    }
+    };
     $scope.cancelSendEthereum = () => {
         $('#ethereum-send-confirm-modal').modal('toggle');
         $('#ethereum-info-modal').modal('toggle');
-    }
+    };
     $scope.sendEthereum = () => {
         // Close the modal and clear the values
         $('#ethereum-send-confirm-modal').modal('toggle');
         // Send the amount
-        var postObject = {
+        let postObject = {
             authToken: $scope.authToken,
             toAddress: $scope.sendAddress,
             amount: $scope.sendAmount
@@ -305,7 +312,7 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$rootScope', '$cooki
                         })
                     });
                 }
-                if (response.data.message == "insufficientFunds") {
+                if (response.data.message === "insufficientFunds") {
                     $scope.sendAddress = null;
                     $scope.sendAmount = null;
                     $(() => {
@@ -316,7 +323,7 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$rootScope', '$cooki
                             type: "error"
                         })
                     });
-                } else if (response.data.message == "invalidAuthToken") {
+                } else if (response.data.message === "invalidAuthToken") {
                     if (redirect) {
                         if (testing) {
                             window.location.href = '/login#?sessExpired&EthereumController&SendETH';
@@ -338,13 +345,42 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$rootScope', '$cooki
         // Close the modal and clear the values
         $('#ethereum-info-modal').modal('toggle');
         // Send the address
+        console.log("ADDING ETH ACCOUNT:", $scope.user.newETHaddress);
+        // Send the address
+        let postObject = {
+            authToken: $scope.authToken,
+            address: $scope.user.newETHaddress
+        };
+        // PNOTIFY ADD ACCOUNT REQUEST VALIDATED ON CLIENT SIDE
+        $(() => {
+            new PNotify({
+                title: 'Adding Account to profile',
+                text: 'Adding account ' + $scope.user.newETHaddress + ' to your user profile',
+                stack: stack_topright,
+                type: "notice"
+            })
+        });
         $http.post(SERVER_PORT + '/api/v1/userops/add_eth_address', postObject).then(
             (response) => {
                 // success callback
                 if (testing) { console.log("ADDING ETH ADDRESS: ", response); }
-                if (response.data.success) {} else if (response.data.message == "invalidAuthToken") {
+                if (response.data.success) {
+                    // PNOTIFY ADD ACCOUNT REQUEST VALIDATED ON CLIENT SIDE
+                    $(() => {
+                        new PNotify({
+                            title: 'Successfully added account',
+                            text: 'Ethereum account ' + $scope.user.newETHaddress + ' has been successfully added to your profile',
+                            stack: stack_topright,
+                            type: "success"
+                        })
+                    });
+                } else if (response.data.message === "invalidAuthToken") {
                     if (redirect) {
-                        if (testing) { window.location.href = '/login#?sessExpired&EthereumController&AddETHAccount'; } else { window.location.href = '/login#?sessExpired'; }
+                        if (testing) {
+                            window.location.href = '/login#?sessExpired&BitcoinController&AddBTCAccount';
+                        } else {
+                            window.location.href = '/login#?sessExpired';
+                        }
                     }
                 }
             },
@@ -369,7 +405,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
     }, 5000);
 
     $scope.dinarcoinFilter = (txn) => {
-        if (txn.metadata.fromCurrency == "DNC" || txn.metadata.toCurrency == "DNC") {
+        if (txn.metadata.fromCurrency === "DNC" || txn.metadata.toCurrency === "DNC") {
             return txn;
         }
     };
@@ -388,43 +424,46 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
             return;
         }
         // Check if Address is valid
+        let dncAddress = $('#DNC-send-address');
+        let dncSendAmount = $('#DNC-send-amount');
+
         if ($scope.sendAddress) {
-            if ($('#DNC-send-address').hasClass('invalid')) {
-                $('#DNC-send-address').removeClass('invalid');
+            if (dncAddress.hasClass('invalid')) {
+                dncAddress.removeClass('invalid');
             }
         } else {
             $scope.sendErrorMessage = "Please specify a valid amount";
-            if (!($('#DNC-send-amount').hasClass('invalid'))) {
-                $('#DNC-send-amount').addClass('invalid');
+            if (!(dncAddress.hasClass('invalid'))) {
+                dncAddress.addClass('invalid');
             }
             return;
         }
         // Check if amount is valid
         if ($scope.sendAmount && $scope.sendAmount > 0) {
-            if ($('#DNC-send-amount').hasClass('invalid')) {
-                $('#DNC-send-amount').removeClass('invalid');
+            if (dncSendAmount.hasClass('invalid')) {
+                dncSendAmount.removeClass('invalid');
             }
         } else {
             $scope.sendErrorMessage = "Please specify a recipient address";
-            if (!($('#DNC-send-address').hasClass('invalid'))) {
-                $('#DNC-send-address').addClass('invalid');
+            if (!(dncSendAmount.hasClass('invalid'))) {
+                dncSendAmount.addClass('invalid');
             }
             return;
         }
 
         $('#dinarcoin-info-modal').modal('toggle');
         $('#dinarcoin-send-confirm-modal').modal('toggle');
-    }
+    };
     $scope.cancelSendDinarcoin = () => {
         $('#dinarcoin-send-confirm-modal').modal('toggle');
         $('#dinarcoin-info-modal').modal('toggle');
-    }
+    };
     $scope.sendDinarcoin = () => {
         // Close the modal and clear the values
         $('#dinarcoin-send-confirm-modal').modal('toggle');
 
         // Send the amount
-        var postObject = {
+        let postObject = {
             authToken: $scope.authToken,
             toAddress: $scope.sendAddress,
             amount: $scope.sendAmount
@@ -447,7 +486,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                         })
                     });
                 }
-                if (response.data.message == "insufficientFunds") {
+                if (response.data.message === "insufficientFunds") {
                     $scope.sendAddress = null;
                     $scope.sendAmount = null;
                     $(() => {
@@ -458,7 +497,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                             type: "error"
                         })
                     });
-                } else if (response.data.message == "invalidAuthToken") {
+                } else if (response.data.message === "invalidAuthToken") {
                     if (redirect) {
                         if (testing) {
                             window.location.href = '/login#?sessExpired&DinarcoinController&SendDNC';
@@ -490,43 +529,45 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
         }
         // Check if Currency is valid
         if (testing) { console.log("SENDING ", $scope.mintCurrency); }
-        if ($scope.mintCurrency == "BTC" || $scope.mintCurrency == "ETH") {
-            if ($('#mint-currency').hasClass('invalid')) {
-                $('#mint-currency').removeClass('invalid');
+        let mintCurrency = $('#mint-currency');
+        if ($scope.mintCurrency === "BTC" || $scope.mintCurrency === "ETH") {
+            if (mintCurrency.hasClass('invalid')) {
+                mintCurrency.removeClass('invalid');
             }
         } else {
             $scope.mintErrorMessage = "Please Pick a currency";
-            if (!($('#mint-currency').hasClass('invalid'))) {
-                $('#mint-currency').addClass('invalid');
+            if (!(mintCurrency.hasClass('invalid'))) {
+                mintCurrency.addClass('invalid');
             }
             return;
         }
         // Check if amount is valid
+        let mintAmount = $('#mint-amount');
         if ($scope.mintAmount && $scope.mintAmount > 0) {
-            if ($('#mint-amount').hasClass('invalid')) {
-                $('#mint-amount').removeClass('invalid');
+            if (mintAmount.hasClass('invalid')) {
+                mintAmount.removeClass('invalid');
             }
         } else {
             $scope.mintErrorMessage = "Please specify a valid amount";
-            if (!($('#mint-amount').hasClass('invalid'))) {
-                $('#mint-amount').addClass('invalid');
+            if (!(mintAmount.hasClass('invalid'))) {
+                mintAmount.addClass('invalid');
             }
             return;
         }
 
         $('#dinarcoin-info-modal').modal('toggle');
         $('#dinarcoin-mint-confirm-modal').modal('toggle');
-    }
+    };
     $scope.cancelMintDinarcoin = () => {
         $('#dinarcoin-mint-confirm-modal').modal('toggle');
         $('#dinarcoin-info-modal').modal('toggle');
-    }
+    };
     $scope.mintDinarcoin = () => {
         // Close the modal and clear the values
-        $('#dinarcoin-info-modal').modal('toggle');
+        $('#dinarcoin-mint-confirm-modal').modal('toggle');
 
         // mint the amount
-        var postObject = {
+        let postObject = {
             authToken: $scope.authToken,
             fromCurrency: $scope.mintCurrency,
             amount: $scope.mintAmount // TODO: Change Amount from BTC/ETH to DNC
@@ -562,7 +603,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                         })
                     });
                 }
-                if (response.data.message == "insufficientFunds") {
+                if (response.data.message === "insufficientFunds") {
                     $scope.mintCurrency = null;
                     $scope.mintAmount = null;
                     $(() => {
@@ -573,7 +614,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                             type: "error"
                         })
                     });
-                } else if (response.data.message == "insufficientAdminFunds") {
+                } else if (response.data.message === "insufficientAdminFunds") {
                     $scope.mintCurrency = null;
                     $scope.mintAmount = null;
                     $(() => {
@@ -584,7 +625,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                             type: "error"
                         })
                     });
-                } else if (response.data.message == "invalidAuthToken") {
+                } else if (response.data.message === "invalidAuthToken") {
                     if (redirect) {
                         if (testing) {
                             window.location.href = '/login#?sessExpired&DinarcoinController&BuyDNC';
@@ -616,41 +657,43 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
         }
         // Check if Currency is valid
         if (testing) { console.log("SENDING ", $scope.burnCurrency); }
-        if ($scope.burnCurrency == "BTC" || $scope.burnCurrency == "ETH") {
-            if ($('#burn-currency').hasClass('invalid')) {
-                $('#burn-currency').removeClass('invalid');
+        let burnCurrency = $('#burn-currency');
+        if ($scope.burnCurrency === "BTC" || $scope.burnCurrency === "ETH") {
+            if (burnCurrency.hasClass('invalid')) {
+                burnCurrency.removeClass('invalid');
             }
         } else {
             $scope.burnErrorMessage = "Please Pick a currency";
-            if (!($('#burn-currency').hasClass('invalid'))) {
-                $('#burn-currency').addClass('invalid');
+            if (!(burnCurrency.hasClass('invalid'))) {
+                burnCurrency.addClass('invalid');
             }
             return;
         }
         // Check if amount is valid
+        let burnAmount = $('#burn-amount');
         if ($scope.burnAmount && $scope.burnAmount > 0) {
-            if ($('#burn-amount').hasClass('invalid')) {
-                $('#burn-amount').removeClass('invalid');
+            if (burnAmount.hasClass('invalid')) {
+                burnAmount.removeClass('invalid');
             }
         } else {
             $scope.burnErrorMessage = "Please specify a valid amount";
-            if (!($('burn-amount').hasClass('invalid'))) {
-                $('#burn-amount').addClass('invalid');
+            if (!(burnAmount.hasClass('invalid'))) {
+                burnAmount.addClass('invalid');
             }
             return;
         }
         $('#dinarcoin-info-modal').modal('toggle');
         $('#dinarcoin-burn-confirm-modal').modal('toggle');
-    }
+    };
     $scope.cancelBurnDinarcoin = () => {
         $('#dinarcoin-burn-confirm-modal').modal('toggle');
         $('#dinarcoin-info-modal').modal('toggle');
-    }
+    };
     $scope.burnDinarcoin = () => {
         // Close the modal and clear the values
-        $('#dinarcoin-info-modal').modal('toggle');
+        $('#dinarcoin-burn-confirm-modal').modal('toggle');
         // mint the amount
-        var postObject = {
+        let postObject = {
             authToken: $scope.authToken,
             toCurrency: $scope.burnCurrency,
             amount: $scope.burnAmount // TODO: Change currency from BTC/ETH to DNC
@@ -685,7 +728,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                     });
 
                 }
-                if (response.data.message == "insufficientFunds") {
+                if (response.data.message === "insufficientFunds") {
                     $scope.burnCurrency = null;
                     $scope.burnAmount = null;
                     $(() => {
@@ -697,7 +740,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                         })
                     });
                 }
-                if (response.data.message == "ticket") {
+                if (response.data.message === "ticket") {
                     $scope.burnCurrency = null;
                     $scope.burnAmount = null;
                     $(() => {
@@ -708,7 +751,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                             type: "error"
                         })
                     });
-                } else if (response.data.message == "invalidAuthToken") {
+                } else if (response.data.message === "invalidAuthToken") {
                     if (redirect) {
                         if (testing) {
                             window.location.href = '/login#?sessExpired&DinarcoinController&SellDNC';
@@ -740,11 +783,11 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
 
     $scope.GSCFilter = function(txn) {
         if (
-            txn.metadata.fromCurrency == "GOLD_1G" || txn.metadata.toCurrency == "GOLD_1G" ||
-            txn.metadata.fromCurrency == "GOLD_100G" || txn.metadata.toCurrency == "GOLD_100G" ||
-            txn.metadata.fromCurrency == "GOLD_1KG" || txn.metadata.toCurrency == "GOLD_1KG" ||
-            txn.metadata.fromCurrency == "SILVER100Oz" || txn.metadata.toCurrency == "SILVER100Oz" ||
-            txn.metadata.fromCurrency == "SILVER1KG" || txn.metadata.toCurrency == "SILVER1KG"
+            txn.metadata.fromCurrency === "GOLD_1G" || txn.metadata.toCurrency === "GOLD_1G" ||
+            txn.metadata.fromCurrency === "GOLD_100G" || txn.metadata.toCurrency === "GOLD_100G" ||
+            txn.metadata.fromCurrency === "GOLD_1KG" || txn.metadata.toCurrency === "GOLD_1KG" ||
+            txn.metadata.fromCurrency === "SILVER100Oz" || txn.metadata.toCurrency === "SILVER100Oz" ||
+            txn.metadata.fromCurrency === "SILVER1KG" || txn.metadata.toCurrency === "SILVER1KG"
         ) {
             return txn;
         }
@@ -827,11 +870,11 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
         // Check if Instrument is valid
         if (testing) { console.log("SENDING ", $scope.mintCurrency); }
         if (
-            $scope.mintInstrument == "GOLD_1G" ||
-            $scope.mintInstrument == "GOLD_100G" ||
-            $scope.mintInstrument == "GOLD_1KG" ||
-            $scope.mintInstrument == "SILVER100Oz" ||
-            $scope.mintInstrument == "SILVER1KG"
+            $scope.mintInstrument === "GOLD_1G" ||
+            $scope.mintInstrument === "GOLD_100G" ||
+            $scope.mintInstrument === "GOLD_1KG" ||
+            $scope.mintInstrument === "SILVER100Oz" ||
+            $scope.mintInstrument === "SILVER1KG"
         ) {
 
             if ($('#mint-instrument').hasClass('invalid')) {
@@ -840,9 +883,9 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
 
             // Check if Currency is valid
             if (
-                $scope.mintCurrency == "BTC" ||
-                $scope.mintCurrency == "ETH" ||
-                $scope.mintCurrency == "DNC"
+                $scope.mintCurrency === "BTC" ||
+                $scope.mintCurrency === "ETH" ||
+                $scope.mintCurrency === "DNC"
             ) {
 
                 if ($('#mint-currency').hasClass('invalid')) {
@@ -859,7 +902,7 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
                     $('#GSC-info-modal').modal('toggle');
 
                     // mint the amount
-                    var postObject = {
+                    let postObject = {
                         authToken: $scope.authToken,
                         instrument: $scope.mintInstrument,
                         fromCurrency: $scope.mintCurrency,
@@ -899,7 +942,7 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
                                     })
                                 });
                             }
-                            if (response.data.message == "insufficientFunds") {
+                            if (response.data.message === "insufficientFunds") {
                                 $scope.mintCurrency = null;
                                 $scope.mintAmount = null;
                                 $(() => {
@@ -910,7 +953,7 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
                                         type: "error"
                                     })
                                 });
-                            } else if (response.data.message == "invalidAuthToken") {
+                            } else if (response.data.message === "invalidAuthToken") {
                                 if (redirect) {
                                     if (testing) {
                                         window.location.href = '/login#?sessExpired&InstrumentController&BuyGSC';
@@ -929,7 +972,7 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
                 } else {
                     if ($scope.mintAmount > 0 && $scope.mintAmount < 0.1) {
                         $scope.mintErrorMessage = "Minimum mint amount is 0.1 DNC";
-                    } else if ($scope.mintAmount > 0 && $scope.mintAmount % 0.1 != 0) {
+                    } else if ($scope.mintAmount > 0 && $scope.mintAmount % 0.1 !== 0) {
                         $scope.mintErrorMessage = "Please enter an amount that is divisible ";
                     }
                     $scope.mintErrorMessage = "Please specify a valid amount";
@@ -975,11 +1018,11 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
         // Check if Instrument is valid
         if (testing) { console.log("SENDING ", $scope.burnCurrency); }
         if (
-            $scope.burnInstrument == "GOLD_1G" ||
-            $scope.burnInstrument == "GOLD_100G" ||
-            $scope.burnInstrument == "GOLD_1KG" ||
-            $scope.burnInstrument == "SILVER100Oz" ||
-            $scope.burnInstrument == "SILVER1KG"
+            $scope.burnInstrument === "GOLD_1G" ||
+            $scope.burnInstrument === "GOLD_100G" ||
+            $scope.burnInstrument === "GOLD_1KG" ||
+            $scope.burnInstrument === "SILVER100Oz" ||
+            $scope.burnInstrument === "SILVER1KG"
         ) {
 
             if ($('#burn-instrument').hasClass('invalid')) {
@@ -988,9 +1031,9 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
 
             // Check if Currency is valid
             if (
-                $scope.burnCurrency == "BTC" ||
-                $scope.burnCurrency == "ETH" ||
-                $scope.burnCurrency == "DNC"
+                $scope.burnCurrency === "BTC" ||
+                $scope.burnCurrency === "ETH" ||
+                $scope.burnCurrency === "DNC"
             ) {
 
                 if ($('#burn-currency').hasClass('invalid')) {
@@ -1007,7 +1050,7 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
                     $('#GSC-info-modal').modal('toggle');
 
                     // burn the amount
-                    var postObject = {
+                    let postObject = {
                         authToken: $scope.authToken,
                         instrument: $scope.burnInstrument,
                         toCurrency: $scope.burnCurrency,
@@ -1044,7 +1087,7 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
                                     })
                                 });
                             }
-                            if (response.data.message == "insufficientFunds") {
+                            if (response.data.message === "insufficientFunds") {
                                 $scope.burnCurrency = null;
                                 $scope.burnAmount = null;
                                 $(() => {
@@ -1055,7 +1098,7 @@ ngapp.controller('instrumentsController', ['$http', '$scope', '$rootScope', '$co
                                         type: "error"
                                     })
                                 });
-                            } else if (response.data.message == "invalidAuthToken") {
+                            } else if (response.data.message === "invalidAuthToken") {
                                 if (redirect) {
                                     if (testing) {
                                         window.location.href = '/login#?sessExpired&InstrumentController&SellGSC';

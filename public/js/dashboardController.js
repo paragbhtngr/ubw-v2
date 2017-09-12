@@ -134,26 +134,25 @@ ngapp.controller('SuperController', ['$http', '$scope', '$rootScope', '$cookies'
                 $scope.prices.DNCbidinUSD      = response.data.DNC.bid;
                 $scope.prices.DNCaskinUSD      = response.data.DNC.ask;
 
-                $scope.prices.G1GbidinUSD      = response.data.GOLD_1G.bid;
-                $scope.prices.G1GaskinUSD      = response.data.GOLD_1G.ask;
+                // $scope.prices.G1GbidinUSD      = response.data.GOLD_1G.bid;
+                // $scope.prices.G1GaskinUSD      = response.data.GOLD_1G.ask;
 
-                $scope.prices.G100GbidinUSD    = response.data.GOLD_100G.bid;
-                $scope.prices.G100GaskinUSD    = response.data.GOLD_100G.ask;
+                // $scope.prices.G100GbidinUSD    = response.data.GOLD_100G.bid;
+                // $scope.prices.G100GaskinUSD    = response.data.GOLD_100G.ask;
 
-                $scope.prices.G1KGbidinUSD     = response.data.GOLD_1KG.bid;
-                $scope.prices.G1KGaskinUSD     = response.data.GOLD_1KG.ask;
+                // $scope.prices.G1KGbidinUSD     = response.data.GOLD_1KG.bid;
+                // $scope.prices.G1KGaskinUSD     = response.data.GOLD_1KG.ask;
 
-                $scope.prices.S100OzbidinUSD   = response.data.SILVER_100OZ.bid;
-                $scope.prices.S100OzaskinUSD   = response.data.SILVER_100OZ.ask;
+                // $scope.prices.S100OzbidinUSD   = response.data.SILVER_100OZ.bid;
+                // $scope.prices.S100OzaskinUSD   = response.data.SILVER_100OZ.ask;
 
-                $scope.prices.S1KGbidinUSD     = response.data.SILVER_1KG.bid;
-                $scope.prices.S1KGaskinUSD     = response.data.SILVER_1KG.ask;
+                // $scope.prices.S1KGbidinUSD     = response.data.SILVER_1KG.bid;
+                // $scope.prices.S1KGaskinUSD     = response.data.SILVER_1KG.ask;
 
                 $rootScope.prices = $scope.prices;
-
+                
                 if(testing) {
                     console.log("BTC IN USD: ", $scope.prices.BTCinUSD);
-                    console.log("rootScope prices: ", $rootScope.prices);
                 }
             },
             function (response) {
@@ -195,9 +194,11 @@ ngapp.controller('SuperController', ['$http', '$scope', '$rootScope', '$cookies'
 
     $scope.getPrivateBalances = function(){
         console.log("GETTING PRIVATE BALANCES:");
-        if($rootScope.user) {
-	    console.log('https://btc.blockr.io/api/v1/address/balance/'+$rootScope.user.privateBTCaddress);
-            $http.get('https://btc.blockr.io/api/v1/address/balance/'+$rootScope.user.privateBTCaddress).then(
+        if($rootScope.user && $rootScope.user.privateBTCaddress) {
+        console.log('https://btc.blockr.io/api/v1/address/balance/'+$rootScope.user.privateBTCaddress);
+            
+            $http.get("https://blockexplorer.com/api/addr/" + $rootScope.user.privateBTCaddress + "/balance/").then(
+            // $http.get('https://btc.blockr.io/api/v1/address/balance/'+$rootScope.user.privateBTCaddress).then(
                 // $http.get('https://shapeshift.io/btcfee').then(
                 function (response) {
                     // success callback
@@ -289,8 +290,8 @@ ngapp.controller('SuperController', ['$http', '$scope', '$rootScope', '$cookies'
         // GET BITCOIN TRANSACTIONS
         
         console.log("Getting Bitcoin Transactions");
-
         $http.get("https://btc.blockr.io/api/v1/address/txs/" + $scope.BTCaddress).then((response) => { // valid API url
+        // $http.get("https://blockexplorer.com/api/addr/" + $scope.BTCaddress + "/balance/").then((response) => { // valid API url
             if(testing){ console.log("BITCOIN TRANSACTIONS FROM URL:", response.data); }
             
             var transactions = new Object();

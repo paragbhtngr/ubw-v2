@@ -14,7 +14,10 @@ ngapp.controller('BitcoinController', ['$http', '$scope', '$rootScope', '$cookie
         $scope.prices = $rootScope.prices;
         $scope.BTCfee = $rootScope.BTCfee / 100000000;
         $scope.BTCtransactions = $rootScope.BTCtransactions;
-        if (testing) { console.log("BITCOIN TRANSACTIONS IN BITCOIN CONTROLLER: ", $rootScope.BTCtransactions); }
+        if (testing) { 
+            console.log("BITCOIN TRANSACTIONS IN BITCOIN CONTROLLER: ", $rootScope.BTCtransactions); 
+            console.log("BTC PRICES IN BTC CONTROLLER", $rootScope.prices);
+        }
     }, 5000);
 
     $scope.bitcoinFilter = (txn) => {
@@ -218,6 +221,7 @@ ngapp.controller('EthereumController', ['$http', '$scope', '$rootScope', '$cooki
         if (testing) {
             console.log("ETHEREUM TRANSACTIONS IN ETHEREUM CONTROLLER", $rootScope.ETHtransactions);
             console.log("DNC TRANSACTIONS IN ETHEREUM CONTROLLER", $rootScope.DNCtransactions);
+            console.log("ETH PRICE IN ETH CONTROLLER", $rootScope.prices);
         }
     }, 5000);
 
@@ -432,7 +436,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                 dncAddress.removeClass('invalid');
             }
         } else {
-            $scope.sendErrorMessage = "Please specify a valid amount";
+            $scope.sendErrorMessage = "Please specify a recipient address";
             if (!(dncAddress.hasClass('invalid'))) {
                 dncAddress.addClass('invalid');
             }
@@ -444,7 +448,7 @@ ngapp.controller('DinarcoinController', ['$http', '$scope', '$rootScope', '$cook
                 dncSendAmount.removeClass('invalid');
             }
         } else {
-            $scope.sendErrorMessage = "Please specify a recipient address";
+            $scope.sendErrorMessage = "Please specify a valid amount";
             if (!(dncSendAmount.hasClass('invalid'))) {
                 dncSendAmount.addClass('invalid');
             }
